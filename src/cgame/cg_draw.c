@@ -611,6 +611,10 @@ static void CG_DrawTeamInfo( void ) {
 	float	alphapercent;
 	float	lineHeight = 9.f;
 
+	// sta acqu-sdk (issue 16): chatflags
+	qhandle_t flag = 0;
+	// end acqu-sdk (issue 16): chatflags
+
 	int chatWidth = 640 - CHATLOC_X - 100;
  
 	if( cg_teamChatHeight.integer < TEAMCHAT_HEIGHT ) {
@@ -672,7 +676,26 @@ static void CG_DrawTeamInfo( void ) {
 			hcolor[3] = alphapercent;
 			trap_R_SetColor( hcolor );
 
-			CG_Text_Paint_Ext( CHATLOC_TEXT_X, CHATLOC_Y - (cgs.teamChatPos - i - 1) * lineHeight - 1, 0.2f, 0.2f, hcolor, cgs.teamChatMsgs[i % chatHeight], 0, 0, 0, &cgs.media.limboFont2 );
+			// sta acqu-sdk (issue 16): chatflags
+			if( cgs.teamChatMsgTeams[i % chatHeight] == TEAM_AXIS ) {
+				flag = cgs.media.axisFlag;
+			} else if( cgs.teamChatMsgTeams[i % chatHeight] == TEAM_ALLIES ) {
+				flag = cgs.media.alliedFlag;
+			}else{
+				flag = 0;
+			}
+			if( flag )
+				CG_DrawPic( 160, 478 - (cgs.teamChatPos - i - 1) * lineHeight - 9, 12, 8, flag );
+
+			CG_Text_Paint_Ext( 
+				CHATLOC_TEXT_X + (flag ? 12 : 0),
+				CHATLOC_Y - (cgs.teamChatPos - i - 1) * lineHeight - 1,
+				0.2f, 0.2f, hcolor, cgs.teamChatMsgs[i % chatHeight],
+				0,
+				0,
+				0,
+				&cgs.media.limboFont2 );
+			// end acqu-sdk (issue 16): chatflags
 		}
 	}
 }

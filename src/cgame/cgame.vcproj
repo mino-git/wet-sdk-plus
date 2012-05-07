@@ -1,150 +1,208 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
+	Version="9,00"
 	Name="cgame"
-	SccProjectName="&quot;$/Wolfenstein MP/src/cgame&quot;, HTMAAAAA"
-	SccAuxPath=""
-	SccLocalPath="."
-	SccProvider="MSSCCI:NXN alienbrain">
+	ProjectGUID="{68A804FC-00C3-44E2-A479-3DB3D20F943D}"
+	TargetFrameworkVersion="131072"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory=".\Release"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/cgame.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				InlineFunctionExpansion="1"
-				OptimizeForProcessor="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;CGAMEDLL"
-				StringPooling="TRUE"
-				RuntimeLibrary="4"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="TRUE"
-				UsePrecompiledHeader="2"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				BufferSecurityCheck="false"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Release/cgame.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="4"
-				SuppressStartupBanner="TRUE"/>
+				SuppressStartupBanner="true"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="../Release/cgame_mp_x86.dll"
 				LinkIncremental="1"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\cgame.def"
 				ProgramDatabaseFile=".\Release/cgame_mp_x86.pdb"
-				GenerateMapFile="TRUE"
+				GenerateMapFile="true"
 				MapFileName=".\Release/cgame_mp_x86.map"
 				SubSystem="2"
 				BaseAddress="0x30000000"
-				ImportLibrary=".\Release/cgame_mp_x86.lib"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary=".\Release/cgame_mp_x86.lib"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/cgame.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/cgame.tlb"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				OptimizeForProcessor="1"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;CGAMEDLL"
-				RuntimeLibrary="5"
-				UsePrecompiledHeader="2"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile=".\Debug/cgame.pch"
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="1"
 				WarningLevel="3"
-				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="4"/>
+				SuppressStartupBanner="true"
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
 				OutputFile="..\Debug/cgame_mp_x86.dll"
 				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
+				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\cgame.def"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/cgame_mp_x86.pdb"
-				GenerateMapFile="TRUE"
+				GenerateMapFile="true"
 				MapFileName=".\Debug/cgame_mp_x86.map"
 				SubSystem="2"
 				BaseAddress="0x30000000"
-				ImportLibrary=".\Debug/cgame_mp_x86.lib"/>
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary=".\Debug/cgame_mp_x86.lib"
+			/>
 			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="TRUE"
-				SuppressStartupBanner="TRUE"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/cgame.tlb"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
-			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -152,221 +210,293 @@
 	<Files>
 		<Filter
 			Name="Source Files"
-			Filter="c">
+			Filter="c"
+			>
 			<File
-				RelativePath="..\game\bg_animation.c">
+				RelativePath="..\game\bg_animation.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_animgroup.c">
+				RelativePath="..\game\bg_animgroup.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_campaign.c">
+				RelativePath="..\game\bg_campaign.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_character.c">
+				RelativePath="..\game\bg_character.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_classes.c">
+				RelativePath="..\game\bg_classes.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_lib.c">
+				RelativePath="..\game\bg_lib.c"
+				>
 				<FileConfiguration
 					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"/>
+						Name="VCCLCompilerTool"
+					/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
+					ExcludedFromBuild="true"
+					>
 					<Tool
-						Name="VCCLCompilerTool"/>
+						Name="VCCLCompilerTool"
+					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\game\bg_misc.c">
+				RelativePath="..\game\bg_misc.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_pmove.c">
+				RelativePath="..\game\bg_pmove.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_slidemove.c">
+				RelativePath="..\game\bg_slidemove.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_sscript.c">
+				RelativePath="..\game\bg_sscript.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_stats.c">
+				RelativePath="..\game\bg_stats.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_tracemap.c">
+				RelativePath="..\game\bg_tracemap.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_atmospheric.c">
+				RelativePath=".\cg_atmospheric.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_character.c">
+				RelativePath=".\cg_character.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_commandmap.c">
+				RelativePath=".\cg_commandmap.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_consolecmds.c">
+				RelativePath=".\cg_consolecmds.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_debriefing.c">
+				RelativePath=".\cg_debriefing.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_draw.c">
+				RelativePath=".\cg_draw.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_drawtools.c">
+				RelativePath=".\cg_drawtools.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_effects.c">
+				RelativePath=".\cg_effects.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_ents.c">
+				RelativePath=".\cg_ents.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_event.c">
+				RelativePath=".\cg_event.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_fireteamoverlay.c">
+				RelativePath=".\cg_fireteamoverlay.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_fireteams.c">
+				RelativePath=".\cg_fireteams.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_flamethrower.c">
+				RelativePath=".\cg_flamethrower.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_info.c">
+				RelativePath=".\cg_info.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_limbopanel.c">
+				RelativePath=".\cg_limbopanel.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_loadpanel.c">
+				RelativePath=".\cg_loadpanel.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_localents.c">
+				RelativePath=".\cg_localents.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_main.c">
+				RelativePath=".\cg_main.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_marks.c">
+				RelativePath=".\cg_marks.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_missionbriefing.c">
+				RelativePath=".\cg_missionbriefing.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_multiview.c">
+				RelativePath=".\cg_multiview.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_newDraw.c">
+				RelativePath=".\cg_newDraw.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_particles.c">
+				RelativePath=".\cg_particles.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_players.c">
+				RelativePath=".\cg_players.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_playerstate.c">
+				RelativePath=".\cg_playerstate.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_polybus.c">
+				RelativePath=".\cg_polybus.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_popupmessages.c">
+				RelativePath=".\cg_popupmessages.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_predict.c">
+				RelativePath=".\cg_predict.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_scoreboard.c">
+				RelativePath=".\cg_scoreboard.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_servercmds.c">
+				RelativePath=".\cg_servercmds.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_snapshot.c">
+				RelativePath=".\cg_snapshot.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_sound.c">
+				RelativePath=".\cg_sound.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_spawn.c">
+				RelativePath=".\cg_spawn.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_statsranksmedals.c">
+				RelativePath=".\cg_statsranksmedals.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_syscalls.c">
+				RelativePath=".\cg_syscalls.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_trails.c">
+				RelativePath=".\cg_trails.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_view.c">
+				RelativePath=".\cg_view.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_weapons.c">
+				RelativePath=".\cg_weapons.c"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_window.c">
+				RelativePath=".\cg_window.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\q_math.c">
+				RelativePath="..\game\q_math.c"
+				>
 			</File>
 			<File
-				RelativePath="..\game\q_shared.c">
+				RelativePath="..\game\q_shared.c"
+				>
 			</File>
 			<File
-				RelativePath="..\ui\ui_shared.c">
+				RelativePath="..\ui\ui_shared.c"
+				>
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
-			Filter="h">
+			Filter="h"
+			>
 			<File
-				RelativePath="..\game\bg_classes.h">
+				RelativePath="..\game\bg_classes.h"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_local.h">
+				RelativePath="..\game\bg_local.h"
+				>
 			</File>
 			<File
-				RelativePath="..\game\bg_public.h">
+				RelativePath="..\game\bg_public.h"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_local.h">
+				RelativePath=".\cg_local.h"
+				>
 			</File>
 			<File
-				RelativePath=".\cg_public.h">
+				RelativePath=".\cg_public.h"
+				>
 			</File>
 			<File
-				RelativePath="..\ui\keycodes.h">
+				RelativePath="..\ui\keycodes.h"
+				>
 			</File>
 			<File
-				RelativePath="..\..\main\ui\menudef.h">
+				RelativePath="..\..\main\ui\menudef.h"
+				>
 			</File>
 			<File
-				RelativePath="..\game\q_shared.h">
+				RelativePath="..\game\q_shared.h"
+				>
 			</File>
 			<File
-				RelativePath="..\game\surfaceflags.h">
+				RelativePath="..\game\surfaceflags.h"
+				>
 			</File>
 			<File
-				RelativePath=".\tr_types.h">
+				RelativePath=".\tr_types.h"
+				>
 			</File>
 			<File
-				RelativePath="..\ui\ui_shared.h">
+				RelativePath="..\ui\ui_shared.h"
+				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\cgame.def">
+			RelativePath=".\cgame.def"
+			>
 		</File>
 	</Files>
 	<Globals>
