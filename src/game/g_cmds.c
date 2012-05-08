@@ -1860,6 +1860,26 @@ qboolean Cmd_CallVote_f( gentity_t *ent, unsigned int dwCommand, qboolean fRefCo
 		return(qfalse);
 	}
 
+	// sta acqu-sdk (issue 4): quake 3 engine callvote exploit
+	// http://aluigi.freeforums.org/quake3-engine-callvote-bug-t686.html
+	if( strchr( arg1, '\n' ) || strchr( arg2, '\n' ) ||
+		strchr( arg1, '\r' ) || strchr( arg2, '\r' ) ) {
+
+		char *ip;
+		char userinfo[MAX_INFO_STRING];
+
+		trap_GetUserinfo( ent->client->ps.clientNum, userinfo, sizeof( userinfo ) );
+		ip = Info_ValueForKey ( userinfo, "ip" );
+
+		G_Printf( "Malformed vote string. Disconnecting client: %s\n", ent->client->pers.netname );
+		G_LogPrintf( "Malformed vote string. Disconnecting client: %i %s %s\n", ent->client->ps.clientNum, ent->client->pers.netname, ip );
+
+		trap_DropClient( ent->client->ps.clientNum, "player kicked", 300 );
+
+		return qfalse;
+	}
+	// end acqu-sdk (issue 4)
+
 
 	if(trap_Argc() > 1 && (i = G_voteCmdCheck(ent, arg1, arg2, fRefCommand)) != G_NOTFOUND) {	//  --OSP
 		if(i != G_OK)	 {
