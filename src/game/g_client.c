@@ -1447,6 +1447,13 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	gclient_t	*client;
 	char		userinfo[MAX_INFO_STRING];
 	gentity_t	*ent;
+
+	// sta acqu-sdk (issue 5): extended ascii characters check
+	int			i;
+	char		name[MAX_NETNAME];
+	// end acqu-sdk (issue 5)
+
+
 #ifdef USEXPSTORAGE
 	ipXPStorage_t* xpBackup;
 	int			i;
@@ -1494,7 +1501,20 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 				return "Invalid password";
 			}
 		}
+
+		// sta acqu-sdk (issue 5): extended ascii characters check
+		// redeye/IRATA - ext. ASCII chars check
+		value = Info_ValueForKey (userinfo, "name");
+		Q_strncpyz( name, value, sizeof(name) );
+		for (i = 0; i < strlen(name); i++)
+		{
+			if (name[i] < 0) // extended ASCII chars have values between -128 and 0 (signed char)
+				return "Bad Name: Extended ASCII Characters. Please change your name.";
+		}
+		// end acqu-sdk (issue 5)
 	}
+
+
 
 	// Gordon: porting q3f flag bug fix
 	//			If a player reconnects quickly after a disconnect, the client disconnect may never be called, thus flag can get lost in the ether
