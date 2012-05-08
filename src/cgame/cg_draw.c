@@ -613,7 +613,7 @@ static void CG_DrawTeamInfo( void ) {
 
 	// sta acqu-sdk (issue 16): chatflags
 	qhandle_t flag = 0;
-	// end acqu-sdk (issue 16): chatflags
+	// end acqu-sdk (issue 16)
 
 	int chatWidth = 640 - CHATLOC_X - 100;
  
@@ -695,7 +695,7 @@ static void CG_DrawTeamInfo( void ) {
 				0,
 				0,
 				&cgs.media.limboFont2 );
-			// end acqu-sdk (issue 16): chatflags
+			// end acqu-sdk (issue 16)
 		}
 	}
 }
