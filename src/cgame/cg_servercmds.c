@@ -685,10 +685,13 @@ static void CG_AddToTeamChat( const char *str, int clientnum ) {
 	int len;
 	char *p, *ls;
 	int lastcolor;
-	int chatHeight;
-
+	int chatHeight;	
+	
 	if (cg_teamChatHeight.integer < TEAMCHAT_HEIGHT) {
-		chatHeight = cg_teamChatHeight.integer;
+		// sta acqu-sdk (issue 7): intermission chat problem
+		// http://forums.warchestgames.com/showthread.php/31979-Vanilla-ET-Intermission-Chat-Problem
+		chatHeight = ( cgs.gamestate == GS_INTERMISSION ) ? TEAMCHAT_HEIGHT : cg_teamChatHeight.integer;
+		// end acqu-sdk (issue 7)
 	} else {
 		chatHeight = TEAMCHAT_HEIGHT;
 	}
