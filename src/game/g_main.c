@@ -203,6 +203,10 @@ vmCvar_t		g_nextcampaign;
 
 vmCvar_t		g_disableComplaints;
 
+// sta acqu-sdk (issue 6): potential fake clients fix
+vmCvar_t		g_maxConnsPerIP;
+// end acqu-sdk (issue 6)
+
 
 cvarTable_t		gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -420,6 +424,10 @@ cvarTable_t		gameCvarTable[] = {
 	{ &g_nextcampaign, "nextcampaign", "", CVAR_TEMP },
 
 	{ &g_disableComplaints, "g_disableComplaints", "0", CVAR_ARCHIVE },
+
+	// sta acqu-sdk (issue 6): potential fake clients fix
+	{ &g_maxConnsPerIP, "g_maxConnsPerIP", "2", CVAR_SERVERINFO | CVAR_ARCHIVE},
+	// end acqu-sdk (issue 6)
 };
 
 // bk001129 - made static to avoid aliasing

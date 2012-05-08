@@ -1246,6 +1246,30 @@ static void ClientCleanName( const char *in, char *out, int outSize )
 void G_StartPlayerAppropriateSound(gentity_t *ent, char *soundType) {
 }
 
+// sta acqu-sdk (issue 6): code addition
+const char *GetParsedIP(const char *ipadd)
+{
+	// code by Dan Pop, http://bytes.com/forum/thread212174.html
+	unsigned b1, b2, b3, b4, port = 0;
+	unsigned char c;
+	int rc;
+	static char ipge[20];
+
+	if(!Q_strncmp(ipadd,"localhost",strlen("localhost")))
+		return "localhost";
+
+	rc = sscanf(ipadd, "%3u.%3u.%3u.%3u:%u%c", &b1, &b2, &b3, &b4, &port, &c);
+	if (rc < 4 || rc > 5) 
+		return NULL;
+	if ( (b1 | b2 | b3 | b4) > 255 || port > 65535) 
+		return NULL;
+	if (strspn(ipadd, "0123456789.:") < strlen(ipadd))
+		return NULL;
+	sprintf(ipge, "%u.%u.%u.%u", b1, b2, b3, b4);
+	return ipge;
+}
+// end acqu-sdk (issue 6)
+
 /*
 ===========
 ClientUserInfoChanged
@@ -1453,6 +1477,13 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	char		name[MAX_NETNAME];
 	// end acqu-sdk (issue 5)
 
+	// sta acqu-sdk (issue 6): potential fake clients fix
+	int			clientNum2;
+	int			conn_per_ip;
+	char		ip[20], ip2[20];
+	char		userinfo2[MAX_INFO_STRING];
+	// end acqu-sdk (issue 6)
+
 
 #ifdef USEXPSTORAGE
 	ipXPStorage_t* xpBackup;
@@ -1471,6 +1502,30 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	if ( G_FilterIPBanPacket( value ) ) {
 		return "You are banned from this server.";
 	}
+
+	// sta acqu-sdk (issue 6): potential fake clients fix
+	// quad: check for maximum connections per IP
+	// based on reyalp's combinedfixes.lua and Invaderzim's patch
+	// prevents fakeplayers DOS http://aluigi.altervista.org/fakep.htm
+	conn_per_ip = 1;
+	Q_strncpyz(ip, GetParsedIP(value), sizeof(ip));
+	for (i=0; i<level.numConnectedClients; i++) {
+		clientNum2 = level.sortedClients[i];
+		if(clientNum == clientNum2) continue;
+		if(isBot || g_entities[clientNum2].r.svFlags & SVF_BOT) continue; // IGNORE BOTS
+		trap_GetUserinfo(clientNum2, userinfo2, sizeof(userinfo2));
+		value = Info_ValueForKey (userinfo2, "ip");
+		Q_strncpyz(ip2, GetParsedIP(value), sizeof(ip2));
+		if (strcmp(ip, ip2)==0) {
+			conn_per_ip++;
+		}
+	}
+
+	if (conn_per_ip > g_maxConnsPerIP.integer) {
+		G_LogPrintf("Client with IP (%s) exceeded maximum allowed connections per IP\n", ip);
+		return "Too many connections from your IP.";
+	}
+	// end acqu-sdk (issue 6)
 
 	// Xian - check for max lives enforcement ban
 	if( g_gametype.integer != GT_WOLF_LMS ) {

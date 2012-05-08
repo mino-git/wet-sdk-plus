@@ -1781,6 +1781,10 @@ extern vmCvar_t		g_nextcampaign;
 
 extern vmCvar_t		g_disableComplaints;
 
+// sta acqu-sdk (issue 6): potential fake clients fix
+extern vmCvar_t		g_maxConnsPerIP;
+// end acqu-sdk (issue 6)
+
 extern vmCvar_t	bot_debug;					// if set, draw "thought bubbles" for crosshair-selected bot
 extern vmCvar_t	bot_debug_curAINode;		// the text of the current ainode for the bot begin debugged
 extern vmCvar_t	bot_debug_alertState;		// alert state of the bot being debugged
