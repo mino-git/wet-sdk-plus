@@ -207,7 +207,11 @@ void G_LoseSkillPoints( gentity_t *ent, skillType_t skill, float points ) {
 		ent->client->sess.skillpoints[skill] = skillLevels[oldskill];
 	}
 
-	G_Printf( "%s just lost %f skill points for skill %s\n", ent->client->pers.netname, oldskillpoints - ent->client->sess.skillpoints[skill], skillNames[skill] );
+	// sta acqu-sdk (issue 2): CHRUKER: b013 - Was printing this with many many decimals
+	G_Printf( "%s just lost %.0f skill points for skill %s\n", ent->client->pers.netname, oldskillpoints - ent->client->sess.skillpoints[skill], skillNames[skill] );
+	//G_Printf( "%s just lost %f skill points for skill %s\n", ent->client->pers.netname, oldskillpoints - ent->client->sess.skillpoints[skill], skillNames[skill] );
+	// end acqu-sdk (issue 2): CHRUKER: b013
+	
 
 	trap_PbStat ( ent - g_entities , "loseskill" , 
 		va ( "%d %d %d %f" , ent->client->sess.sessionTeam , ent->client->sess.playerType , 
@@ -542,15 +546,26 @@ void G_DebugAddSkillLevel( gentity_t *ent, skillType_t skill )
 	if( !g_debugSkills.integer )
 		return;
 
-	trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %6.2f) %s: You raised your skill level to %i.\"\n",
+	// sta acqu-sdk (issue 2): CHRUKER: b013 - Was printing the float with 6.2 as max. numbers
+	trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %.0f) %s: You raised your skill level to %i.\"\n",
 								COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->sess.skill[skill] ) );
+
+	//trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %6.2f) %s: You raised your skill level to %i.\"\n",
+	//							COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->sess.skill[skill] ) );
+	// end acqu-sdk (issue 2): CHRUKER: b013
 
 	trap_RealTime( &ct );
 
 	if( g_debugSkills.integer >= 2 && skillDebugLog != -1 ) {
-		char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %6.2f) %s: %s raised in skill level to %i.\n",
+		// sta acqu-sdk (issue 2): CHRUKER: b013 - Was printing the float with 6.2 as max. numbers
+		char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %.0f) %s: %s raised in skill level to %i.\n",
 			ct.tm_hour, ct.tm_min, ct.tm_sec,
 			COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->pers.netname, ent->client->sess.skill[skill] );
+
+		//char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %6.2f) %s: %s raised in skill level to %i.\n",
+		//	ct.tm_hour, ct.tm_min, ct.tm_sec,
+		//	COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->pers.netname, ent->client->sess.skill[skill] );
+		// end acqu-sdk (issue 2): CHRUKER: b013
 		trap_FS_Write( s, strlen( s ), skillDebugLog );
 	}
 }
@@ -562,19 +577,31 @@ void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, con
 	if( !g_debugSkills.integer )
 		return;
 
-	trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %6.2f) %s: You gained %.2fXP, reason: %s.\"\n",
+	// sta acqu-sdk (issue 2): CHRUKER: b013 - Was printing the float with 6.2 as max. numbers
+	trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %.0f) %s: You gained %.0fXP, reason: %s.\"\n",
 								COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], points, reason ) );
+
+	//trap_SendServerCommand( ent-g_entities, va( "sdbg \"^%c(SK: %2i XP: %6.2f) %s: You gained %.2fXP, reason: %s.\"\n",
+	//							COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], points, reason ) );
+	// end acqu-sdk (issue 2): CHRUKER: b013
 
 	trap_RealTime( &ct );
 
 	if( g_debugSkills.integer >= 2 && skillDebugLog != -1 ) {
-		char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %6.2f) %s: %s gained %.2fXP, reason: %s.\n",
+		// sta acqu-sdk (issue 2): CHRUKER: b013 - Was printing the float with 6.2 as max. numbers
+		char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %.0f) %s: %s gained %.0fXP, reason: %s.\n",
 			ct.tm_hour, ct.tm_min, ct.tm_sec,
 			COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->pers.netname, points, reason );
+
+		//char *s = va( "%02d:%02d:%02d : ^%c(SK: %2i XP: %6.2f) %s: %s gained %.2fXP, reason: %s.\n",
+		//	ct.tm_hour, ct.tm_min, ct.tm_sec,
+		//	COLOR_RED + skill, ent->client->sess.skill[skill], ent->client->sess.skillpoints[skill], skillNames[skill], ent->client->pers.netname, points, reason );
+		// end acqu-sdk (issue 2): CHRUKER: b013
 		trap_FS_Write( s, strlen( s ), skillDebugLog );
 	}
 }
 
+// sta acqu-sdk (issue 2): CHRUKER: b017 - Added a check to make sure that the best result is larger than 0
 #define CHECKSTAT1( XX )														\
 	best = NULL;																\
 	for( i = 0; i < level.numConnectedClients; i++ ) {							\
@@ -582,12 +609,16 @@ void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, con
 		if( cl->sess.sessionTeam == TEAM_SPECTATOR ) {							\
 			continue;															\
 		}																		\
-		if( !best || cl->XX > best->XX ) {									\
+		if( cl->XX <= 0 ) {														\
+			continue;															\
+		}																		\
+		if( !best || cl->XX > best->XX ) {										\
 			best = cl;															\
 		}																		\
 	}																			\
 	if( best ) { best->hasaward = qtrue; }										\
 	Q_strcat( buffer, 1024, va( ";%s; %i ", best ? best->pers.netname : "", best ? best->sess.sessionTeam : -1 ) )
+// end acqu-sdk (issue 2): CHRUKER: b017
 
 #define CHECKSTATMIN( XX, YY )													\
 	best = NULL;																\
@@ -603,6 +634,8 @@ void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, con
 	if( best ) { best->hasaward = qtrue; }										\
 	Q_strcat( buffer, 1024, va( ";%s; %i ", best && best->XX >= YY ? best->pers.netname : "", best && best->XX >= YY ? best->sess.sessionTeam : -1 ) )
 
+// sta acqu-sdk (issue 2): CHRUKER: b017 - Moved the minimum skill requirement into a seperate if sentence
+// Added a check to make sure only people who have increased their skills are considered
 #define CHECKSTATSKILL( XX )															\
 	best = NULL;																\
 	for( i = 0; i < level.numConnectedClients; i++ ) {							\
@@ -610,12 +643,19 @@ void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, con
 		if( cl->sess.sessionTeam == TEAM_SPECTATOR ) {							\
 			continue;															\
 		}																		\
+		if ((cl->sess.skillpoints[XX] - cl->sess.startskillpoints[XX]) <= 0) {	\
+			continue;															\
+		}																		\
+		if( cl->sess.skill[XX] < 1 ) {											\
+			continue;															\
+		}																		\
 		if( !best || (cl->sess.skillpoints[XX] - cl->sess.startskillpoints[XX]) > (best->sess.skillpoints[XX] - best->sess.startskillpoints[XX]) ) {									\
 			best = cl;															\
 		}																		\
 	}																			\
 	if( best ) { best->hasaward = qtrue; }										\
-	Q_strcat( buffer, 1024, va( ";%s; %i ", best && best->sess.skillpoints[XX] >= 20 ? best->pers.netname : "", best && best->sess.skillpoints[XX] >= 20 ? best->sess.sessionTeam : -1 ) )
+	Q_strcat( buffer, 1024, va( ";%s; %i ", best ? best->pers.netname : "", best ? best->sess.sessionTeam : -1 ) )
+// end acqu-sdk (issue 2): CHRUKER: b017
 
 #define CHECKSTAT3( XX, YY, ZZ )												\
 	best = NULL;																\

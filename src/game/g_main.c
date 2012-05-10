@@ -2540,10 +2540,12 @@ void LogExit( const char *string ) {
 	// that will get cut off when the queued intermission starts
 	trap_SetConfigstring( CS_INTERMISSION, "1" );
 
-	G_LogPrintf( "red:%i  blue:%i\n", level.teamScores[TEAM_AXIS], level.teamScores[TEAM_ALLIES] );
+	// sta acqu-sdk (issue 2): CHRUKER: b016	
+	//G_LogPrintf( "red:%i  blue:%i\n", level.teamScores[TEAM_AXIS], level.teamScores[TEAM_ALLIES] );
 
 	// NERVE - SMF - send gameCompleteStatus message to master servers
-	trap_SendConsoleCommand( EXEC_APPEND, "gameCompleteStatus\n" );
+	//trap_SendConsoleCommand( EXEC_APPEND, "gameCompleteStatus\n" );
+	// end acqu-sdk (issue 2): CHRUKER: b016
 
 	for( i = 0; i < level.numConnectedClients; i++ ) {
 		int		ping;
@@ -2560,10 +2562,21 @@ void LogExit( const char *string ) {
 			continue;
 		}
 
+		// sta acqu-sdk (issue 2): CHRUKER: b016 - Make sure all the stats are recalculated and accurate
+		G_CalcRank( cl );
+		// end acqu-sdk (issue 2): CHRUKER: b016
+
 		ping = cl->ps.ping < 999 ? cl->ps.ping : 999;
 
 		G_LogPrintf( "score: %i  ping: %i  client: %i %s\n", cl->ps.persistant[PERS_SCORE], ping, level.sortedClients[i], cl->pers.netname );
 	}
+
+	// sta acqu-sdk (issue 2): CHRUKER: b016 - Moved here because we needed the stats to be up-to-date before sending
+	G_LogPrintf( "red:%i blue:%i\n", level.teamScores[TEAM_AXIS], level.teamScores[TEAM_ALLIES] );
+
+	// NERVE - SMF - send gameCompleteStatus message to master servers
+	trap_SendConsoleCommand( EXEC_APPEND, "gameCompleteStatus\n" );
+	// end acqu-sdk (issue 2): CHRUKER: b016
 
 	// NERVE - SMF
 	if( g_gametype.integer == GT_WOLF_STOPWATCH ) {
@@ -2604,6 +2617,10 @@ void LogExit( const char *string ) {
 		int		winner;
 		int		highestskillpoints, highestskillpointsclient, j, teamNum;
 
+		// sta acqu-sdk (issue 2): CHRUKER: b017 - Preventing medals from being handed out left and right
+		int highestskillpointsincrease;
+		// end acqu-sdk (issue 2): CHRUKER: b017
+
 		trap_GetConfigstring( CS_MULTI_MAPWINNER, cs, sizeof(cs) );
 		winner = atoi( Info_ValueForKey( cs, "winner" ) );
 
@@ -2627,6 +2644,9 @@ void LogExit( const char *string ) {
 		for( teamNum = TEAM_AXIS; teamNum <= TEAM_ALLIES; teamNum++ ) {
 			for( i = 0; i < SK_NUM_SKILLS; i++ ) {
 				highestskillpoints = 0;
+				// sta acqu-sdk (issue 2): CHRUKER: b017 - Preventing medals from being handed out left and right
+				highestskillpointsincrease = 0;
+				// end acqu-sdk (issue 2): CHRUKER: b017
 				highestskillpointsclient = -1;
 				for( j = 0; j < level.numConnectedClients; j++ ) {
 					cl = &level.clients[level.sortedClients[j]];
@@ -2634,10 +2654,29 @@ void LogExit( const char *string ) {
 					if( cl->sess.sessionTeam != teamNum )
 						continue;
 
-					if( cl->sess.skillpoints[i] > highestskillpoints ) {
-						highestskillpoints = cl->sess.skillpoints[i];
-						highestskillpointsclient = j;
+					// sta acqu-sdk (issue 2): CHRUKER: b017 - Make sure the player got some skills
+					if( cl->sess.skill[i] < 1 )
+						continue;
+					// end acqu-sdk (issue 2): CHRUKER: b017
+
+					// sta acqu-sdk (issue 2): CHRUKER: b017 - Only battlesense and light weapons medals are awarded to the highest score
+					if ( i == SK_BATTLE_SENSE || i == SK_LIGHT_WEAPONS ) {
+						if( cl->sess.skillpoints[i] > highestskillpoints ) {
+							highestskillpoints = cl->sess.skillpoints[i];
+							highestskillpointsclient = j;
+						}
+					} else {
+						if( (cl->sess.skillpoints[i] - cl->sess.startskillpoints[i]) > highestskillpointsincrease ) {
+							highestskillpointsincrease = (cl->sess.skillpoints[i] - cl->sess.startskillpoints[i]);
+							highestskillpointsclient = j;
+						}
 					}
+
+					//if( cl->sess.skillpoints[i] > highestskillpoints ) {
+					//	highestskillpoints = cl->sess.skillpoints[i];
+					//	highestskillpointsclient = j;
+					//}
+					// end acqu-sdk (issue 2): CHRUKER: b017
 				}
 
 				if( highestskillpointsclient >= 0 ) {
@@ -2650,11 +2689,29 @@ void LogExit( const char *string ) {
 						if( cl->sess.sessionTeam != teamNum )
 							continue;
 
-						if( cl->sess.skillpoints[i] == highestskillpoints ) {
-							cl->sess.medals[i]++;
+						// sta acqu-sdk (issue 2): CHRUKER: b017 - Make sure the player got some skills
+						if( cl->sess.skill[i] < 1 )
+							continue;
+						// end acqu-sdk (issue 2): CHRUKER: b017
 
-							ClientUserinfoChanged( level.sortedClients[j] );
+						// sta acqu-sdk (issue 2): CHRUKER: b017 - Only battlesense and light weapons medals are awarded to the highest score
+						if ( i == SK_BATTLE_SENSE || i == SK_LIGHT_WEAPONS ) {
+							if( cl->sess.skillpoints[i] == highestskillpoints ) {
+								cl->sess.medals[i]++;
+								ClientUserinfoChanged( level.sortedClients[j] );
+							}
+						} else {
+							if( (cl->sess.skillpoints[i] - cl->sess.startskillpoints[i]) == highestskillpointsincrease ) {
+								cl->sess.medals[i]++;
+
+								ClientUserinfoChanged( level.sortedClients[j] );
+							}						
 						}
+						//if( cl->sess.skillpoints[i] == highestskillpoints ) {
+						//	cl->sess.medals[i]++;
+						//	ClientUserinfoChanged( level.sortedClients[j] );
+						//}
+						// end acqu-sdk (issue 2): CHRUKER: b017
 					}
 				}
 			}

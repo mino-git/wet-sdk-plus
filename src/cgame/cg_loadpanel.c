@@ -531,30 +531,63 @@ qboolean CG_LoadPanel_ContinueButtonKeyDown( panel_button_t* button, int key ) {
 
 
 void CG_LoadPanel_DrawPin( const char* text, float px, float py, float sx, float sy, qhandle_t shader, float pinsize, float backheight ) {
-	float x, y, w, h;
+	// sta acqu-sdk (issue 2): CHRUKER: b049
+	float  w;
+	//float x, y, w, h;
+	// end acqu-sdk (issue 2): CHRUKER: b049
 	vec4_t colourFadedBlack = { 0.f, 0.f, 0.f, 0.4f };
 
 	w = DC->textWidthExt( text, sx, 0, &bg_loadscreenfont2 );
-	if( px + 30 + w > 440 ) {
-		DC->fillRect( px - w - 28 + 2, py - (backheight/2.f) + 2, 28 + w, backheight, colourFadedBlack );
-		DC->fillRect( px - w - 28, py - (backheight/2.f), 28 + w, backheight, colorBlack );
+
+	// sta acqu-sdk (issue 2): CHRUKER: b049 - Correct placement of the map name
+	// Pin half width is 16
+	// Pin left margin is 4
+	// Pin right margin is 0
+	// Text margin is 4
+	if( px + 20 + w > 440 ) {
+		// x - pinhwidth (16) - pin left margin (4) - w - text margin (4) => x - w - 24
+		DC->fillRect( px - w - 24 + 2, py - (backheight/2.f) + 2, 24 + w, backheight, colourFadedBlack );
+		DC->fillRect( px - w - 24, py - (backheight/2.f), 24 + w, backheight, colorBlack );
 	} else {
-		DC->fillRect( px + 2, py - (backheight/2.f) + 2, 28 + w, backheight, colourFadedBlack );
-		DC->fillRect( px, py - (backheight/2.f), 28 + w, backheight, colorBlack );
+		// Width = pinhwidth (16) + pin right margin (0) + w + text margin (4) = 20 + w
+		DC->fillRect( px + 2, py - (backheight/2.f) + 2, 20 + w, backheight, colourFadedBlack );
+		DC->fillRect( px, py - (backheight/2.f), 20 + w, backheight, colorBlack );
 	}
 
-	x = px - pinsize;
-	y = py - pinsize;
-	w = pinsize * 2.f;
-	h = pinsize * 2.f;
+	//if( px + 30 + w > 440 ) {
+	//	DC->fillRect( px - w - 28 + 2, py - (backheight/2.f) + 2, 28 + w, backheight, colourFadedBlack );
+	//	DC->fillRect( px - w - 28, py - (backheight/2.f), 28 + w, backheight, colorBlack );
+	//} else {
+	//	DC->fillRect( px + 2, py - (backheight/2.f) + 2, 28 + w, backheight, colourFadedBlack );
+	//	DC->fillRect( px, py - (backheight/2.f), 28 + w, backheight, colorBlack );
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b049
 
-	DC->drawHandlePic( x, y, w, h, shader );
+	// sta acqu-sdk (issue 2): CHRUKER: b049
+	//x = px - pinsize;
+	//y = py - pinsize;
+	//w = pinsize * 2.f;
+	//h = pinsize * 2.f;	
 
-	if( px + 30 + w > 440 ) {
-		DC->drawTextExt( px - 12 - w - 28, py + 4, sx, sy, colorWhite, text, 0, 0, 0, &bg_loadscreenfont2 );
+	DC->drawHandlePic( px - pinsize, py - pinsize, pinsize * 2.f, pinsize * 2.f, shader );
+	//DC->drawHandlePic( x, y, w, h, shader );
+	// end acqu-sdk (issue 2): CHRUKER: b049
+
+	// sta acqu-sdk (issue 2): CHRUKER: b049
+	if( px + 20 + w > 440 ) {
+		// x - pinhwidth (16) - pin left margin (4) - w => x - w - 20
+		DC->drawTextExt( px - w - 20, py + 4, sx, sy, colorWhite, text, 0, 0, 0, &bg_loadscreenfont2 );
 	} else {
+		// x + pinhwidth (16) + pin right margin (0) => x + 16
 		DC->drawTextExt( px + 16, py + 4, sx, sy, colorWhite, text, 0, 0, 0, &bg_loadscreenfont2 );
 	}
+
+	//if( px + 30 + w > 440 ) {
+	//	DC->drawTextExt( px - 12 - w - 28, py + 4, sx, sy, colorWhite, text, 0, 0, 0, &bg_loadscreenfont2 );
+	//} else {
+	//	DC->drawTextExt( px + 16, py + 4, sx, sy, colorWhite, text, 0, 0, 0, &bg_loadscreenfont2 );
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b049
 }
 
 void CG_LoadPanel_RenderCampaignPins( panel_button_t* button ) {

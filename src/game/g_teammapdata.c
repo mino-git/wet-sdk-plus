@@ -19,8 +19,10 @@ void G_PushMapEntityToBuffer( char* buffer, int size, mapEntityData_t *mEnt ) {
 		case ME_DESTRUCT:
 		case ME_DESTRUCT_2:
 		case ME_COMMANDMAP_MARKER:
-			Q_strcat( buffer, size, va(" %i %i", mEnt->type, mEnt->data ) );
-			break;
+			// sta acqu-sdk (issue 2): CHRUKER: b043 - These also needs to be send so that icons can be displayed correct command map layer
+			//Q_strcat( buffer, size, va(" %i %i", mEnt->type, mEnt->data ) );
+			//break;
+			// end acqu-sdk (issue 2): CHRUKER: b043
 		case ME_TANK:
 		case ME_TANK_DEAD:
 			Q_strcat( buffer, size, va(" %i %s %i", mEnt->type, buf, mEnt->data ) );
@@ -1028,7 +1030,10 @@ void G_UpdateTeamMapData( void ) {
 
 													// for marker
 													ent->client->landmineSpotted->s.frame = rand() % 20;
-													ent->client->landmineSpotted->r.contents = CONTENTS_CORPSE;
+													// sta acqu-sdk (issue 2): CHRUKER: b036 - Landmine flags shouldn't block our view
+													ent->client->landmineSpotted->r.contents = CONTENTS_TRANSLUCENT;
+													//ent->client->landmineSpotted->r.contents = CONTENTS_CORPSE;
+													// end acqu-sdk (issue 2): CHRUKER: b036
 													trap_LinkEntity( ent->client->landmineSpotted );
 
 													{
@@ -1071,7 +1076,10 @@ void G_UpdateTeamMapData( void ) {
 
 													// for marker
 													ent->client->landmineSpotted->s.frame = rand() % 20;
-													ent->client->landmineSpotted->r.contents = CONTENTS_CORPSE;
+													// sta acqu-sdk (issue 2): CHRUKER: b036 - Landmine flags shouldn't block our view													
+													ent->client->landmineSpotted->r.contents = CONTENTS_TRANSLUCENT;
+													//ent->client->landmineSpotted->r.contents = CONTENTS_CORPSE;
+													// end acqu-sdk (issue 2): CHRUKER: b036
 													trap_LinkEntity( ent->client->landmineSpotted );
 
 													{

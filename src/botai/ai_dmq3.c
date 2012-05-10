@@ -738,7 +738,10 @@ qboolean G_WeaponCharged( playerState_t* ps, team_t team, int weapon, int* skill
 			break;
 
 		case WP_LANDMINE:
-			if( skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 2 ) {
+			// sta acqu-sdk (issue 2): CHRUKER: b026 - Skill should first kick in at level 3
+			if( skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 3 ) {
+			//if( skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 2 ) {
+			// end acqu-sdk (issue 2): CHRUKER: b026
 				if( WC_WEAPON_TIME_LEFT < (WC_ENGINEER_TIME * 0.33f)) {
 					return qfalse;
 				}

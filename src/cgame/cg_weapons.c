@@ -4229,6 +4229,17 @@ void CG_OutOfAmmoChange( qboolean allowforceswitch ) {
 
 		// JPW NERVE -- early out if we just fired Panzerfaust, go to pistola, then grenades
 		if (cg.weaponSelect == WP_PANZERFAUST) {
+			// sta acqu-sdk (issue 2): CHRUKER: b021 - Actually use a SMG first if we got it
+			for( i = 0; i < MAX_WEAPS_IN_BANK_MP; i++ ) {
+				// CHRUKER: b021 - Make sure we don't reselect the panzer. (That took me a while to figure that out :-)
+				if (weapBanksMultiPlayer[3][i] != WP_PANZERFAUST && CG_WeaponSelectable(weapBanksMultiPlayer[3][i])) { // find a smg
+					cg.weaponSelect = weapBanksMultiPlayer[3][i];
+					CG_FinishWeaponChange(cg.predictedPlayerState.weapon, cg.weaponSelect);
+					return;
+				}
+			}
+			// end acqu-sdk (issue 2): CHRUKER: b021
+
 			for( i = 0; i < MAX_WEAPS_IN_BANK_MP; i++ ) {
 				if (CG_WeaponSelectable(weapBanksMultiPlayer[2][i])) { // find a pistol
 					cg.weaponSelect = weapBanksMultiPlayer[2][i];

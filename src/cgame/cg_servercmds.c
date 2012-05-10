@@ -1658,13 +1658,23 @@ void CG_parseWeaponStatsGS_cmd(void)
 			if(ci->skill[i] < NUM_SKILL_LEVELS - 1) {
 				str = va("%4d/%-4d", ci->skillpoints[i], skillLevels[ci->skill[i]+1]);
 			} else {
-				str = va("%d", ci->skillpoints[i]);
+				// sta acqu-sdk (issue 2): CHRUKER: b023 - Fixing indentation
+				str = va(" %-8d", ci->skillpoints[i]);
+				//str = va("%d", ci->skillpoints[i]);
+				// end acqu-sdk (issue 2): CHRUKER: b023
+				
 			}
 
 			if(cgs.gametype == GT_WOLF_CAMPAIGN) {
-				Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %s %12d", skillNames[i], ci->skill[i], str, ci->medals[i]), sizeof(gs->strSkillz[0]));
+				// sta acqu-sdk (issue 2): CHRUKER: b023 - Fixing indentation
+				Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %-15s %6d", skillNames[i], ci->skill[i], str, ci->medals[i]), sizeof(gs->strSkillz[0]));
+				//Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %s %12d", skillNames[i], ci->skill[i], str, ci->medals[i]), sizeof(gs->strSkillz[0]));
+				// end acqu-sdk (issue 2): CHRUKER: b023
 			} else {
-				Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %s", skillNames[i], ci->skill[i], str),	sizeof(gs->strSkillz[0]));
+				// sta acqu-sdk (issue 2): CHRUKER: b023 - Fixing indentation
+				Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %-15s", skillNames[i], ci->skill[i], str), sizeof(gs->strSkillz[0]));
+				//Q_strncpyz(gs->strSkillz[gs->cSkills++], va("%-15s %3d %s", skillNames[i], ci->skill[i], str),	sizeof(gs->strSkillz[0]));
+				// end acqu-sdk (issue 2): CHRUKER: b023
 			}
 		}
 	}
@@ -1683,7 +1693,11 @@ void CG_parseWeaponStats_cmd(void (txt_dump)(char *))
 	unsigned int nClient = atoi(CG_Argv(iArg++));
 	unsigned int nRounds = atoi(CG_Argv(iArg++));
 	unsigned int dwWeaponMask = atoi(CG_Argv(iArg++));
-	unsigned int dwSkillPointMask, xp = 0;
+	// sta acqu-sdk (issue 2): CHRUKER: b037 - Negative XP wouldn't show up on the playerstat screen
+	unsigned int dwSkillPointMask;
+	int xp = 0;
+	//unsigned int dwSkillPointMask, xp = 0;
+	// end acqu-sdk (issue 2): CHRUKER: b037
 
 	ci = &cgs.clientinfo[nClient];
 

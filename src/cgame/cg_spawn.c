@@ -361,6 +361,13 @@ void SP_worldspawn( void ) {
 	CG_SpawnString( "cclayers", "0", &s );
 	cgs.ccLayers = atoi(s);
 
+	// sta acqu-sdk (issue 2): CHRUKER: b043 - Make sure the maximum commandmaps, doesn't overflow the maximum allowed command map layers
+	if (cgs.ccLayers > MAX_COMMANDMAP_LAYERS) {
+		cgs.ccLayers = MAX_COMMANDMAP_LAYERS;
+		CG_Printf( va("^3Warning: The maximum number (%i) of command map layers is exceeded.\n", MAX_COMMANDMAP_LAYERS) );
+	}
+	// end acqu-sdk (issue 2): CHRUKER: b043
+
 	for( i = 0; i < cgs.ccLayers; i++ ) {
 		CG_SpawnString( va("cclayerceil%i",i), "0", &s );
 		cgs.ccLayerCeils[i] = atoi(s);

@@ -87,7 +87,10 @@
 extern vec3_t	playerlegsProneMins;
 extern vec3_t	playerlegsProneMaxs;
 
-#define MAX_COMMANDMAP_LAYERS	4
+// sta acqu-sdk (issue 2): CHRUKER: b043 - Increased from 4 to 16
+#define MAX_COMMANDMAP_LAYERS	16
+// end acqu-sdk (issue 2): CHRUKER: b043
+
 
 #define	DEFAULT_MODEL		"multi"
 #define DEFAULT_HEAD		"default"	// technically the default head skin.  this means "head_default.skin" for the head

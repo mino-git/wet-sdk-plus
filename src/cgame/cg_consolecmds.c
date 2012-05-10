@@ -1074,8 +1074,10 @@ void CG_InitConsoleCommands( void ) {
 	//
 	trap_AddCommand ("kill");
 	trap_AddCommand ("say");
-	trap_AddCommand ("say_limbo");			// NERVE - SMF
-	trap_AddCommand ("tell");
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Doesn't exist
+	//trap_AddCommand ("say_limbo");			// NERVE - SMF
+	//trap_AddCommand ("tell");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 	trap_AddCommand ("listbotgoals");
 	trap_AddCommand ("give");
 	trap_AddCommand ("god");
@@ -1083,7 +1085,9 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("noclip");
 	trap_AddCommand ("team");
 	trap_AddCommand ("follow");
-	trap_AddCommand ("addbot");
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Not activated
+	//trap_AddCommand ("addbot");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 	trap_AddCommand ("setviewpos");
 	trap_AddCommand ("callvote");
 	trap_AddCommand ("vote");
@@ -1103,7 +1107,9 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand("?");
 	trap_AddCommand("bottomshots");
 	trap_AddCommand("commands");
-	trap_AddCommand("follow");
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Duplicate, look further up
+	//trap_AddCommand("follow");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 	trap_AddCommand("lock");
 #ifdef MV_SUPPORT
 	trap_AddCommand("mvadd");
@@ -1136,22 +1142,40 @@ void CG_InitConsoleCommands( void ) {
 	// OSP
 
 	trap_AddCommand ("fireteam");
-	trap_AddCommand ("buddylist");
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Doesn't exist
+	//trap_AddCommand ("buddylist");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 	trap_AddCommand ("showstats");
 
 	trap_AddCommand ("ignore");
 	trap_AddCommand ("unignore");
 
-	trap_AddCommand ("addtt");
-	trap_AddCommand ("selectbuddy");
-	trap_AddCommand ("selectNextBuddy");	// xkan 9/26/2002
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Doesn't exist / Duplicate / Doesn't exist
+	//trap_AddCommand ("addtt");
+	//trap_AddCommand ("selectbuddy");
+	//trap_AddCommand ("selectNextBuddy");	// xkan 9/26/2002
+	// end acqu-sdk (issue 2): CHRUKER: b011
 
-	trap_AddCommand ("loadgame");
-	trap_AddCommand ("savegame");
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Only available with savegame support
+	//trap_AddCommand ("loadgame");
+	//trap_AddCommand ("savegame");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 
 	trap_AddCommand ("campaign");
 	trap_AddCommand ("listcampaigns");
 
-	trap_AddCommand ("setweapons");
-	trap_AddCommand ("setclass");		
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Doesn't exist
+	//trap_AddCommand ("setweapons");
+	//trap_AddCommand ("setclass");
+	// end acqu-sdk (issue 2): CHRUKER: b011
+
+	// sta acqu-sdk (issue 2): CHRUKER: b011 - Missing commands
+	trap_AddCommand ("imready");
+	trap_AddCommand ("say_buddy");
+	trap_AddCommand ("setspawnpt");
+	trap_AddCommand ("vsay");
+	trap_AddCommand ("vsay_buddy");
+	trap_AddCommand ("vsay_team");
+	trap_AddCommand ("where");
+	// end acqu-sdk (issue 2): CHRUKER: b011
 }

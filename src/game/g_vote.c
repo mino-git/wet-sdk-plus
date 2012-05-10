@@ -272,7 +272,10 @@ int G_Comp_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2, qb
 	} else {
 		// Load in comp settings for current gametype
 		G_configSet(g_gametype.integer, qtrue);
-		AP("cp \"Competition Settings Loaded!\n\"");
+		// sta acqu-sdk (issue 2): CHRUKER: b042 - Was using cp, but subsequent cp calls quickly removed it, so now its using cpm		
+		AP("cpm \"Competition Settings Loaded!\n\"");
+		//AP("cp \"Competition Settings Loaded!\n\"");
+		// end acqu-sdk (issue 2): CHRUKER: b042
 	}
 
 	return(G_OK);
@@ -676,7 +679,10 @@ int G_Pub_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2, qbo
 	} else {
 		// Load in pub settings for current gametype
 		G_configSet(g_gametype.integer, qfalse);
-		AP("cp \"Public Settings Loaded!\n\"");
+		// sta acqu-sdk (issue 2): CHRUKER: b042 - Was using cp, but subsequent cp calls quickly removed it, so now its using cpm		
+		AP("cpm \"Public Settings Loaded!\n\"");
+		//AP("cp \"Public Settings Loaded!\n\"");
+		// end acqu-sdk (issue 2): CHRUKER: b042
 	}
 
 	return(G_OK);
@@ -739,7 +745,9 @@ int G_ShuffleTeams_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *
 	// Vote request (vote is being initiated)
 	if(arg) {
 		if(trap_Argc() > 2) {
-			G_refPrintf(ent, "Usage: ^3%s %s%s\n\n", ((fRefereeCmd) ? "\\ref" : "\\callvote"), arg, aVoteInfo[dwVoteIndex].pszVoteHelp);
+			// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+			G_refPrintf(ent, "Usage: ^3%s %s%s\n", ((fRefereeCmd) ? "\\ref" : "\\callvote"), arg, aVoteInfo[dwVoteIndex].pszVoteHelp);
+			// end acqu-sdk (issue 2): CHRUKER: b047 
 			return(G_INVALID);
 		} else if(!vote_allow_shuffleteamsxp.integer && ent && !ent->client->sess.referee) {
 			G_voteDisableMessage(ent, arg);
@@ -951,7 +959,9 @@ int G_Warmupfire_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *ar
 	// Vote action (vote has passed)
 	} else {
 		// Warmup damage setting
-		AP(va("print \"^3Warmup Damage set to: ^5%s\n\"", warmupType[atoi(level.voteInfo.vote_value)]));
+		// sta acqu-sdk (issue 2): CHRUKER: b048 - Was using print, but this really should be displayed as a popup message.
+		AP(va("cpm \"^3Warmup Damage set to: ^5%s\n\"", warmupType[atoi(level.voteInfo.vote_value)]));
+		// end acqu-sdk (issue 2): CHRUKER: b048
 		trap_SendConsoleCommand(EXEC_APPEND, va("match_warmupDamage %s\n", level.voteInfo.vote_value));
 	}
 

@@ -1040,12 +1040,17 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 #endif // SAVEGAME_SUPPORT
 
 //	trap_SendServerCommand( -1, va("print \"%i\n\"\n", targ->health) );
-
+	
 	// the intermission has allready been qualified for, so don't
 	// allow any extra scoring
-	if ( level.intermissionQueued || (g_gamestate.integer != GS_PLAYING && match_warmupDamage.integer == 0)) {
+	// sta acqu-sdk (issue 2): CHRUKER: b024 - Don't do damage if at warmup and warmupdamage is set to 'None' and the target is a client.
+	if ( level.intermissionQueued || (g_gamestate.integer != GS_PLAYING && match_warmupDamage.integer == 0 && targ->client)) {
 		return;
 	}
+	//if ( level.intermissionQueued || (g_gamestate.integer != GS_PLAYING && match_warmupDamage.integer == 0)) {
+	//	return;
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b024
 
 	if ( !inflictor ) {
 		inflictor = &g_entities[ENTITYNUM_WORLD];
@@ -1413,18 +1418,20 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 			VectorSubtract( point, muzzleTrace, shotvec );
 			dist = VectorLength( shotvec );
 
-#if DO_BROKEN_DISTANCEFALLOFF
-			// ~~~___---___
-			if( dist > 1500.f ) {
-				if( dist > 2500.f ) {
-					take *= 0.2f;
-				} else {
-					float scale = 1.f - 0.2f * (1000.f / (dist - 1000.f));
-
-					take *= scale;
-				}
-			}
-#else
+// sta acqu-sdk (issue 2): CHRUKER: b022
+//#if DO_BROKEN_DISTANCEFALLOFF
+//			// ~~~___---___
+//			if( dist > 1500.f ) {
+//				if( dist > 2500.f ) {
+//					take *= 0.2f;
+//				} else {
+//					float scale = 1.f - 0.2f * (1000.f / (dist - 1000.f));
+//
+//					take *= scale;
+//				}
+//			}
+//#else
+// end acqu-sdk (issue 2): CHRUKER: b022
 			// ~~~---______
 			// zinx - start at 100% at 1500 units (and before),
 			// and go to 20% at 2500 units (and after)
@@ -1441,7 +1448,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 			else if (scale < 0.2f) scale = 0.2f;
 
 			take *= scale;
-#endif
+// sta acqu-sdk (issue 2): CHRUKER: b022
+//#endif
+// end acqu-sdk (issue 2): CHRUKER: b022
+
 		}
 
 		if( !(targ->client->ps.eFlags & EF_HEADSHOT) ) {	// only toss hat on first headshot

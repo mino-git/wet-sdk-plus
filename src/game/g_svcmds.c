@@ -1340,6 +1340,9 @@ qboolean	ConsoleCommand( void ) {
 
 		// OSP - console also gets ref commands
 		if(!level.fLocalHost && Q_stricmp(cmd, "ref") == 0) {
+			// sta acqu-sdk (issue 2): CHRUKER: b005 - G_refCommandCheck expects the next argument (warn, pause, lock etc).
+			trap_Argv(1, cmd, sizeof(cmd));
+			// end acqu-sdk (issue 2): CHRUKER: b005
 			if(!G_refCommandCheck(NULL, cmd)) {
 				G_refHelp_cmd(NULL);
 			}

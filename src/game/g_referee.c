@@ -52,10 +52,19 @@ void G_refHelp_cmd(gentity_t *ent)
 
 		G_voteHelp(ent, qfalse);
 
-		CP("print \"\n^5allready         putallies^7 <pid>  ^5speclock          warmup\n\"");
-		CP(  "print \"^5lock             putaxis^7 <pid>    ^5specunlock        warn ^7<pid>\n\"");
-		CP(  "print \"^5help             remove           unlock            mute ^7<pid>\n\"");
-		CP(  "print \"^5pause            restart          unpause           unmute ^7<pid>\n\"");
+		// sta acqu-sdk (issue 2): CHRUKER: b038 - Removed non-existing restart command
+		// sta acqu-sdk (issue 2): CHRUKER: b039 - Added <pid> parameter to remove command
+		//CP("print \"\n^5allready         putallies^7 <pid>  ^5speclock          warmup\n\"");
+		//CP(  "print \"^5lock             putaxis^7 <pid>    ^5specunlock        warn ^7<pid>\n\"");
+		//CP(  "print \"^5help             remove           unlock            mute ^7<pid>\n\"");
+		//CP(  "print \"^5pause            restart          unpause           unmute ^7<pid>\n\"");
+
+		CP( "print \"\n^5allready       putallies^7 <pid>  ^5specunlock          warn ^7<pid>\n\"");
+		CP( "print \"^5help             putaxis^7 <pid>    ^5unlock              mute ^7<pid>\n\"");
+		CP( "print \"^5lock             remove^7 <pid>     unpause               unmute ^7<pid>\n\"");
+		CP( "print \"^5pause            speclock           warmup ^7[value]\n\"");
+		// end acqu-sdk (issue 2): CHRUKER: b039
+		// end acqu-sdk (issue 2): CHRUKER: b038
 
 		CP(  "print \"Usage: ^3\\ref <cmd> [params]\n\n\"");
 
@@ -63,11 +72,21 @@ void G_refHelp_cmd(gentity_t *ent)
 	} else {
 		G_Printf("\nAdditional console commands:\n");
 		G_Printf(  "----------------------------------------------\n");
-		G_Printf(  "allready    putallies <pid>     unlock\n");
-		G_Printf(  "lock        putaxis <pid>       unpause\n");
-		G_Printf(  "help        restart             warmup [value]\n");
-		G_Printf(  "pause       speclock            warn <pid>\n");
-		G_Printf(  "remove      specunlock\n\n");
+		// sta acqu-sdk (issue 2): CHRUKER: b038 - Removed non-existing restart command
+		// sta acqu-sdk (issue 2): CHRUKER: b039 - Added <pid> parameter to remove command
+		//G_Printf(  "allready    putallies <pid>     unlock\n");
+		//G_Printf(  "lock        putaxis <pid>       unpause\n");
+		//G_Printf(  "help        restart             warmup [value]\n");
+		//G_Printf(  "pause       speclock            warn <pid>\n");
+		//G_Printf(  "remove      specunlock\n\n");
+
+		G_Printf( "allready     putallies <pid>     unpause\n");
+		G_Printf( "help         putaxis <pid>       warmup [value]\n");
+		G_Printf( "lock         speclock            warn <pid>\n");
+		G_Printf( "pause        specunlock\n");
+		G_Printf( "remove <pid> unlock\n\n");
+		// end acqu-sdk (issue 2): CHRUKER: b039
+		// end acqu-sdk (issue 2): CHRUKER: b038
 
 		G_Printf(  "Usage: <cmd> [params]\n\n");
 	}
@@ -105,19 +124,28 @@ void G_ref_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fValue)
 
 	if(ent) {
 		if(!Q_stricmp(refereePassword.string, "none") || !refereePassword.string[0]) {
-			CP("cpm \"Sorry, referee status disabled on this server.\n\"");
+			// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+			CP("print \"Sorry, referee status disabled on this server.\n\"");
+			//CP("cpm \"Sorry, referee status disabled on this server.\n\"");
+			// end acqu-sdk (issue 2): CHRUKER: b046
 			return;
 		}
 
 		if(trap_Argc() < 2) {
-			CP("cpm \"Usage: ref [password]\n\"");
+			// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+			CP("print \"Usage: ref [password]\n\"");
+			//CP("cpm \"Usage: ref [password]\n\"");
+			// end acqu-sdk (issue 2): CHRUKER: b046
 			return;
 		}
 
 		trap_Argv(1, arg, sizeof(arg));
 
 		if(Q_stricmp(arg, refereePassword.string)) {
-			CP("cpm \"Invalid referee password!\n\"");
+			// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+			CP("print \"Invalid referee password!\n\"");
+			//CP("cpm \"Invalid referee password!\n\"");
+			// end acqu-sdk (issue 2): CHRUKER: b046
 			return;
 		}
 
@@ -164,8 +192,14 @@ void G_refLockTeams_cmd(gentity_t *ent, qboolean fLock)
 
 	status = va("Referee has ^3%sLOCKED^7 teams", ((fLock) ? "" : "UN"));
 
-	G_printFull(status, ent);
-	G_refPrintf(ent, "You have %sLOCKED teams\n", ((fLock) ? "" : "UN"));
+	// sta acqu-sdk (issue 2): CHRUKER: b041
+	G_printFull(status, NULL);
+	//G_printFull(status, ent);
+	// end acqu-sdk (issue 2): CHRUKER: b041
+
+	// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+	G_refPrintf(ent, "You have %sLOCKED teams", ((fLock) ? "" : "UN"));
+	// end acqu-sdk (issue 2): CHRUKER: b047
 
 	if( fLock ) {
 		level.server_settings |= CV_SVS_LOCKTEAMS;
@@ -183,7 +217,9 @@ void G_refPause_cmd(gentity_t *ent, qboolean fPause)
 	char *referee = (ent) ? "Referee" : "ref";
 
 	if((PAUSE_UNPAUSING >= level.match_pause && !fPause) || (PAUSE_NONE != level.match_pause && fPause)) {
-		G_refPrintf(ent, "The match is already %sPAUSED!\n\"", status[fPause]);
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded \" and linebreak
+		G_refPrintf(ent, "The match is already %sPAUSED!", status[fPause]);
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
@@ -195,11 +231,16 @@ void G_refPause_cmd(gentity_t *ent, qboolean fPause)
 		G_globalSound("sound/misc/referee.wav");
 		G_spawnPrintf(DP_PAUSEINFO, level.time + 15000, NULL);
 		AP(va("print \"^3%s ^1PAUSED^3 the match^3!\n", referee));
-		CP(va("cp \"^3Match is ^1PAUSED^3! (^7%s^3)\n\"", referee));
+		// sta acqu-sdk (issue 2): CHRUKER: b040 - Was only sending this to the client sending the command
+		AP(va("cp \"^3Match is ^1PAUSED^3! (^7%s^3)\n\"", referee));
+		//CP(va("cp \"^3Match is ^1PAUSED^3! (^7%s^3)\n\"", referee));
+		// end acqu-sdk (issue 2): CHRUKER: b040
 		level.server_settings |= CV_SVS_PAUSE;
 		trap_SetConfigstring(CS_SERVERTOGGLES, va("%d", level.server_settings));
 	} else {
-		AP(va("print \"\n^3%s ^5UNPAUSES^3 the match ... resuming in 10 seconds!\n\n\"", referee));
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Had extra linebreaks, before and after
+		AP(va("print \"^3%s ^5UNPAUSES^3 the match ... resuming in 10 seconds!\n\"", referee));
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		level.match_pause = PAUSE_UNPAUSING;
 		G_globalSound("sound/osp/prepare.wav");
 		G_spawnPrintf(DP_UNPAUSING, level.time + 10, NULL);
@@ -229,12 +270,16 @@ void G_refPlayerPut_cmd(gentity_t *ent, int team_id)
 
 	// Can only move to other teams.
 	if(player->client->sess.sessionTeam == team_id) {
-		G_refPrintf(ent, "\"%s\" is already on team %s!\n", player->client->pers.netname, aTeams[team_id]);
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+		G_refPrintf(ent, "\"%s\" is already on team %s!", player->client->pers.netname, aTeams[team_id]);
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
 	if(team_maxplayers.integer && TeamCount(-1, team_id) >= team_maxplayers.integer) {
-		G_refPrintf(ent, "Sorry, the %s team is already full!\n",  aTeams[team_id]);
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+		G_refPrintf(ent, "Sorry, the %s team is already full!",  aTeams[team_id]);
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
@@ -300,7 +345,10 @@ void G_refSpeclockTeams_cmd(gentity_t *ent, qboolean fLock)
 
 	status = va("Referee has ^3SPECTATOR %sLOCKED^7 teams", ((fLock) ? "" : "UN"));
 
-	G_printFull(status, ent);
+	// sta acqu-sdk (issue 2): CHRUKER: b041
+	G_printFull(status, NULL);
+	//G_printFull(status, ent);
+	// end acqu-sdk (issue 2): CHRUKER: b041
 
 	// Update viewers as necessary
 //	G_pollMultiPlayers();
@@ -321,7 +369,9 @@ void G_refWarmup_cmd(gentity_t* ent)
 
 	if(!*cmd || atoi(cmd) < 0) {
 		trap_Cvar_VariableStringBuffer( "g_warmup", cmd, sizeof(cmd));
-		G_refPrintf(ent, "Warmup Time: %d\n", atoi(cmd));
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+		G_refPrintf(ent, "Warmup Time: %d", atoi(cmd));
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
@@ -368,12 +418,16 @@ void G_refMute_cmd(gentity_t *ent, qboolean mute)
 	player = g_entities + pid;
 
 	if( player->client->sess.referee != RL_NONE ) {
-		G_refPrintf(ent, "Cannot mute a referee.\n" );
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+		G_refPrintf(ent, "Cannot mute a referee." );
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
 	if(player->client->sess.muted == mute) {
-		G_refPrintf(ent, "\"%s^*\" %s\n", player->client->pers.netname, mute ? "is already muted!" : "is not muted!" );
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
+		G_refPrintf(ent, "\"%s^*\" %s", player->client->pers.netname, mute ? "is already muted!" : "is not muted!" );
+		// end acqu-sdk (issue 2): CHRUKER: b047
 		return;
 	}
 
@@ -570,6 +624,14 @@ void G_refPrintf( gentity_t* ent, const char *fmt, ... )
 	Q_vsnprintf (text, sizeof(text), fmt, argptr);
 	va_end (argptr);
 
-	if(ent == NULL) trap_Printf(text);
-	else CP(va("cpm \"%s\n\"", text));
+
+	if(ent == NULL)
+		// sta acqu-sdk (issue 2): CHRUKER: b047 - Added linebreak to the string
+		trap_Printf(va("%s\n", text));
+		//trap_Printf(text);
+		// end acqu-sdk (issue 2): CHRUKER: b047
+	// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+	else CP(va("print \"%s\n\"", text));
+	//else CP(va("cpm \"%s\n\"", text));
+	// end acqu-sdk (issue 2): CHRUKER: b046
 }

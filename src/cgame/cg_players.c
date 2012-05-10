@@ -135,7 +135,10 @@ void CG_NewClientInfo( int clientNum ) {
 	clientInfo_t newInfo;
 	const char	*configstring;
 	const char	*v;
-	int	oldclass;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b020
+	//int	oldclass;
+	// end acqu-sdk (issue 2): CHRUKER: b020
 
 	ci = &cgs.clientinfo[clientNum];
 
@@ -257,42 +260,67 @@ void CG_NewClientInfo( int clientNum ) {
 			CG_AddPMItemBig( PM_RANK, va("Promoted to rank %s!", cgs.clientinfo[ cg.clientNum ].team == TEAM_AXIS ? rankNames_Axis[newInfo.rank] : rankNames_Allies[newInfo.rank] ), rankicons[ newInfo.rank ][ 0 ].shader );
 		}
 
+		// sta acqu-sdk (issue 2): CHRUKER: b020 - Make sure player class and primary weapons are correct for
+		// subsequent calls to CG_LimboPanel_SendSetupMsg
+		CG_LimboPanel_Setup();
+		// end acqu-sdk (issue 2): CHRUKER: b020
+
 		for( i = 0; i < SK_NUM_SKILLS; i++ ) {
 			if( newInfo.skill[i] > cgs.clientinfo[ cg.clientNum ].skill[i] ) {
 				// Gordon: slick hack so that funcs we call use teh new value now
 				cgs.clientinfo[ cg.clientNum ].skill[ i ] = newInfo.skill[ i ];
 
 				if( newInfo.skill[i] == 4 && i == SK_HEAVY_WEAPONS ) {
-					if( cgs.clientinfo[ cg.clientNum ].skill[SK_LIGHT_WEAPONS] == 4 ) {
-						oldclass = cgs.ccSelectedClass;
-						cgs.ccSelectedClass = newInfo.cls;
-						CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 2 );
-						CG_LimboPanel_SendSetupMsg( qfalse );
-						cgs.ccSelectedClass = oldclass;
+					// sta acqu-sdk (issue 2): CHRUKER: b020
+					if( cgs.clientinfo[ cg.clientNum ].skill[SK_LIGHT_WEAPONS] >= 4 ) {
+					//if( cgs.clientinfo[ cg.clientNum ].skill[SK_LIGHT_WEAPONS] == 4 ) {
+					// end acqu-sdk (issue 2): CHRUKER: b020
+
+						// sta acqu-sdk (issue 2): CHRUKER: b020 - Only select SMG (2) if using the single gun (0)
+						if( cgs.ccSelectedWeapon2 == 0 ) {
+							//oldclass = cgs.ccSelectedClass;
+							//cgs.ccSelectedClass = newInfo.cls;
+							CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 2 );	// Selects SMG
+							CG_LimboPanel_SendSetupMsg( qfalse );
+							//cgs.ccSelectedClass = oldclass;
+						}
+						// end acqu-sdk (issue 2): CHRUKER: b020
 					} else {
-						oldclass = cgs.ccSelectedClass;
-						cgs.ccSelectedClass = newInfo.cls;
+						// sta acqu-sdk (issue 2): CHRUKER: b020						
+						//oldclass = cgs.ccSelectedClass;
+						//cgs.ccSelectedClass = newInfo.cls;
 						CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 1 );
 						CG_LimboPanel_SendSetupMsg( qfalse );
-						cgs.ccSelectedClass = oldclass;
+						//cgs.ccSelectedClass = oldclass;
+						// end acqu-sdk (issue 2): CHRUKER: b020
 					}
 				}
 
 				if( newInfo.skill[i] == 4 && i == SK_LIGHT_WEAPONS ) {
-					if( cgs.clientinfo[ cg.clientNum ].skill[SK_HEAVY_WEAPONS] == 4 ) {
-						if( cgs.ccSelectedWeapon2 == 2 ) {
-							oldclass = cgs.ccSelectedClass;
-							cgs.ccSelectedClass = newInfo.cls;
-							CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 3 );
+					// sta acqu-sdk (issue 2): CHRUKER: b020
+					if( cgs.clientinfo[ cg.clientNum ].skill[SK_HEAVY_WEAPONS] >= 4 ) {
+					//if( cgs.clientinfo[ cg.clientNum ].skill[SK_HEAVY_WEAPONS] == 4 ) {
+					// end acqu-sdk (issue 2): CHRUKER: b020
+
+						// sta acqu-sdk (issue 2): CHRUKER: b020
+						if( cgs.ccSelectedWeapon2 == 0 ) {
+						//if( cgs.ccSelectedWeapon2 == 2 ) {
+							//oldclass = cgs.ccSelectedClass;
+							//cgs.ccSelectedClass = newInfo.cls;
+							CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 1 );
+							//CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 3 );
 							CG_LimboPanel_SendSetupMsg( qfalse );
-							cgs.ccSelectedClass = oldclass;
+							//cgs.ccSelectedClass = oldclass;
 						}
+						// end acqu-sdk (issue 2): CHRUKER: b020
 					} else {
-						oldclass = cgs.ccSelectedClass;
-						cgs.ccSelectedClass = newInfo.cls;
+						// sta acqu-sdk (issue 2): CHRUKER: b020
+						//oldclass = cgs.ccSelectedClass;
+						//cgs.ccSelectedClass = newInfo.cls;
 						CG_LimboPanel_SetSelectedWeaponNumForSlot( 1, 1 );
 						CG_LimboPanel_SendSetupMsg( qfalse );
-						cgs.ccSelectedClass = oldclass;
+						//cgs.ccSelectedClass = oldclass;
+						// end acqu-sdk (issue 2): CHRUKER: b020
 					}					
 				}
 

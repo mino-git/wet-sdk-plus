@@ -57,6 +57,9 @@ static const cmd_reference_t aCommandInfo[] = {
 	{ "specunlock",		qtrue,	qfalse,	G_speclock_cmd, ":^7 Unlocks a player's team from spectators" },
 	{ "statsall",		qtrue,	qfalse,	G_statsall_cmd, ":^7 Shows weapon accuracy stats for all players" },
 	{ "statsdump",		qtrue,	qtrue,	NULL, ":^7 Shows player stats + match info saved locally to a file" },
+	// sta acqu-sdk (issue 2): CHRUKER: b012 - Was missing
+	{ "stoprecord",		qtrue,	qtrue,	NULL, ":^7 Stops a demo recording currently in progress" },
+	// end acqu-sdk (issue 2): CHRUKER: b012
 	{ "team",			qtrue,	qtrue,	Cmd_Team_f, " <b|r|s|none>:^7 Joins a team (b = allies, r = axis, s = spectator)" },
 //	{ "setclass",		qtrue,	qtrue,	Cmd_SetClass_f, " <classnum>:^7 Selects a class" },
 //	{ "setweapons",		qtrue,	qtrue,	Cmd_SetWeapons_f, " <weapon|weapon2>:^7 Selects your weapon loadout" },
@@ -159,7 +162,10 @@ void G_commands_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fValue)
 	if(num_cmds % HELP_COLUMNS) rows++;
 	if(rows < 0) return;
 
-	CP("cpm \"^5\nAvailable OSP Game-Commands:\n----------------------------\n\"");
+	// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+	CP("print \"^5\nAvailable OSP Game-Commands:\n----------------------------\n\"");
+	//CP("cpm \"^5\nAvailable OSP Game-Commands:\n----------------------------\n\"");
+	// end acqu-sdk (issue 2): CHRUKER: b046
 	for(i=0; i<rows; i++) {
 		if(i+rows*3+1 <= num_cmds) {
 			CP(va("print \"^3%-17s%-17s%-17s%-17s\n\"", aCommandInfo[i].pszCommandName,
@@ -177,7 +183,10 @@ void G_commands_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fValue)
 		}
 	}
 
-	CP("cpm \"\nType: ^3\\command_name ?^7 for more information\n\"");
+	// sta acqu-sdk (issue 2): CHRUKER: b046 - Was using the cpm command, but this is really just for the console.
+	CP("print \"\nType: ^3\\command_name ?^7 for more information\n\"");
+	//CP("cpm \"\nType: ^3\\command_name ?^7 for more information\n\"");
+	// end acqu-sdk (issue 2): CHRUKER: b046
 }
 
 
@@ -237,7 +246,10 @@ void G_pause_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fPause)
 				G_globalSound("sound/misc/referee.wav");
 				G_spawnPrintf(DP_PAUSEINFO, level.time + 15000, NULL);
 				AP(va("print \"^3Match is ^1PAUSED^3!\n^7[%s^7: - %d Timeouts Remaining]\n\"", aTeams[tteam], teamInfo[tteam].timeouts));
-				CP(va("cp \"^3Match is ^1PAUSED^3! (%s^3)\n\"", aTeams[tteam]));
+				// sta acqu-sdk (issue 2): CHRUKER: b040 - Was only sending this to the client sending the command
+				AP(va("cp \"^3Match is ^1PAUSED^3! (%s^3)\n\"", aTeams[tteam]));
+				//CP(va("cp \"^3Match is ^1PAUSED^3! (%s^3)\n\"", aTeams[tteam]));
+				// end acqu-sdk (issue 2): CHRUKER: b040
 				level.server_settings |= CV_SVS_PAUSE;
 				trap_SetConfigstring(CS_SERVERTOGGLES, va("%d", level.server_settings));
 			}

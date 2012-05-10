@@ -3640,7 +3640,10 @@ static void PM_Weapon( void ) {
 	}
 
 	if( pm->ps->weapon == WP_LANDMINE ) {
-		if( pm->skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 2 ) {
+		// sta acqu-sdk (issue 2): CHRUKER: b026 - Skill should first kick in at level 3
+		if( pm->skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 3 ) {
+		//if( pm->skill[SK_EXPLOSIVES_AND_CONSTRUCTION] >= 2 ) {
+		// end acqu-sdk (issue 2): CHRUKER: b026
 			if( pm->cmd.serverTime - pm->ps->classWeaponTime < (pm->engineerChargeTime*0.33f) ) {
 				return;
 			}
@@ -3796,7 +3799,13 @@ static void PM_Weapon( void ) {
 			pm->ps->weapon != WP_DYNAMITE &&
 			pm->ps->weapon != WP_LANDMINE &&
 			pm->ps->weapon != WP_TRIPMINE &&
-			pm->ps->weapon != WP_SMOKE_BOMB ) {
+			pm->ps->weapon != WP_SMOKE_BOMB &&
+			// sta acqu-sdk (issue 2): CHRUKER: b029 - Was missing
+			pm->ps->weapon != WP_MEDIC_SYRINGE &&
+			pm->ps->weapon != WP_PLIERS &&
+			pm->ps->weapon != WP_MEDIC_ADRENALINE
+			// end acqu-sdk (issue 2): CHRUKER: b029					
+			) {
 				PM_AddEvent(EV_NOFIRE_UNDERWATER);	// event for underwater 'click' for nofire
 				pm->ps->weaponTime	= 500;
 				pm->ps->weaponDelay	= 0;			// avoid insta-fire after water exit on delayed weapon attacks

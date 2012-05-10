@@ -2534,13 +2534,31 @@ void CG_Debreifing2_Mission_Draw( panel_button_t* button ) {
 
 				w = CG_Text_Width_Ext( cgs.campaignData.arenas[i].longname, 0.2f, 0, &cgs.media.limboFont2 );
 
-				if( x + 10 + w > button->rect.x + button->rect.w ) {
-					CG_FillRect( x - w - 12 + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
-					CG_FillRect( x - w - 12, y - 6, 12 + w, 12, colorBlack );
+				// sta acqu-sdk (issue 2): CHRUKER: b049 - Correct placement of the map name
+				// Pin half width is 12
+				// Pin left margin is 3
+				// Pin right margin is 0
+				// Text margin is 2				
+
+				if( x + 14 + w > button->rect.x + button->rect.w ) {				
+					// x - pinhwidth (12) - pin left margin (3) - w - text margin (2) => x - w - 17
+					CG_FillRect( x - w - 17 + 1, y - 6 + 1, 17 + w, 12, colourFadedBlack );
+					CG_FillRect( x - w - 17, y - 6, 17 + w, 12, colorBlack );
 				} else {
-					CG_FillRect( x + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
-					CG_FillRect( x, y - 6, 12 + w, 12, colorBlack );
+					// Width = pinhwidth (12) + pin right margin (0) + w + text margin (2) = 14 + w
+					CG_FillRect( x + 1, y - 6 + 1, 14 + w, 12, colourFadedBlack );
+					CG_FillRect( x, y - 6, 14 + w, 12, colorBlack );
 				}
+
+				//if( x + 10 + w > button->rect.x + button->rect.w ) {
+				//
+				//	CG_FillRect( x - w - 12 + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
+				//	CG_FillRect( x - w - 12, y - 6, 12 + w, 12, colorBlack );
+				//} else {
+				//	CG_FillRect( x + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
+				//	CG_FillRect( x, y - 6, 12 + w, 12, colorBlack );
+				//}
+				// end acqu-sdk (issue 2): CHRUKER: b049
 
 				switch( CG_Debriefing_FindWinningTeamForPos( i + 1 ) ) {
 					case TEAM_AXIS:
@@ -2554,11 +2572,21 @@ void CG_Debreifing2_Mission_Draw( panel_button_t* button ) {
 						break;
 				}
 
-				if( x + 10 + w > button->rect.x + button->rect.w ) {
-					CG_Text_Paint_Ext( x - w - 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
+				// sta acqu-sdk (issue 2): CHRUKER: b049 - Correct placement of the map name
+				if( x + 14 + w > button->rect.x + button->rect.w ) {
+					// x - pinhwidth (12) - pin left margin (3) - w => x - w - 15
+					CG_Text_Paint_Ext( x - w - 15, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
 				} else {
-					CG_Text_Paint_Ext( x + 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
+					// x + pinhwidth (12) + pin right margin (0) => x + 12
+					CG_Text_Paint_Ext( x + 12, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
 				}
+
+				//if( x + 10 + w > button->rect.x + button->rect.w ) {
+				//	CG_Text_Paint_Ext( x - w - 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
+				//} else {
+				//	CG_Text_Paint_Ext( x + 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.campaignData.arenas[i].longname, 0, 0, 0, &cgs.media.limboFont2 );
+				//}
+				// end acqu-sdk (issue 2): CHRUKER: b049
 			}
 
 			if( cgs.tdbSelectedMap ) {
@@ -2619,13 +2647,30 @@ void CG_Debreifing2_Mission_Draw( panel_button_t* button ) {
 
 		w = CG_Text_Width_Ext( cgs.arenaData.longname, 0.2f, 0, &cgs.media.limboFont2 );
 
-		if( x + 10 + w > button->rect.x + button->rect.w ) {
-			CG_FillRect( x - w - 12 + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
-			CG_FillRect( x - w - 12, y - 6, 12 + w, 12, colorBlack );
+		// sta acqu-sdk (issue 2): CHRUKER: b049 - Correct placement of the map name
+		// Pin half width is 12
+		// Pin left margin is 3
+		// Pin right margin is 0
+		// Text margin is 2
+
+		if( x + 14 + w > button->rect.x + button->rect.w ) {
+			// x - pinhwidth (12) - pin left margin (3) - w - text margin (2) => x - w - 17
+			CG_FillRect( x - w - 17 + 1, y - 6 + 1, 14 + w, 12, colourFadedBlack );
+			CG_FillRect( x - w - 17, y - 6, 14 + w, 12, colorBlack );
 		} else {
+			// Width = pinhwidth (12) + pin right margin (0) + w + text margin (2) = 14 + w
 			CG_FillRect( x + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
 			CG_FillRect( x, y - 6, 12 + w, 12, colorBlack );
 		}
+
+		//if( x + 10 + w > button->rect.x + button->rect.w ) {
+		//	CG_FillRect( x - w - 12 + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
+		//	CG_FillRect( x - w - 12, y - 6, 12 + w, 12, colorBlack );
+		//} else {
+		//	CG_FillRect( x + 1, y - 6 + 1, 12 + w, 12, colourFadedBlack );
+		//	CG_FillRect( x, y - 6, 12 + w, 12, colorBlack );
+		//}
+		// end acqu-sdk (issue 2): CHRUKER: b049
 
 		switch( CG_Debriefing_FindWinningTeam() ) {
 			case TEAM_AXIS:
@@ -2639,11 +2684,21 @@ void CG_Debreifing2_Mission_Draw( panel_button_t* button ) {
 				break;
 		}
 
-		if( x + 10 + w > button->rect.x + button->rect.w ) {
-			CG_Text_Paint_Ext( x - w - 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
+		// sta acqu-sdk (issue 2): CHRUKER: b049 - Correct placement of the map name
+		if( x + 14 + w > button->rect.x + button->rect.w ) {
+			// x - pinhwidth (12) - pin left margin (3) - w => x - w - 15
+			CG_Text_Paint_Ext( x - w - 15, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
 		} else {
-			CG_Text_Paint_Ext( x + 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
+			// x + pinhwidth (12) + pin right margin (0) => x + 12
+			CG_Text_Paint_Ext( x + 12, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
 		}
+
+		//if( x + 10 + w > button->rect.x + button->rect.w ) {
+		//	CG_Text_Paint_Ext( x - w - 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
+		//} else {
+		//	CG_Text_Paint_Ext( x + 10, y + 3, 0.2f, 0.2f, colorWhite, cgs.arenaData.longname, 0, 0, 0, &cgs.media.limboFont2 );
+		//}
+		// end acqu-sdk (issue 2): CHRUKER: b049
 	} else {
 		CG_DrawPic( button->rect.x, button->rect.y, button->rect.w, button->rect.h, trap_R_RegisterShaderNoMip( "menu/art/unknownmap" ) );
 	}

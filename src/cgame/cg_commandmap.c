@@ -121,11 +121,13 @@ void CG_ParseMapEntity( int* mapEntityCount, int* offset, team_t team ) {
 	mEnt->type = atoi(buffer);
 
 	switch( mEnt->type ) {
-		case ME_CONSTRUCT: // Gordon: these ones don't need much info
+		case ME_CONSTRUCT:
 		case ME_DESTRUCT:
 		case ME_DESTRUCT_2:
 		case ME_COMMANDMAP_MARKER:
-			break;
+		// sta acqu-sdk (issue 2): CHRUKER: b043 - These are needed for command map icons to show up on the correct layer.
+			//break;
+		// end acqu-sdk (issue 2): CHRUKER: b043
 
 		case ME_TANK:
 		case ME_TANK_DEAD:

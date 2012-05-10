@@ -376,25 +376,48 @@ char *G_createStats(gentity_t *refEnt)
 
 	// Add weapon stats as necessary
 	for(i=WS_KNIFE; i<WS_MAX; i++) {
+		// sta acqu-sdk (issue 2): CHRUKER: b015 - The client also expects stats when kills are above 0
 		if(refEnt->client->sess.aWeaponStats[i].atts || refEnt->client->sess.aWeaponStats[i].hits ||
-		  refEnt->client->sess.aWeaponStats[i].deaths) {
+			refEnt->client->sess.aWeaponStats[i].deaths || refEnt->client->sess.aWeaponStats[i].kills) {
 			dwWeaponMask |= (1 << i);
 			Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d %d %d",
 					refEnt->client->sess.aWeaponStats[i].hits, refEnt->client->sess.aWeaponStats[i].atts,
 					refEnt->client->sess.aWeaponStats[i].kills, refEnt->client->sess.aWeaponStats[i].deaths,
 					refEnt->client->sess.aWeaponStats[i].headshots));
 		}
+
+		//if(refEnt->client->sess.aWeaponStats[i].atts || refEnt->client->sess.aWeaponStats[i].hits ||
+		//  refEnt->client->sess.aWeaponStats[i].deaths) {
+		//	dwWeaponMask |= (1 << i);
+		//	Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d %d %d",
+		//			refEnt->client->sess.aWeaponStats[i].hits, refEnt->client->sess.aWeaponStats[i].atts,
+		//			refEnt->client->sess.aWeaponStats[i].kills, refEnt->client->sess.aWeaponStats[i].deaths,
+		//			refEnt->client->sess.aWeaponStats[i].headshots));
+		//}
+		// end acqu-sdk (issue 2): CHRUKER: b015
 	}
 
+	// sta acqu-sdk (issue 2): CHRUKER: b015 - Only send these when there are some weaponstats. This is what the client expects.
 	// Additional info
-	Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d",
-													refEnt->client->sess.damage_given,
-													refEnt->client->sess.damage_received,
-													refEnt->client->sess.team_damage));
+	if (dwWeaponMask != 0) {
+		Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d",
+														refEnt->client->sess.damage_given,
+														refEnt->client->sess.damage_received,
+														refEnt->client->sess.team_damage));
+	}
+
+	//Q_strcat(strWeapInfo, sizeof(strWeapInfo), va(" %d %d %d",
+	//												refEnt->client->sess.damage_given,
+	//												refEnt->client->sess.damage_received,
+	//												refEnt->client->sess.team_damage));
+	// end acqu-sdk (issue 2): CHRUKER: b015
 
 	// Add skillpoints as necessary
 	for(i=SK_BATTLE_SENSE; i<SK_NUM_SKILLS; i++) {
-		if(refEnt->client->sess.skillpoints[i] > 0) {
+		// sta acqu-sdk (issue 2): CHRUKER: b037 - Need to add negative skillpoints too
+		if(refEnt->client->sess.skillpoints[i] != 0) {
+		//if(refEnt->client->sess.skillpoints[i] > 0) {
+		// end acqu-sdk (issue 2): CHRUKER: b037
 			dwSkillPointMask |= (1 << i);
 			Q_strcat(strSkillInfo, sizeof(strSkillInfo), va(" %d", (int)refEnt->client->sess.skillpoints[i]));
 		}
@@ -456,9 +479,17 @@ void G_parseStats(char *pszStatsInfo)
 		}
 	}
 
-	GETVAL(cl->sess.damage_given);
-	GETVAL(cl->sess.damage_received);
-	GETVAL(cl->sess.team_damage);
+	// sta acqu-sdk (issue 2): CHRUKER: b015 - These only gets generated when there are some weaponstats. This is what the client expects.
+	if (dwWeaponMask != 0) {
+		GETVAL(cl->sess.damage_given);
+		GETVAL(cl->sess.damage_received);
+		GETVAL(cl->sess.team_damage);
+	}
+
+	//GETVAL(cl->sess.damage_given);
+	//GETVAL(cl->sess.damage_received);
+	//GETVAL(cl->sess.team_damage);
+	// end acqu-sdk (issue 2): CHRUKER: b015
 }
 
 

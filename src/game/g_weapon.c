@@ -139,7 +139,8 @@ void Weapon_Knife( gentity_t *ent ) {
 	if( ent->client->sess.playerType == PC_COVERTOPS )
 		damage *= 2;	// Watch it - you could hurt someone with that thing!
 
-	if(traceEnt->client) 
+	// sta acqu-sdk (issue 2): CHRUKER: b002 - Only do backstabs if the body is standing up (ie. alive)
+	if(traceEnt->client && traceEnt->health > 0) 	// end acqu-sdk (issue 2): CHRUKER: b002
 	{
 		AngleVectors (ent->client->ps.viewangles,		pforward, NULL, NULL);
 		AngleVectors (traceEnt->client->ps.viewangles,	eforward, NULL, NULL);
@@ -149,10 +150,16 @@ void Weapon_Knife( gentity_t *ent ) {
 			damage = 100;	// enough to drop a 'normal' (100 health) human with one jab
 			mod = MOD_KNIFE;
 
-			// rain - only do this if they have a positive health
-			if ( traceEnt->health > 0 && ent->client->sess.skill[SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS] >= 4 ) {
-				damage = traceEnt->health;
+			// sta acqu-sdk (issue 2): CHRUKER: b002			
+			if ( ent->client->sess.skill[SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS] >= 4 ) {
+			damage = traceEnt->health;
 			}
+
+			// rain - only do this if they have a positive health
+			// if ( traceEnt->health > 0 && ent->client->sess.skill[SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS] >= 4 ) {
+			//	damage = traceEnt->health;
+			//}
+			// end acqu-sdk (issue 2): CHRUKER: b002
 		}
 	}
 
@@ -3146,8 +3153,20 @@ void Bullet_Fire (gentity_t *ent, float spread, int damage, qboolean distance_fa
 		case WP_STEN:
 		case WP_SILENCER:
 		case WP_SILENCED_COLT:
-			if( ent->client->sess.skill[SK_LIGHT_WEAPONS] >= 4 )
+		// sta acqu-sdk (issue 2): CHRUKER: b045 - Akimbo weapons also need spread reduction
+		case WP_AKIMBO_LUGER:
+		case WP_AKIMBO_COLT:
+		case WP_AKIMBO_SILENCEDLUGER:
+		case WP_AKIMBO_SILENCEDCOLT:
+		// end acqu-sdk (issue 2): CHRUKER: b045
+
+			// sta acqu-sdk (issue 2): CHRUKER: b007 - The reduction should kick in at level 3 not level 4
+			if( ent->client->sess.skill[SK_LIGHT_WEAPONS] >= 3 )
 				spread *= .65f;
+
+			//if( ent->client->sess.skill[SK_LIGHT_WEAPONS] >= 4 )
+			//	spread *= .65f;
+			// end acqu-sdk (issue 2): CHRUKER: b007
 			break;
 	}
 
@@ -3215,33 +3234,42 @@ qboolean Bullet_Fire_Extended(gentity_t *source, gentity_t *attacker, vec3_t sta
 		float scale;
 
 		//VectorSubtract( tr.endpos, start, shotvec );
-		VectorSubtract( tr.endpos, muzzleTrace, shotvec );		
-		dist = VectorLengthSquared( shotvec );
+		VectorSubtract( tr.endpos, muzzleTrace, shotvec );	
+		// sta acqu-sdk (issue 2): CHRUKER: b022
+		dist = VectorLength( shotvec );
+		//dist = VectorLengthSquared( shotvec );
+		// end acqu-sdk (issue 2): CHRUKER: b022
 
-#if DO_BROKEN_DISTANCEFALLOFF
-		// ~~~___---___
-		if( dist > Square(1500.f) ) {
-			reducedDamage = qtrue;
-
-			if( dist > Square(2500.f) ) {
-				damage *= 0.5f;
-			} else {
-				float scale = 1.f - 0.5f * (Square(1000.f) / (dist - Square(1000.f)));
-
-				damage *= scale;
-			}
-		}
-#else
+// sta acqu-sdk (issue 2): CHRUKER: b022
+//#if DO_BROKEN_DISTANCEFALLOFF
+//		// ~~~___---___
+//		if( dist > Square(1500.f) ) {
+//			reducedDamage = qtrue;
+//
+//			if( dist > Square(2500.f) ) {
+//				damage *= 0.5f;
+//			} else {
+//				float scale = 1.f - 0.5f * (Square(1000.f) / (dist - Square(1000.f)));
+//
+//				damage *= scale;
+//			}
+//		}
+//#else
+// end acqu-sdk (issue 2): CHRUKER: b022
 		// ~~~---______
 		// zinx - start at 100% at 1500 units (and before),
 		// and go to 50% at 2500 units (and after)
 
+		// sta acqu-sdk (issue 2): CHRUKER: b022
 		// Square(1500) to Square(2500) -> 0.0 to 1.0
-		scale = (dist - Square(1500.f)) / (Square(2500.f) - Square(1500.f));
+		//scale = (dist - Square(1500.f)) / (Square(2500.f) - Square(1500.f));			
+		// 1500 to 2500 -> 0.0 to 1.0
+		scale = (dist - 1500.f) / (2500.f - 1500.f);
 		// 0.0 to 1.0 -> 0.0 to 0.5
 		scale *= 0.5f;
 		// 0.0 to 0.5 -> 1.0 to 0.5
 		scale = 1.0f - scale;
+		// end acqu-sdk (issue 2): CHRUKER: b022	
 
 		// And, finally, cap it.
 		reducedDamage = qtrue;
@@ -3249,7 +3277,9 @@ qboolean Bullet_Fire_Extended(gentity_t *source, gentity_t *attacker, vec3_t sta
 		else if (scale < 0.5f) scale = 0.5f;
 
 		damage *= scale;
-#endif
+// sta acqu-sdk (issue 2): CHRUKER: b022
+//#endif
+// end acqu-sdk (issue 2): CHRUKER: b022
 	}
 
 	// send bullet impact

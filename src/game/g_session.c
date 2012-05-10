@@ -305,8 +305,17 @@ void G_InitSessionData( gclient_t *client, char *userinfo ) {
 	sess->muted = qfalse;
 	memset( sess->skill, 0, sizeof(sess->skill) );
 	memset( sess->skillpoints, 0, sizeof(sess->skillpoints) );
+
+	// sta acqu-sdk (issue 2): CHRUKER: b017 - startskillpoints didn't get reset
+	memset( sess->startskillpoints, 0, sizeof(sess->startskillpoints) );
+	// end acqu-sdk (issue 2): CHRUKER: b017
+
 	memset( sess->medals, 0, sizeof(sess->medals) );
 	sess->rank = 0;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b017 - startxptotal didn't get reset
+	sess->startxptotal = 0;
+	// end acqu-sdk (issue 2): CHRUKER: b017
 
 	// OSP
 	sess->coach_team = 0;

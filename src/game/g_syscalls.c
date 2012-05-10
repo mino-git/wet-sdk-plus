@@ -112,7 +112,10 @@ void trap_SendServerCommand( int clientNum, const char *text ) {
 	// client engine upon receipt, so ignore them
 	if( strlen( text ) > 1022 ) {
 		G_LogPrintf( "%s: trap_SendServerCommand( %d, ... ) length exceeds 1022.\n", GAMEVERSION, clientNum );
-		G_LogPrintf( "%s: text [%s]\n", GAMEVERSION, text );
+		// sta acqu-sdk (issue 2): CHRUKER: b001
+		G_LogPrintf( "%s: text [%.950s]... truncated\n", GAMEVERSION, text );
+		// G_LogPrintf( "%s: text [%s]\n", GAMEVERSION, text );
+		// end acqu-sdk (issue 2): CHRUKER: b001
 		return;
 	}
 	syscall( G_SEND_SERVER_COMMAND, clientNum, text );
