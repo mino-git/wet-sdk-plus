@@ -8693,10 +8693,16 @@ static void UI_StartServerRefresh( qboolean full )
 	if( ui_netSource.integer == AS_GLOBAL ) {
 		ptr = UI_Cvar_VariableString( "debug_protocol" );
 		if( *ptr ) {
-			trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %s\n", 0, ptr));
+			// sta acqu-sdk (issue 19): serverlist partially broken
+			trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %s empty full\n", 0, ptr));
+			//trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %s\n", 0, ptr));
+			// end acqu-sdk (issue 19)
 		}
 		else {
-			trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %d\n", 0, (int)trap_Cvar_VariableValue( "protocol" ) ) );
+			// sta acqu-sdk (issue 19): serverlist partially broken
+			trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %d empty full\n", 0, (int)trap_Cvar_VariableValue( "protocol" ) ) );
+			//trap_Cmd_ExecuteText( EXEC_APPEND, va( "globalservers %d %s\n", 0, ptr));
+			// end acqu-sdk (issue 19)
 		}
 	}
 }
