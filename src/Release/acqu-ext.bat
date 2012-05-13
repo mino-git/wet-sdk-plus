@@ -1,4 +1,4 @@
-7z.exe u -tzip z.zip cgame_mp_x86.dll ui_mp_x86.dll -r
+7z.exe u -tzip z.zip cgame_mp_x86.dll ui_mp_x86.dll gfx scripts -r
 
 rename z.zip z.pk3
 
