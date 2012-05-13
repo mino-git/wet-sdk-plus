@@ -220,6 +220,13 @@ void CG_DrawTopBottom_NoScale( float x, float y, float w, float h, float size ) 
 	trap_R_DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, cgs.media.whiteShader );
 }
 
+// sta acqu-sdk (issue 2): CHRUKER: b076 - Scoreboard background had black lines drawn twice
+void CG_DrawBottom_NoScale( float x, float y, float w, float h, float size ) {
+	CG_AdjustFrom640( &x, &y, &w, &h );
+	trap_R_DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, cgs.media.whiteShader );
+}
+// end acqu-sdk (issue 2): CHRUKER: b076
+
 /*
 ================
 UI_DrawRect
@@ -400,8 +407,12 @@ to a fixed color.
 Coordinates are at 640 by 480 virtual resolution
 ==================
 */
-void CG_DrawStringExt( int x, int y, const char *string, const float *setColor, 
+// sta acqu-sdk (issue 2): CHRUKER: b082 - setColor is no longer const
+void CG_DrawStringExt( int x, int y, const char *string, float *setColor, 
 		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars ) {
+//void CG_DrawStringExt( int x, int y, const char *string, const float *setColor, 
+//		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars ) {
+// end acqu-sdk (issue 2): CHRUKER: b082
 	vec4_t		color;
 	const char	*s;
 	int			xx;
@@ -445,6 +456,10 @@ void CG_DrawStringExt( int x, int y, const char *string, const float *setColor,
 					color[3] = setColor[3];
 				}
 				trap_R_SetColor( color );
+
+				// sta acqu-sdk (issue 2): CHRUKER: b082 - Save the new color so that it can be used on subsequent lines
+				memcpy( setColor, color, sizeof(color) );
+				// end acqu-sdk (issue 2): CHRUKER: b082
 			}
 			s += 2;
 			continue;

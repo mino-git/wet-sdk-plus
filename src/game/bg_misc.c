@@ -5015,7 +5015,10 @@ int BG_strRelPos(char *in, int index)
 
 // strip colors and control codes, copying up to dwMaxLength-1 "good" chars and nul-terminating
 // returns the length of the cleaned string
-int BG_cleanName( const char *pszIn, char *pszOut, unsigned int dwMaxLength, qboolean fCRLF )
+// sta acqu-sdk (issue 2): CHRUKER: b069 - Cleaned up a few compiler warnings
+int BG_cleanName( const char *pszIn, char *pszOut, int dwMaxLength, qboolean fCRLF )
+//int BG_cleanName( const char *pszIn, char *pszOut, unsigned int dwMaxLength, qboolean fCRLF )
+// end acqu-sdk (issue 2): CHRUKER: b069
 {
 	const char *pInCopy = pszIn;
 	const char *pszOutStart = pszOut;

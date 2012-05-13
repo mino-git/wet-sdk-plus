@@ -799,8 +799,11 @@ void CG_PredictPlayerState( void ) {
 		return;
 	}
 
+	// sta acqu-sdk (issue 2): CHRUKER: b089 - Player view is distorted in intermission if you have ridden an vehicle, mounted a tank
 	// non-predicting local movement will grab the latest angles
-	if ( cg_nopredict.integer 
+	if ( cg_nopredict.integer || cg.predictedPlayerState.pm_type == PM_INTERMISSION
+	//if ( cg_nopredict.integer
+	// end acqu-sdk (issue 2): CHRUKER: b089
 #ifdef ALLOW_GSYNC
 		|| cg_synchronousClients.integer 
 #endif // ALLOW_GSYNC

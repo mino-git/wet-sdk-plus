@@ -42,10 +42,13 @@ void G_refHelp_cmd(gentity_t *ent)
 {
 	// List commands only for enabled refs.
 	if(ent) {
-		if(!ent->client->sess.referee) {
-			CP("cpm \"Sorry, you are not a referee!\n");
-			return;
-		}
+		// sta acqu-sdk (issue 2): CHRUKER: b068 - This seems like a very redundant check since the function is only called
+		// from the server console or through G_ref_cmd (the function just below).
+		//if(!ent->client->sess.referee) {
+		//	CP("cpm \"Sorry, you are not a referee!\n");
+		//	return;
+		//}
+		// end acqu-sdk (issue 2): CHRUKER: b068
 
 		CP("print \"\n^3Referee commands:^7\n\"");
 		CP(    "print \"------------------------------------------\n\"");
@@ -417,7 +420,10 @@ void G_refMute_cmd(gentity_t *ent, qboolean mute)
 
 	player = g_entities + pid;
 
-	if( player->client->sess.referee != RL_NONE ) {
+	// sta acqu-sdk (issue 2): CHRUKER: b060 - Added mute check so that players that are muted before granted referee status, can be unmuted
+	if( player->client->sess.referee != RL_NONE && mute ) {
+	//if( player->client->sess.referee != RL_NONE ) {
+	// end acqu-sdk (issue 2): CHRUKER: b060
 		// sta acqu-sdk (issue 2): CHRUKER: b047 - Removed unneeded linebreak
 		G_refPrintf(ent, "Cannot mute a referee." );
 		// end acqu-sdk (issue 2): CHRUKER: b047

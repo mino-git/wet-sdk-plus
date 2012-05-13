@@ -100,6 +100,43 @@ int G_FindConfigstringIndex( const char *name, int start, int max, qboolean crea
 	return i;
 }
 
+// sta acqu-sdk (issue 2): CHRUKER: b087 - Player always mounting the last gun used, on multiple tank maps
+/*
+================
+G_RemoveConfigstringIndex
+================
+*/
+
+void G_RemoveConfigstringIndex( const char *name, int start, int max) {
+	int i, j;
+	char s[MAX_STRING_CHARS];
+	
+	if ( !name || !name[0] ) {
+		return;
+	}
+	
+	for (i = 1; i < max; i++) {
+		trap_GetConfigstring( start + i, s, sizeof( s ) );
+		
+		if ( !s[0] ) { 
+			break; 
+		}
+		
+		if (strcmp( s, name ) == 0) {
+
+			trap_SetConfigstring( start + i, "");
+
+			for (j = i + 1; j < max - 1; j++) {
+				trap_GetConfigstring( start + j, s, sizeof( s ) );
+				trap_SetConfigstring( start + j, "" );
+				trap_SetConfigstring( start + i, s );
+			}
+			break;
+		}
+	}
+}
+// end acqu-sdk (issue 2): CHRUKER: b087
+
 
 int G_ModelIndex( char *name ) {
 	return G_FindConfigstringIndex (name, CS_MODELS, MAX_MODELS, qtrue);
@@ -796,6 +833,10 @@ void G_SetOrigin( gentity_t *ent, vec3_t origin ) {
 	ent->s.pos.trTime = 0;
 	ent->s.pos.trDuration = 0;
 	VectorClear( ent->s.pos.trDelta );
+
+	// sta acqu-sdk (issue 2): CHRUKER: b091 - Spawnpoints not movable
+	VectorCopy( origin, ent->s.origin );
+	// end acqu-sdk (issue 2): CHRUKER: b091
 
 	VectorCopy( origin, ent->r.currentOrigin );
 

@@ -22,9 +22,15 @@ void G_SendScore( gentity_t *ent ) {
 
 	// send the latest information on all clients
 	numSorted = level.numConnectedClients;
-	if ( numSorted > 64 ) {
-		numSorted = 64;
+	// sta acqu-sdk (issue 2): CHRUKER: b068 - Had 64 hardcoded as the limit
+	if ( numSorted > MAX_CLIENTS ) {
+		numSorted = MAX_CLIENTS;
 	}
+
+	//if ( numSorted > 64 ) {
+	//	numSorted = 64;
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b068
 
 	i = 0;
 	// Gordon: team doesnt actually mean team, ignore...
@@ -75,8 +81,13 @@ void G_SendScore( gentity_t *ent ) {
 			}
 
 			if( g_gametype.integer == GT_WOLF_LMS ) {
+				// sta acqu-sdk (issue 2): CHRUKER: b094 - Playing time shown at debriefing keep increasing				
 				Com_sprintf (entry, sizeof(entry), " %i %i %i %i %i %i %i", level.sortedClients[i], cl->ps.persistant[PERS_SCORE], ping, 
-					(level.time - cl->pers.enterTime) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+					(level.time - cl->pers.enterTime - (level.time - level.intermissiontime)) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+
+				//Com_sprintf (entry, sizeof(entry), " %i %i %i %i %i %i %i", level.sortedClients[i], cl->ps.persistant[PERS_SCORE], ping, 
+				//	(level.time - cl->pers.enterTime) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+				// end acqu-sdk (issue 2): CHRUKER: b094
 			} else {
 				int j, totalXP;
 
@@ -84,19 +95,29 @@ void G_SendScore( gentity_t *ent ) {
 					totalXP += cl->sess.skillpoints[j];
 				}
 
+				// sta acqu-sdk (issue 2): CHRUKER: b094 - Playing time shown at debriefing keep increasing	
 				Com_sprintf (entry, sizeof(entry), " %i %i %i %i %i %i %i", level.sortedClients[i], totalXP, ping, 
-					(level.time - cl->pers.enterTime) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+					(level.time - cl->pers.enterTime - (level.time - level.intermissiontime)) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+
+				//Com_sprintf (entry, sizeof(entry), " %i %i %i %i %i %i %i", level.sortedClients[i], totalXP, ping, 
+				//	(level.time - cl->pers.enterTime) / 60000, g_entities[level.sortedClients[i]].s.powerups, playerClass, respawnsLeft );
+				// end acqu-sdk (issue 2): CHRUKER: b094
 			}
 
 			if(size + strlen(entry) > 1000) {
-				i--; // we need to redo this client in the next buffer (if we can)
+				// sta acqu-sdk (issue 2): CHRUKER: b063 - Removed the line which decreased i
+				//i--; // we need to redo this client in the next buffer (if we can)
+				// end acqu-sdk (issue 2): CHRUKER: b063
 				break;
 			}
 			size += strlen(entry);
 
 			Q_strcat(buffer, 1024, entry);
 			if( ++count >= 32 ) {
-				i--; // we need to redo this client in the next buffer (if we can)
+				// sta acqu-sdk (issue 2): CHRUKER: b063 - Changed the line that decreased i, so it points to the next player
+				i++;
+				//i--; // we need to redo this client in the next buffer (if we can)
+				// end acqu-sdk (issue 2): CHRUKER: b063
 				break;
 			}
 		}
@@ -212,7 +233,10 @@ int ClientNumberFromString( gentity_t *to, char *s ) {
 	qboolean	fIsNumber = qtrue;
 
 	// See if its a number or string
-	for(idnum=0; idnum<strlen(s) && s[idnum] != 0; idnum++) {
+	// sta acqu-sdk (issue 2): CHRUKER: b068 - Added the (int) type casting
+	for(idnum=0; idnum<(int)strlen(s) && s[idnum] != 0; idnum++) {
+	//for(idnum=0; idnum<strlen(s) && s[idnum] != 0; idnum++) {
+	// end acqu-sdk (issue 2): CHRUKER: b068
 		if(s[idnum] < '0' || s[idnum] > '9') {
 			fIsNumber = qfalse;
 			break;
@@ -303,6 +327,11 @@ void Cmd_Give_f (gentity_t *ent)
 //	gentity_t		*it_ent;
 //	trace_t		trace;
 	int			amount;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b064 - Added skill
+	int			skill;
+	// end acqu-sdk (issue 2): CHRUKER: b064
+
 	qboolean	hasAmount = qfalse;
 
 	if ( !CheatsOk( ent ) ) {
@@ -325,15 +354,36 @@ void Cmd_Give_f (gentity_t *ent)
 
 	if( Q_stricmpn( name, "skill", 5 ) == 0 ) {
 		if( hasAmount ) {
-			if( amount >= 0 && amount < SK_NUM_SKILLS ) {
-				G_AddSkillPoints( ent, amount, 20 );
-				G_DebugAddSkillPoints( ent, amount, 20, "give skill" ); 
+			// sta acqu-sdk (issue 2): CHRUKER: b064
+			//if( amount >= 0 && amount < SK_NUM_SKILLS ) {
+			//	G_AddSkillPoints( ent, amount, 20 );
+			//	G_DebugAddSkillPoints( ent, amount, 20, "give skill" ); 
+			//}
+			skill = amount;	// CHRUKER: b064 - Changed amount to skill, so that we can use amount properly
+			if( skill >= 0 && skill < SK_NUM_SKILLS ) {
+				// CHRUKER: b064 - Detecting the correct amount to move to the next skill level
+				amount = 20;
+				if ( ent->client->sess.skill[skill] < NUM_SKILL_LEVELS-1 )
+					amount = skillLevels[ent->client->sess.skill[skill] + 1] - ent->client->sess.skillpoints[skill];
+				
+				G_AddSkillPoints( ent, skill, amount );
+				G_DebugAddSkillPoints( ent, skill, amount, "give skill" );				
 			}
+			// end acqu-sdk (issue 2): CHRUKER: b064
 		} else {
 			// bumps all skills with 1 level
 			for( i = 0; i < SK_NUM_SKILLS; i++ ) {
-				G_AddSkillPoints( ent, i, 20 );
-				G_DebugAddSkillPoints( ent, i, 20, "give skill" ); 
+				// sta acqu-sdk (issue 2): CHRUKER: b064
+				//G_AddSkillPoints( ent, i, 20 );
+				//G_DebugAddSkillPoints( ent, i, 20, "give skill" );
+				// CHRUKER: b064 - Detecting the correct amount to move to the next skill level
+				amount = 20;				
+				if ( ent->client->sess.skill[i] < NUM_SKILL_LEVELS-1 )
+					amount = skillLevels[ent->client->sess.skill[i] + 1] - ent->client->sess.skillpoints[i];
+				
+				G_AddSkillPoints( ent, i, amount );
+				G_DebugAddSkillPoints( ent, i, amount, "give skill" );
+				// end acqu-sdk (issue 2): CHRUKER: b064
 			}
 		}
 		return;
@@ -840,6 +890,10 @@ qboolean SetTeam( gentity_t *ent, char *s, qboolean force, weapon_t w1, weapon_t
 	client->sess.spectatorClient = specClient;
 	client->pers.ready = qfalse;
 
+	// sta acqu-sdk (issue 2): CHRUKER: b081 - During team switching you can sometime spawn immediately
+	client->pers.lastReinforceTime = 0;
+	// end acqu-sdk (issue 2): CHRUKER: b081
+
 	// (l)users will spam spec messages... honest!
 	if(team != oldTeam) {
 		gentity_t* tent = G_PopupMessage( PM_TEAM );
@@ -1230,8 +1284,14 @@ void Cmd_Follow_f( gentity_t *ent, unsigned int dwCommand, qboolean fValue ) {
 	}
 
 	if(ent->client->ps.pm_flags & PMF_LIMBO) {
-		CP("cpm \"Can't issue a follow command while in limbo.\n\"");
-		CP("cpm \"Hit FIRE to switch between teammates.\n\"");
+
+		// sta acqu-sdk (issue 2): CHRUKER: b065 - Was printing using cpm before, but this is just for the console
+		CP("print \"Can't issue a follow command while in limbo.\n\"");
+		CP("print \"Hit FIRE to switch between teammates.\n\"");
+
+		//CP("cpm \"Can't issue a follow command while in limbo.\n\"");
+		//CP("cpm \"Hit FIRE to switch between teammates.\n\"");
+		// end acqu-sdk (issue 2): CHRUKER: b065
 		return;
 	}
 
@@ -1583,7 +1643,10 @@ void G_Voice( gentity_t *ent, gentity_t *target, int mode, const char *id, qbool
 
 	// Only do the spam check for MP
 	if ( ent->voiceChatSquelch >= 30000 ) {
-		trap_SendServerCommand( ent-g_entities, "cpm \"^1Spam Protection^7: VoiceChat ignored\n\"" );
+		// sta acqu-sdk (issue 2): CHRUKER: b066 - Was using the cpm command, but this needs to be displayed immediately
+		trap_SendServerCommand( ent-g_entities, "cp \"^1Spam Protection^7: VoiceChat ignored\"" );
+		//trap_SendServerCommand( ent-g_entities, "cpm \"^1Spam Protection^7: VoiceChat ignored\n\"" );
+		// end acqu-sdk (issue 2): CHRUKER: b066
 		return;
 	}
 
@@ -1828,26 +1891,33 @@ qboolean Cmd_CallVote_f( gentity_t *ent, unsigned int dwCommand, qboolean fRefCo
 	char	arg2[MAX_STRING_TOKENS];
 
 	// Normal checks, if its not being issued as a referee command
+	// sta acqu-sdk (issue 2): CHRUKER: b067 - Was using the cpm command, but these needs to be displayed immediately.	
 	if( !fRefCommand ) {
 		if( level.voteInfo.voteTime ) {
-			CP("cpm \"A vote is already in progress.\n\"");
+			G_printFull("A vote is already in progress.", ent);
+			//CP("cpm \"A vote is already in progress.\n\"");
 			return qfalse;
 		} else if( level.intermissiontime ) {
-			CP("cpm \"Cannot callvote during intermission.\n\"");
+			G_printFull("Cannot callvote during intermission.", ent);
+			//CP("cpm \"Cannot callvote during intermission.\n\"");
 			return qfalse;
 		} else if( !ent->client->sess.referee ) {
 			if( voteFlags.integer == VOTING_DISABLED ) {
-				CP("cpm \"Voting not enabled on this server.\n\"");
+				G_printFull("Voting not enabled on this server.", ent);
+				//CP("cpm \"Voting not enabled on this server.\n\"");
 				return qfalse;
 			} else if( vote_limit.integer > 0 && ent->client->pers.voteCount >= vote_limit.integer ) {
-				CP(va("cpm \"You have already called the maximum number of votes (%d).\n\"", vote_limit.integer));
+				G_printFull(va("You have already called the maximum number of votes (%d).", vote_limit.integer), ent);
+				//CP(va("cpm \"You have already called the maximum number of votes (%d).\n\"", vote_limit.integer));
 				return qfalse;
 			} else if( ent->client->sess.sessionTeam == TEAM_SPECTATOR) {
-				CP("cpm \"Not allowed to call a vote as a spectator.\n\"");
+				G_printFull("Not allowed to call a vote as a spectator.", ent);
+				//CP("cpm \"Not allowed to call a vote as a spectator.\n\"");
 				return qfalse;
 			}
 		}
 	}
+	// end acqu-sdk (issue 2): CHRUKER: b067
 
 	// make sure it is a valid command to vote on
 	trap_Argv( 1, arg1, sizeof( arg1 ) );
@@ -2459,7 +2529,10 @@ qboolean Do_Activate2_f(gentity_t *ent, gentity_t *traceEnt) {
 						G_AddEvent( ent, EV_DISGUISE_SOUND, 0 );
 
 						G_AddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f );
-						G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5, "stealing uniform" ); 
+						// sta acqu-sdk (issue 2): CHRUKER: b068 - Passed 5 as integer instead of float
+						G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f, "stealing uniform" );
+						//G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5, "stealing uniform" ); 
+						// end acqu-sdk (issue 2): CHRUKER: b068
 
 						Q_strncpyz( ent->client->disguiseNetname, g_entities[traceEnt->s.clientNum].client->pers.netname, sizeof(ent->client->disguiseNetname) );
 						ent->client->disguiseRank = g_entities[traceEnt->s.clientNum].client ? g_entities[traceEnt->s.clientNum].client->sess.rank : 0;
@@ -2655,6 +2728,10 @@ void G_LeaveTank( gentity_t* ent, qboolean position ) {
 	tank->mg42weapHeat = ent->client->ps.weapHeat[WP_DUMMY_MG42];
 	tank->backupWeaponTime = ent->client->ps.weaponTime;
 	ent->client->ps.weaponTime = ent->backupWeaponTime;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b087 - Player always mounting the last gun used, on multiple tank maps
+	G_RemoveConfigstringIndex( va("%i %i %s", ent->s.number, ent->tagParent->s.number, ent->tagName), CS_TAGCONNECTS, MAX_TAGCONNECTS );
+	// end acqu-sdk (issue 2): CHRUKER: b087
 
 	G_Script_ScriptEvent( tank, "mg42", "unmount" );
 	ent->tagParent = NULL;

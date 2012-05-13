@@ -651,7 +651,10 @@ typedef struct {
 #define MAX_STATUSLENGTH		64
 #define MAX_LISTBOXWIDTH		59
 #define UI_FONT_THRESHOLD		0.1
-#define MAX_DISPLAY_SERVERS		2048
+// sta acqu-sdk (issue 2): CHRUKER: b084 - Server list was wrapping
+#define MAX_DISPLAY_SERVERS		4096
+//#define MAX_DISPLAY_SERVERS		2048
+// end acqu-sdk (issue 2): CHRUKER: b084
 #define MAX_SERVERSTATUS_LINES	128
 #define MAX_SERVERSTATUS_TEXT	2048
 #define MAX_FOUNDPLAYER_SERVERS	16

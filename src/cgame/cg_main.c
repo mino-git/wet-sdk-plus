@@ -801,7 +801,10 @@ int CG_findClientNum(char *s)
 	qboolean	fIsNumber = qtrue;
 
 	// See if its a number or string
-	for(id=0; id<strlen(s) && s[id] != 0; id++) {
+	// sta acqu-sdk (issue 2): CHRUKER: b075 - Added the (int) type casting
+	for(id=0; id<(int)strlen(s) && s[id] != 0; id++) {
+	//for(id=0; id<strlen(s) && s[id] != 0; id++) {
+	// end acqu-sdk (issue 2): CHRUKER: b075
 		if(s[id] < '0' || s[id] > '9') {
 			fIsNumber = qfalse;
 			break;
@@ -954,7 +957,10 @@ void CG_SetupDlightstyles(void)
 		token = COM_Parse (&str);	// attenuation
 		cent->dl_atten = atoi(token);
 
-		for(j=0;j<strlen(cent->dl_stylestring);j++) {
+		// sta acqu-sdk (issue 2): CHRUKER: b075 - Added the (int) type casting
+		for(j=0;j<(int)strlen(cent->dl_stylestring);j++) {
+		//for(j=0;j<strlen(cent->dl_stylestring);j++) {
+		// end acqu-sdk (issue 2): CHRUKER: b075
 
 			cent->dl_stylestring[j] += cent->dl_atten;	// adjust character for attenuation/amplification
 
@@ -2661,6 +2667,10 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum, qb
 
 	cgs.ccRequestedObjective = -1;
 	cgs.ccCurrentCamObjective = -2;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b079 - Background images on the loading screen were not visible on the first call
+	trap_R_SetColor( NULL );
+	// end acqu-sdk (issue 2): CHRUKER: b079
 
 	// load a few needed things before we do any screen updates
 	cgs.media.charsetShader		= trap_R_RegisterShader( "gfx/2d/hudchars" ); //trap_R_RegisterShader( "gfx/2d/bigchars" );

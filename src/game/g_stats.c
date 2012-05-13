@@ -20,28 +20,32 @@ void G_LogKill( gentity_t* ent, weapon_t weap ) {
 		return;
 	}
 
-	if(ent->client->sess.playerType == PC_SOLDIER) {
-		int i, j;
-		qboolean pass = qtrue;
+	// sta acqu-sdk (issue 2): CHRUKER: b068 - This block didn't do anything, so it has been commented out.
+	// The variables 'soliderKillTimes', 'soldierKillMarker', 'NUM_SOLDIERKILL_TIMES', 'SOLDIERKILL_MAXTIME'
+	// and 'pass' have also been commented out. The first 4 was defined in g_local.h
+	//if(ent->client->sess.playerType == PC_SOLDIER) {
+	//	int i, j;
+	//	qboolean pass = qtrue;
 
-		ent->client->soliderKillTimes[ent->client->soldierKillMarker++] = level.timeCurrent;
+	//	ent->client->soliderKillTimes[ent->client->soldierKillMarker++] = level.timeCurrent;
 
-		if ( ent->client->soldierKillMarker >= NUM_SOLDIERKILL_TIMES ) {
-			ent->client->soldierKillMarker = 0;
-		}
+	//	if ( ent->client->soldierKillMarker >= NUM_SOLDIERKILL_TIMES ) {
+	//		ent->client->soldierKillMarker = 0;
+	//	}
 
-		for( i = 0, j = ent->client->soldierKillMarker; i < NUM_SOLDIERKILL_TIMES; i++ ) {
+	//	for( i = 0, j = ent->client->soldierKillMarker; i < NUM_SOLDIERKILL_TIMES; i++ ) {
 
-			if( !ent->client->soliderKillTimes[j] || (ent->client->soliderKillTimes[j] < level.timeCurrent - SOLDIERKILL_MAXTIME) ) {
-				pass = qfalse;
-				break;
-			}
+	//		if( !ent->client->soliderKillTimes[j] || (ent->client->soliderKillTimes[j] < level.timeCurrent - SOLDIERKILL_MAXTIME) ) {
+	//			pass = qfalse;
+	//			break;
+	//		}
 
-			if( ++j == NUM_SOLDIERKILL_TIMES ) {
-				j = 0;
-			}
-		}
-	}
+	//		if( ++j == NUM_SOLDIERKILL_TIMES ) {
+	//			j = 0;
+	//		}
+	//	}
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b068
 
 	ent->client->pers.playerStats.weaponStats[weap].kills++;
 

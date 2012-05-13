@@ -122,7 +122,10 @@ qboolean G_ScriptAction_SetAutoSpawn( gentity_t* ent, char *params ) {
 
 	tent = G_Find( NULL, FOFS(message), spawnname );
 	if(!tent) {
-		G_Error( "G_Scripting: setautospawn, couldn't find target\n" );
+		// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+		G_Error( "G_Scripting: setautospawn, couldn't find target (%s)\n", spawnname );
+		//G_Error( "G_Scripting: setautospawn, couldn't find target\n" );
+		// end acqu-sdk (issue 2): CHRUKER: b083
 	}
 
 	if( !tent->count ) {
@@ -579,8 +582,14 @@ qboolean G_ScriptAction_FollowSpline( gentity_t* ent, char *params ) {
 			}
 
 			bufferIndex = atoi(token);
-			if (bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS-1 );
+			// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which can result in a wrong index
+			if (bufferIndex < 0 || bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
+			//if (bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+			// end acqu-sdk (issue 2): CHRUKER: b055
+				// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which can result in a wrong index
+				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS-1 );
+				//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS-1 );
+				// end acqu-sdk (issue 2): CHRUKER: b055
 			}
 
 			backward = ent->scriptAccumBuffer[bufferIndex] != 0 ? qtrue : qfalse;
@@ -1953,7 +1962,10 @@ qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
 
 	bufferIndex = atoi(token);
 	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 10 as the last bufferindex, but its actually 9
+		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1);
+		//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -2146,8 +2158,14 @@ qboolean G_ScriptAction_GlobalAccum( gentity_t *ent, char *params )
 	}
 
 	bufferIndex = atoi(token);
-	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
+	// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which would result in invalid indexes
+	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
+	//if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+	// end acqu-sdk (issue 2): CHRUKER: b055
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 10 as the last bufferindex, but its actually 7
+		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+		//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -2796,7 +2814,10 @@ qboolean G_ScriptAction_VoiceAnnounce( gentity_t *ent, char *params) {
 
 	sysmsg = G_GetSysMessageNumber( token );
 	if(sysmsg == -1) {
-		G_Error( "G_ScriptAction_VoiceAnnounce: invalid system message\n" );
+		// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+		G_Error( "G_ScriptAction_VoiceAnnounce: invalid system message (%s)\n", token );
+		//G_Error( "G_ScriptAction_VoiceAnnounce: invalid system message\n" );
+		// end acqu-sdk (issue 2): CHRUKER: b083
 	}
 
 	G_SendSystemMessage( sysmsg, !num ? TEAM_AXIS : TEAM_ALLIES );
@@ -3214,7 +3235,10 @@ qboolean G_ScriptAction_SetState( gentity_t *ent, char *params ) {
 	token = COM_ParseExt( &pString, qfalse );
 	Q_strncpyz( state, token, sizeof(state) );
 	if (!state[0]) {
-		G_Error( "G_Scripting: setstate must have a name and an state\n" );
+		// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+		G_Error( "G_Scripting: setstate (%s) must have a name and an state\n", name );
+		//G_Error( "G_Scripting: setstate must have a name and an state\n" );
+		// end acqu-sdk (issue 2): CHRUKER: b083
 	}
 
 	if( !Q_stricmp( state, "default" ) ) {
@@ -3224,7 +3248,10 @@ qboolean G_ScriptAction_SetState( gentity_t *ent, char *params ) {
 	} else if( !Q_stricmp( state, "underconstruction" ) ) {
 		entState = STATE_UNDERCONSTRUCTION;
 	} else {
-		G_Error( "G_Scripting: setstate with invalid state '%s'\n", state );
+		// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+		G_Error( "G_Scripting: setstate (%s) with invalid state '%s'\n", name, state );
+		//G_Error( "G_Scripting: setstate with invalid state '%s'\n", state );
+		// end acqu-sdk (issue 2): CHRUKER: b083
 	}
 
 	// look for an entities
@@ -3235,7 +3262,10 @@ qboolean G_ScriptAction_SetState( gentity_t *ent, char *params ) {
 
 		if( !target ) {
 			if( !found ) {
-				G_Printf( "^1Warning: setstate called and no entities found\n" );
+				// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+				G_Printf( "^1Warning: setstate (%s) called and no entities found\n", name );
+				//G_Printf( "^1Warning: setstate called and no entities found\n" );
+				// end acqu-sdk (issue 2): CHRUKER: b083
 			}
 			break;
 		}
@@ -3452,9 +3482,15 @@ qboolean G_ScriptAction_PrintAccum( gentity_t *ent, char *params )
 
 
 	bufferIndex = atoi(token);
-	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
+	// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using MAX_SCRIPT_ACCUM_BUFFERS which is a different limit
+	if ((bufferIndex < 0) || (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) )
+	//if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
+	// end acqu-sdk (issue 2): CHRUKER: b055
 	{
-		G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last buffer index and using MAX_SCRIPT_ACCUM_BUFFERS, but its actually 9
+		G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", G_MAX_SCRIPT_ACCUM_BUFFERS - 1);
+		//G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	G_Printf("(G_Script) %s: Accum[%i] = %d\n", ent->scriptName, bufferIndex, ent->scriptAccumBuffer[bufferIndex]);
@@ -3493,7 +3529,10 @@ qboolean G_ScriptAction_PrintGlobalAccum( gentity_t *ent, char *params )
 	bufferIndex = atoi(token);
 	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
 	{
-		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last buffer index, but its actually 7
+		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+		//G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	G_Printf("(G_Script) GlobalAccum[%i] = %d\n", bufferIndex, level.globalAccumBuffer[bufferIndex]);

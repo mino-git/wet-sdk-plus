@@ -2566,6 +2566,10 @@ void G_GlobalClientEvent( int event, int param, int client ) {
 	tent->s.density = param;
 	tent->r.singleClient = client;
 	tent->r.svFlags = SVF_SINGLECLIENT | SVF_BROADCAST;
+
+	// sta acqu-sdk (issue 2): CHRUKER: b099 - Calling for a lot of artillery or airstrikes can result voice over spam
+	tent->s.effect1Time = 1; // don't buffer
+	// end acqu-sdk (issue 2): CHRUKER: b099
 }
 
 /*
@@ -2705,10 +2709,13 @@ void Weapon_Artillery(gentity_t *ent) {
 
 			bomb->think = artillerySpotterThink;
 		} else {
-			if( ent->client->sess.skill[SK_SIGNALS] >= 3 )
-				bomb->nextthink		= level.time + 8950 + 2000 * i + crandom() * 800;
-			else
-				bomb->nextthink		= level.time + 8950 + 2000 * i + crandom() * 800;
+			// sta acqu-sdk (issue 2): CHRUKER: b068 - this seems odd... if level 3 or above signal skills, do this. if not, do it anyway...
+			//if( ent->client->sess.skill[SK_SIGNALS] >= 3 )
+			//	bomb->nextthink		= level.time + 8950 + 2000 * i + crandom() * 800;			
+			//else
+			// end acqu-sdk (issue 2): CHRUKER: b068
+			
+			bomb->nextthink		= level.time + 8950 + 2000 * i + crandom() * 800;
 
 			// Gordon: for explosion type
 			bomb->accuracy		= 2;
@@ -3953,6 +3960,9 @@ void FireWeapon( gentity_t *ent ) {
 	// covert ops disguise handling
 	if( ent->client->ps.powerups[PW_OPS_DISGUISED] &&
 		ent->s.weapon != WP_SMOKE_BOMB &&
+		// sta acqu-sdk (issue 2): CHRUKER: b054 - Binoculars are also a stealthy tool
+		ent->s.weapon != WP_BINOCULARS &&
+		// end acqu-sdk (issue 2): CHRUKER: b054
 		ent->s.weapon != WP_SATCHEL &&
 		ent->s.weapon != WP_SATCHEL_DET ) {
 		if( !( ent->s.weapon == WP_KNIFE ||
@@ -4126,7 +4136,10 @@ void FireWeapon( gentity_t *ent ) {
 		}
 
 		if( ent->client->sess.skill[SK_HEAVY_WEAPONS] >= 1 ) {
-			ent->client->ps.classWeaponTime += .5f*(1-0.3f) * level.soldierChargeTime[ent->client->sess.sessionTeam-1];
+			// sta acqu-sdk (issue 2): CHRUKER: b068 - Was using "0.5f*(1-0.3f)", however the 0.33f is used everywhere else, and is more precise
+			ent->client->ps.classWeaponTime += .33f * level.soldierChargeTime[ent->client->sess.sessionTeam-1];
+			//ent->client->ps.classWeaponTime += .5f*(1-0.3f) * level.soldierChargeTime[ent->client->sess.sessionTeam-1];
+			// end acqu-sdk (issue 2): CHRUKER: b068
 		} else {
 			ent->client->ps.classWeaponTime += .5f * level.soldierChargeTime[ent->client->sess.sessionTeam-1];
 		}

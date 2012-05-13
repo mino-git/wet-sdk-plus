@@ -388,10 +388,17 @@ void SP_worldspawn( void ) {
 		cg.thirtySecondSound_g[0] = \
 		cg.thirtySecondSound_a[0] = '\0';
 
-	CG_SpawnString( "twoMinuteSound_axis", "axis_hq_5minutes", &s );
+	// sta acqu-sdk (issue 2): CHRUKER: b092 - Custom 5 minute warning is the same as 2 minute warning
+	CG_SpawnString( "fiveMinuteSound_axis", "axis_hq_5minutes", &s );
 	Q_strncpyz( cg.fiveMinuteSound_g, s, sizeof(cg.fiveMinuteSound_g) );
-	CG_SpawnString( "twoMinuteSound_allied", "allies_hq_5minutes", &s );
+	CG_SpawnString( "fiveMinuteSound_allied", "allies_hq_5minutes", &s );
 	Q_strncpyz( cg.fiveMinuteSound_a, s, sizeof(cg.fiveMinuteSound_a) );
+
+	//CG_SpawnString( "twoMinuteSound_axis", "axis_hq_5minutes", &s );
+	//Q_strncpyz( cg.fiveMinuteSound_g, s, sizeof(cg.fiveMinuteSound_g) );
+	//CG_SpawnString( "twoMinuteSound_allied", "allies_hq_5minutes", &s );
+	//Q_strncpyz( cg.fiveMinuteSound_a, s, sizeof(cg.fiveMinuteSound_a) );
+	// end acqu-sdk (issue 2): CHRUKER: b092
 
 	CG_SpawnString( "twoMinuteSound_axis", "axis_hq_2minutes", &s );
 	Q_strncpyz( cg.twoMinuteSound_g, s, sizeof(cg.twoMinuteSound_g) );

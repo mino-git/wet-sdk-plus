@@ -686,6 +686,9 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 	gentity_t	*checkEnt, *traceEnt = 0;
   	playerState_t *ps;
 	int			hintType, hintDist, hintVal;
+	// sta acqu-sdk (issue 2): CHRUKER: b080 - Breakable damage indicator can wrap when the entity has a lot of health
+	static int	hintValMax = 255;
+	// end acqu-sdk (issue 2): CHRUKER: b080
 	qboolean	zooming, indirectHit;	// indirectHit means the checkent was not the ent hit by the trace (checkEnt!=traceEnt)
 	int			trace_contents;			// DHM - Nerve
 	int			numOfIgnoredEnts = 0;
@@ -901,6 +904,11 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 							hintDist = CH_BREAKABLE_DIST;
 							hintType = HINT_BREAKABLE;
 							hintVal  = checkEnt->health;		// also send health to client for visualization
+
+							// sta acqu-sdk (issue 2): CHRUKER: b080 - Breakable damage indicator can wrap when the entity has a lot of health
+							if ( hintVal > hintValMax )	hintValMax = hintVal;							
+							hintVal = (hintVal * 255) / hintValMax;
+							// end acqu-sdk (issue 2): CHRUKER: b080
 							break;
 						case 1:
 							hintDist = CH_BREAKABLE_DIST * 2;
@@ -926,6 +934,11 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 								hintDist = CH_BREAKABLE_DIST;
 								hintType = HINT_BREAKABLE;
 								hintVal  = checkEnt->health;		// also send health to client for visualization
+
+								// sta acqu-sdk (issue 2): CHRUKER: b080 - Breakable damage indicator can wrap when the entity has a lot of health
+								if ( hintVal > hintValMax ) hintValMax = hintVal;
+								hintVal = (hintVal * 255) / hintValMax;
+								// end acqu-sdk (issue 2): CHRUKER: b080
 							} else {
 								hintDist = 0;
 								hintType = ps->serverCursorHint		= HINT_FORCENONE;
@@ -946,6 +959,11 @@ void G_CheckForCursorHints( gentity_t *ent ) {
 								hintDist = CH_BREAKABLE_DIST;
 								hintType = HINT_BREAKABLE;
 								hintVal  = checkEnt->health;		// also send health to client for visualization
+
+								// sta acqu-sdk (issue 2): CHRUKER: b080 - Breakable damage indicator can wrap when the entity has a lot of health
+								if ( hintVal > hintValMax ) hintValMax = hintVal;
+								hintVal = (hintVal * 255) / hintValMax;
+								// end acqu-sdk (issue 2): CHRUKER: b080
 								break;
 							case 1:
 								hintDist = CH_BREAKABLE_DIST * 2;
@@ -2278,6 +2296,12 @@ void MoveClientToIntermission( gentity_t *ent ) {
 
 	// clean up powerup info
 	// memset( ent->client->ps.powerups, 0, sizeof(ent->client->ps.powerups) );
+
+	// sta acqu-sdk (issue 2): CHRUKER: b089 - Player view is distorted in intermission if you have ridden an vehicle, mounted a tank
+	if( ent->tankLink ) {
+		G_LeaveTank( ent, qfalse );
+	}
+	// end acqu-sdk (issue 2): CHRUKER: b089
 
 	ent->client->ps.eFlags = 0;
 	ent->s.eFlags = 0;

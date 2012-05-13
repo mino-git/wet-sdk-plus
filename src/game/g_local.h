@@ -714,8 +714,10 @@ typedef struct {
 
 #define MAX_CLIENT_MARKERS 10
 
-#define NUM_SOLDIERKILL_TIMES 10
-#define SOLDIERKILL_MAXTIME 60000
+// sta acqu-sdk (issue 2): CHRUKER: b068 - These two are only referenced in g_stats.c and there they don't do anything
+//#define NUM_SOLDIERKILL_TIMES 10
+//#define SOLDIERKILL_MAXTIME 60000
+// end acqu-sdk (issue 2): CHRUKER: b068
 
 #define LT_SPECIAL_PICKUP_MOD	3		// JPW NERVE # of times (minus one for modulo) LT must drop ammo before scoring a point
 #define MEDIC_SPECIAL_PICKUP_MOD	4	// JPW NERVE same thing for medic
@@ -814,8 +816,10 @@ struct gclient_s {
 	int			lastConstructibleBlockingWarnTime;
 	int			lastConstructibleBlockingWarnEnt;
 
-	int			soldierKillMarker;
-	int			soliderKillTimes[NUM_SOLDIERKILL_TIMES];
+	// sta acqu-sdk (issue 2): CHRUKER: b068 - These two are only referenced in g_stats.c and there they don't do anything
+	//int			soldierKillMarker;
+	//int			soliderKillTimes[NUM_SOLDIERKILL_TIMES];
+	// end acqu-sdk (issue 2): CHRUKER: b068
 
 	int			landmineSpottedTime;
 	gentity_t*	landmineSpotted;
@@ -1175,6 +1179,11 @@ void Spawn_Shard (gentity_t *ent, gentity_t *inflictor, int quantity, int type);
 // Ridah
 int G_FindConfigstringIndex( const char *name, int start, int max, qboolean create );
 // done.
+
+// sta acqu-sdk (issue 2): CHRUKER: b087 - Player always mounting the last gun used, on multiple tank maps
+void G_RemoveConfigstringIndex( const char *name, int start, int max);
+// end acqu-sdk (issue 2): CHRUKER: b087
+
 int		G_ModelIndex( char *name );
 int		G_SoundIndex( const char *name );
 int		G_SkinIndex( const char *name );

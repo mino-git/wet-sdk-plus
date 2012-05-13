@@ -2295,9 +2295,13 @@ void CG_DrawStretchPic( float x, float y, float width, float height, qhandle_t h
 void CG_DrawString( float x, float y, const char *string, 
 				   float charWidth, float charHeight, const float *modulate );
 
-
-void CG_DrawStringExt( int x, int y, const char *string, const float *setColor, 
+// sta acqu-sdk (issue 2): CHRUKER: b082 - setColor is no longer const
+void CG_DrawStringExt( int x, int y, const char *string, float *setColor, 
 		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars );
+//void CG_DrawStringExt( int x, int y, const char *string, const float *setColor, 
+//		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars );
+// end acqu-sdk (issue 2): CHRUKER: b082
+
 // JOSEPH 4-17-00
 void CG_DrawStringExt2( int x, int y, const char *string, const float *setColor, 
 		qboolean forceColor, qboolean shadow, int charWidth, int charHeight, int maxChars );
@@ -2328,6 +2332,10 @@ void CG_DrawRect_FixedBorder( float x, float y, float width, float height, int b
 void CG_DrawSides(float x, float y, float w, float h, float size);
 void CG_DrawTopBottom(float x, float y, float w, float h, float size);
 void CG_DrawTopBottom_NoScale( float x, float y, float w, float h, float size );
+
+// sta acqu-sdk (issue 2): CHRUKER: b076 - Scoreboard background had black lines drawn twice
+void CG_DrawBottom_NoScale( float x, float y, float w, float h, float size );
+// end acqu-sdk (issue 2): CHRUKER: b076
 
 // NERVE - SMF - localization functions
 void CG_InitTranslation();

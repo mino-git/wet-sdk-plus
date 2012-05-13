@@ -892,10 +892,13 @@ static int CG_CalcFov( void ) {
 		cg.zoomval = 0;
 	}
 
-	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
+	// sta acqu-sdk (issue 2): CHRUKER: b088 - Players field of view at intermission is different if you had deployed a MG42 (fixation moved further down)
+	if ( cg.predictedPlayerState.pm_type != PM_INTERMISSION ) {
+	//if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
 		// if in intermission, use a fixed value
-		fov_x = 90;
-	} else {
+		//fov_x = 90;
+	//} else {
+	// end acqu-sdk (issue 2): CHRUKER: b088
 		fov_x = cg_fov.value;
 		if( !developer.integer ) {
 			if ( fov_x < 90 ) {
@@ -952,6 +955,13 @@ static int CG_CalcFov( void ) {
 	} else if( cg.snap->ps.eFlags & EF_MOUNTEDTANK ) {
 		fov_x = 75;
 	}
+
+	// sta acqu-sdk (issue 2): CHRUKER: b088 - Players field of view at intermission is different if you had deployed a MG42
+	if ( cg.predictedPlayerState.pm_type == PM_INTERMISSION ) {
+		// if in intermission, use a fixed value
+		fov_x = 90;
+	}
+	// end acqu-sdk (issue 2): CHRUKER: b088
 
 	if( cg.showGameView ) {
 		fov_x = fov_y = 60.f;

@@ -257,7 +257,10 @@ void G_pause_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fPause)
 			CP("cpm \"^3Your team didn't call the timeout!\n\"");
 			return;
 		} else {
-			AP("print \"\n^3Match is ^5UNPAUSED^3 ... resuming in 10 seconds!\n\n\"");
+			// sta acqu-sdk (issue 2): CHRUKER: b068 - Had extra linebreaks, before and after.
+			AP("print \"^3Match is ^5UNPAUSED^3 ... resuming in 10 seconds!\n\"");
+			//AP("print \"\n^3Match is ^5UNPAUSED^3 ... resuming in 10 seconds!\n\n\"");
+			// end acqu-sdk (issue 2): CHRUKER: b068
 			level.match_pause = PAUSE_UNPAUSING;
 			G_globalSound("sound/osp/prepare.wav");
 			G_spawnPrintf(DP_UNPAUSING, level.time + 10, NULL);
@@ -582,7 +585,10 @@ void G_teamready_cmd(gentity_t *ent, unsigned int dwCommand, qboolean state)
 
 
 // These map to WS_* weapon indexes
-const int cQualifyingShots[WS_MAX] = {
+// sta acqu-sdk (issue 2): CHRUKER: b068
+const unsigned int cQualifyingShots[WS_MAX] = {
+//const int cQualifyingShots[WS_MAX] = {
+// end acqu-sdk (issue 2): CHRUKER: b068
 	10,		// 0
 	15,		// 1
 	15,		// 2
@@ -639,7 +645,13 @@ int QDECL SortStats( const void *a, const void *b )
 // Shows the most accurate players for each weapon to the requesting client
 void G_weaponStatsLeaders_cmd(gentity_t* ent, qboolean doTop, qboolean doWindow)
 {
-	int i, iWeap, shots, wBestAcc, cClients, cPlaces;
+	// sta acqu-sdk (issue 2): CHRUKER: b068
+	int i, iWeap, wBestAcc, cClients, cPlaces;
+	unsigned shots;	
+
+	//int i, iWeap, shots, wBestAcc, cClients, cPlaces;
+	// end acqu-sdk (issue 2): CHRUKER: b068
+
 	int aClients[MAX_CLIENTS];
 	float acc;
 	char z[MAX_STRING_CHARS];
@@ -692,7 +704,13 @@ void G_weaponStatsLeaders_cmd(gentity_t* ent, qboolean doTop, qboolean doWindow)
 void G_weaponRankings_cmd(gentity_t *ent, unsigned int dwCommand, qboolean state)
 {
 	gclient_t *cl;
-	int c = 0, i, shots, wBestAcc;
+	// sta acqu-sdk (issue 2): CHRUKER: b068
+	int c = 0, i, wBestAcc;
+	unsigned shots;
+
+	//int c = 0, i, shots, wBestAcc;
+	// end acqu-sdk (issue 2): CHRUKER: b068
+
 	char z[MAX_STRING_CHARS];
 
 	if(trap_Argc() < 2) {

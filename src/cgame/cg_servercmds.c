@@ -2156,6 +2156,11 @@ static void CG_ServerCommand( void ) {
 
 	// DHM - Nerve :: Allow client to lodge a complaing
 	if ( !Q_stricmp( cmd, "complaint" ) && cgs.gamestate == GS_PLAYING) {
+		// sta acqu-sdk (issue 2): CHRUKER: b096 - Complaint votes sticks around, so vote no if we have complaints turned off
+		if (cg_complaintPopUp.integer == 0) {
+			trap_SendClientCommand("vote no");
+		}
+		// end acqu-sdk (issue 2): CHRUKER: b096
 		cgs.complaintEndTime = cg.time + 20000;
 		cgs.complaintClient = atoi( CG_Argv(1) );
 

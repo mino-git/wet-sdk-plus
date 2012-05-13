@@ -205,7 +205,10 @@ ipXPStorage_t* G_FindIpData( ipXPStorageList_t *ipXPStorageList, char *from ) {
 	
 	in = *(unsigned *)m;
 
-	for( i = 0; i < MAX_IPFILTERS; i++ ) {
+	// sta acqu-sdk (issue 2): CHRUKER: b074 - Was using MAX_IPFILTERS which has a limit of 1024 instead of 64
+	for( i = 0; i < MAX_XPSTORAGEITEMS; i++ ) {
+	//for( i = 0; i < MAX_IPFILTERS; i++ ) {
+	// end acqu-sdk (issue 2): CHRUKER: b074
 		if( !ipXPStorageList->ipFilters[ i ].timeadded || level.time - ipXPStorageList->ipFilters[ i ].timeadded > ( 5 * 60000 ) ) {
 			continue;
 		}
@@ -723,7 +726,10 @@ gclient_t *G_GetPlayerByName( char *name ) {
 
 	for (i = 0; i < level.numConnectedClients; i++) {
 		
-		cl = &level.clients[i];
+		// sta acqu-sdk (issue 2): CHRUKER: b097 - Kick command is not able to kick some players by name
+		cl = &level.clients[level.sortedClients[i]];
+		//cl = &level.clients[i];
+		// end acqu-sdk (issue 2): CHRUKER: b097
 		
 		if (!Q_stricmp(cl->pers.netname, name)) {
 			return cl;

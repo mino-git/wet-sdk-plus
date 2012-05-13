@@ -445,10 +445,12 @@ int G_UnMute_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2, 
 		} else if(G_voteDescription(ent, fRefereeCmd, dwVoteIndex)) return(G_INVALID);
 		else if((pid = ClientNumberFromString(ent, arg2)) == -1) return(G_INVALID);
 
-		if(level.clients[pid].sess.referee) {
-			G_refPrintf(ent, "Can't vote to un-mute referees!");
-			return(G_INVALID);
-		}
+		// sta acqu-sdk (issue 2): CHRUKER: b060 - Referees can always be unmuted
+		//if(level.clients[pid].sess.referee) {
+		//	G_refPrintf(ent, "Can't vote to un-mute referees!");
+		//	return(G_INVALID);
+		//}
+		// end acqu-sdk (issue 2): CHRUKER: b060
 
 		if(!level.clients[pid].sess.muted) {
 			G_refPrintf(ent, "Player is not muted!");

@@ -1030,9 +1030,15 @@ void G_RunFlamechunk( gentity_t *ent ) {
 	//		uninitialized
 	VectorCopy( ent->s.pos.trDelta, vel );
 
+	// sta acqu-sdk (issue 2): CHRUKER: b062 - TAT forgot to normalize it :-)
+	speed = VectorNormalize( vel );
+	// end acqu-sdk (issue 2): CHRUKER: b062
+
 	// Adust the current speed of the chunk
 	if ( level.time - ent->timestamp > 50 ) {
-		speed = VectorNormalize( vel );
+		// sta acqu-sdk (issue 2): CHRUKER: b062
+		//speed = VectorNormalize( vel );
+		// end acqu-sdk (issue 2): CHRUKER: b062
 		speed -= (50.f/1000.f) * FLAME_FRICTION_PER_SEC;
 	
 		if ( speed < FLAME_MIN_SPEED )

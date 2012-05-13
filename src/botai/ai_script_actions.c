@@ -332,7 +332,11 @@ qboolean Bot_ScriptAction_Accum( bot_state_t *bs, char *params )
 
 	bufferIndex = atoi(token);
 	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
-		Bot_ScriptError( bs, "accum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last bufferindex, but its actually 7
+		Bot_ScriptError( bs, "accum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+		//Bot_ScriptError( bs, "accum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
+
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -1004,7 +1008,10 @@ qboolean Bot_ScriptAction_GlobalAccum( bot_state_t *bs, char *params )
 
 	bufferIndex = atoi(token);
 	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
-		Bot_ScriptError( bs, "globalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last bufferindex, but its actually 7
+		Bot_ScriptError( bs, "globalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+		//Bot_ScriptError( bs, "globalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -1619,9 +1626,15 @@ qboolean Bot_ScriptAction_PrintAccum( bot_state_t *bs, char *params )
 
 
 	bufferIndex = atoi(token);
-	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
+	// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using MAX_SCRIPT_ACCUM_BUFFERS, which is a different limit
+	if ((bufferIndex < 0) || (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) )
+	//if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
+	// end acqu-sdk (issue 2): CHRUKER: b055
 	{
-		G_Error("Bot_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last bufferindex, but its actually 9
+		G_Error("Bot_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", G_MAX_SCRIPT_ACCUM_BUFFERS - 1);
+		//G_Error("Bot_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 	ent = BotGetEntity( bs->client );
@@ -1662,7 +1675,10 @@ qboolean Bot_ScriptAction_PrintGlobalAccum( gentity_t *ent, char *params )
 	bufferIndex = atoi(token);
 	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
 	{
-		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// sta acqu-sdk (issue 2): Was printing 8 as the last bufferindex, but its actually 7
+		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
+		//G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
+		// end acqu-sdk (issue 2): CHRUKER: b055
 	}
 
 

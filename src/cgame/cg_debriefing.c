@@ -312,7 +312,10 @@ panel_button_t debriefTitleWindow = {
 panel_button_t debriefMissionTitleWindow = {
 	NULL,
 	NULL,
-	{ 10, 30, 193, 240 },
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - Campaign window now spans down to the chat window
+	{ 10, 30, 193, 326 },
+	//{ 10, 30, 193, 240 },
+	// end acqu-sdk (issue 2): CHRUKER: b095
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	NULL,	/* font		*/
 	NULL,	/* keyDown	*/
@@ -372,7 +375,10 @@ panel_button_t debriefMissionAwardsList = {
 panel_button_t debriefMissionStatsWindow = {
 	NULL,
 	"MISSION STATS",
-	{ 10, 280-6, 620, 70+12 },
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - Campaign window now spans down to the chat window
+	{ 213, 280-6, 417, 70+12 },
+	//{ 10, 280-6, 620, 70+12 },
+	// end acqu-sdk (issue 2): CHRUKER: b095
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	NULL,	/* font		*/
 	NULL,	/* keyDown	*/
@@ -384,7 +390,10 @@ panel_button_t debriefMissionStatsWindow = {
 panel_button_t debriefMissionStatsHeaders = {
 	NULL,
 	NULL,
-	{ 16, 298, 608, 16 },
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - Campaign window now spans down to the chat window
+	{ 219, 298, 405, 16 },
+	//{ 16, 298, 608, 16 },
+	// end acqu-sdk (issue 2): CHRUKER: b095
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	NULL,	/* font		*/
 	NULL,	/* keyDown	*/
@@ -396,7 +405,10 @@ panel_button_t debriefMissionStatsHeaders = {
 panel_button_t debriefMissionStatsWinner = {
 	NULL,
 	NULL,
-	{ 16, 314, 608, 16 },
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - Campaign window now spans down to the chat window
+	{ 219, 314, 405, 16 },
+	//{ 16, 314, 608, 16 },
+	// end acqu-sdk (issue 2): CHRUKER: b095
 	{ 0, 0, 0, 0, 0, 0, 0, 0 },
 	NULL,	/* font		*/
 	NULL,	/* keyDown	*/
@@ -408,7 +420,10 @@ panel_button_t debriefMissionStatsWinner = {
 panel_button_t debriefMissionStatsLoser = {
 	NULL,
 	NULL,
-	{ 16, 330, 608, 16 },
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - Campaign window now spans down to the chat window
+	{ 219, 330, 405, 16 },
+	//{ 16, 330, 608, 16 },
+	// end acqu-sdk (issue 2): CHRUKER: b095
 	{ 1, 0, 0, 0, 0, 0, 0, 0 },
 	NULL,	/* font		*/
 	NULL,	/* keyDown	*/
@@ -2498,7 +2513,10 @@ void CG_Debreifing2_Maps_Draw( panel_button_t* button ) {
 				CG_FillRect( button->rect.x + 2, y + 2, button->rect.w - 4, 12, clrBck );
 			}
 
-			CG_Text_Paint_Ext( button->rect.x + 8, y + 11, 0.19f, 0.19f, clrTxtBck, va( "%i. %s", i+1, cgs.campaignData.arenas[i].longname ), 0, 0, 0, &cgs.media.limboFont2 );
+			// sta acqu-sdk (issue 2): CHRUKER: b095 - Removed the map counter
+			CG_Text_Paint_Ext( button->rect.x + 8, y + 11, 0.19f, 0.19f, clrTxtBck, va( "%s", cgs.campaignData.arenas[i].longname ), 0, 0, 0, &cgs.media.limboFont2 );
+			//CG_Text_Paint_Ext( button->rect.x + 8, y + 11, 0.19f, 0.19f, clrTxtBck, va( "%i. %s", i+1, cgs.campaignData.arenas[i].longname ), 0, 0, 0, &cgs.media.limboFont2 );
+			// end acqu-sdk (issue 2): CHRUKER: b095
 			
 			if( i <= cgs.currentCampaignMap ) {
 				str = CG_Debreifing2_WinStringForTeam( CG_Debriefing_FindWinningTeamForPos( i + 1 ) );
@@ -2507,7 +2525,10 @@ void CG_Debreifing2_Maps_Draw( panel_button_t* button ) {
 				CG_Text_Paint_Ext( button->rect.x + button->rect.w - w - 8, y + 11, 0.19f, 0.19f, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
 			}
 
-			y += 14;
+			// sta acqu-sdk (issue 2): CHRUKER: b095 - This makes the list fit better to the new window size
+			y += 13;
+			//y += 14;
+			// end acqu-sdk (issue 2): CHRUKER: b095
 		}
 	} else if( cg_gameType.integer == GT_WOLF_STOPWATCH ) {
 	}
@@ -2826,16 +2847,29 @@ qboolean CG_Debriefing2_Maps_KeyDown( panel_button_t* button, int key ) {
 	return qfalse;
 }
 
+// sta acqu-sdk (issue 2): CHRUKER: b095 - Repositioning mission stats
 int skillPositions[ SK_NUM_SKILLS + 1 ] = {
 	0,
-	70,
-	140,
-	210,
-	280,
-	350,
-	420,
-	490,
+	55,
+	110,
+	150,
+	200,
+	250,
+	290,
+	330,
 };
+
+//int skillPositions[ SK_NUM_SKILLS + 1 ] = {
+//	0,
+//	70,
+//	140,
+//	210,
+//	280,
+//	350,
+//	420,
+//	490,
+//};
+// end acqu-sdk (issue 2): CHRUKER: b095
 
 void CG_Debriefing2TeamSkillHeaders_Draw( panel_button_t* button ) {
 	int i, j;
@@ -2865,9 +2899,15 @@ void CG_Debriefing2TeamSkillHeaders_Draw( panel_button_t* button ) {
 			}
 
 			if( *str ) {
-				w = CG_Text_Width_Ext( str, 0.2f, 0, &cgs.media.limboFont2 );
+				// sta acqu-sdk (issue 2): CHRUKER: b095 - Rescaling and repositioning the headers
+				w = CG_Text_Width_Ext( str, 0.175f, 0, &cgs.media.limboFont2 );
 
-				CG_Text_Paint_Ext( button->rect.x + 100 + skillPositions[ i ] - (w*0.5f), button->rect.y + (j*11), 0.2f, 0.2f, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+				CG_Text_Paint_Ext( button->rect.x + 60 + skillPositions[ i ] - (w*0.5f), button->rect.y + (j*11), 0.2f, 0.2f, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+
+				//w = CG_Text_Width_Ext( str, 0.2f, 0, &cgs.media.limboFont2 );
+
+				//CG_Text_Paint_Ext( button->rect.x + 100 + skillPositions[ i ] - (w*0.5f), button->rect.y + (j*11), 0.2f, 0.2f, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+				// end acqu-sdk (issue 2): CHRUKER: b095
 			}
 		}
 	}
@@ -2890,11 +2930,19 @@ void CG_Debriefing2TeamSkillXP_Draw( panel_button_t* button ) {
 		team = winner == TEAM_AXIS ? TEAM_AXIS : TEAM_ALLIES;
 	}
 
+	// sta acqu-sdk (issue 2): CHRUKER: b095 - New scale to make it fit the new window size
 	if( team == winner ) {
-		scale = 0.3f;
+		scale = 0.225f;
 	} else {
-		scale = 0.2f;
+		scale = 0.175f;
 	}
+
+	//if( team == winner ) {
+	//	scale = 0.3f;
+	//} else {
+	//	scale = 0.2f;
+	//}
+	// end acqu-sdk (issue 2): CHRUKER: b095
 
 	switch( team ) {
 		case TEAM_AXIS:
@@ -2919,7 +2967,10 @@ void CG_Debriefing2TeamSkillXP_Draw( panel_button_t* button ) {
 
 		w = CG_Text_Width_Ext( str, scale, 0, &cgs.media.limboFont2 );
 
-		CG_Text_Paint_Ext( button->rect.x + 100 + skillPositions[ i ] - (w*0.5f), button->rect.y + 11, scale, scale, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+		// sta acqu-sdk (issue 2): CHRUKER: b095 - Repositioning where the XP stats start
+		CG_Text_Paint_Ext( button->rect.x + 60 + skillPositions[ i ] - (w*0.5f), button->rect.y + 11, scale, scale, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+		//CG_Text_Paint_Ext( button->rect.x + 100 + skillPositions[ i ] - (w*0.5f), button->rect.y + 11, scale, scale, clrTxtBck, str, 0, 0, 0, &cgs.media.limboFont2 );
+		// end acqu-sdk (issue 2): CHRUKER: b095
 	}
 }
 

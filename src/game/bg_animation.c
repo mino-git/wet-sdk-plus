@@ -488,7 +488,11 @@ int BG_IndexForString( char *token, animStringItem_t *strings, qboolean allowFai
 BG_CopyStringIntoBuffer
 ===============
 */
-char *BG_CopyStringIntoBuffer( char *string, char *buffer, int bufSize, int *offset ) {
+// sta acqu-sdk (issue 2): CHRUKER: b069 - Cleaned up a few compiler warnings
+char *BG_CopyStringIntoBuffer( char *string, char *buffer, unsigned int bufSize, unsigned int *offset ) {
+//char *BG_CopyStringIntoBuffer( char *string, char *buffer, int bufSize, int *offset ) {
+// end acqu-sdk (issue 2): CHRUKER: b069
+
 	char *pch;
 
 	// check for overloaded buffer

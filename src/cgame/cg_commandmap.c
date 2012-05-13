@@ -464,8 +464,13 @@ void CG_DrawMapEntity( mapEntityData_t *mEnt, float x, float y, float w, float h
 		}
 
 		if( scissor ) {
-			icon_pos[0] = mEnt->automapTransformed[0] - scissor->tl[0] + x - icon_size;
-			icon_pos[1] = mEnt->automapTransformed[1] - scissor->tl[1] + y - icon_size;
+			// sta acqu-sdk (issue 2): CHRUKER: b085 - Compass icons were offset when zooming in or out			
+			icon_pos[0] = mEnt->automapTransformed[0] - scissor->tl[0] + x - (icon_size * (scissor->zoomFactor / 5.159));
+			icon_pos[1] = mEnt->automapTransformed[1] - scissor->tl[1] + y - (icon_size * (scissor->zoomFactor / 5.159));
+
+			//icon_pos[0] = mEnt->automapTransformed[0] - scissor->tl[0] + x - icon_size;
+			//icon_pos[1] = mEnt->automapTransformed[1] - scissor->tl[1] + y - icon_size;
+			// end acqu-sdk (issue 2): CHRUKER: b085
 		} else { 
 			icon_pos[0] = x + mEnt->transformed[0] - icon_size;
 			icon_pos[1] = y + mEnt->transformed[1] - icon_size;

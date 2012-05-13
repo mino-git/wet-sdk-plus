@@ -419,7 +419,10 @@ void Team_DroppedFlagThink(gentity_t *ent) {
 			G_Script_ScriptEvent( level.gameManager, "trigger", "axis_object_returned" );
 		}
 
-		trap_SendServerCommand(-1, "cp \"Axis have returned the objective!\" 2");
+		// sta acqu-sdk (issue 2): CHRUKER: b058 - This is all handled in the map script.
+		//trap_SendServerCommand(-1, "cp \"Axis have returned the objective!\" 2");
+		// end acqu-sdk (issue 2): CHRUKER: b058
+
 	} else if( ent->item->giTag == PW_BLUEFLAG ) {
 		G_Script_ScriptEvent( &g_entities[ent->s.otherEntityNum], "trigger", "returned" );
 

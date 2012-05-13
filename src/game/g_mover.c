@@ -5239,7 +5239,10 @@ void G_LinkDebris( void ) {
 
 		target = G_FindByTargetname( NULL, debris->target );
 		if(!target) {
-			G_Error( "ERROR: func_debris with no target" );
+			// sta acqu-sdk (issue 2): CHRUKER: b083 - Improving script error messages
+			G_Error( "ERROR: func_debris with no target (%s)", debris->target );
+			//G_Error( "ERROR: func_debris with no target" );
+			// end acqu-sdk (issue 2): CHRUKER: b083
 		}
 
 		speed = debris->velocity[0];
