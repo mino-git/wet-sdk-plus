@@ -84,8 +84,10 @@ KNIFE/GAUNTLET (NOTE: gauntlet is now the Zombie melee)
 
 #define KNIFE_DIST 48
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 // Let's use the same angle between function we've used before
-extern float sAngleBetweenVectors(vec3_t a, vec3_t b);
+//extern float sAngleBetweenVectors(vec3_t a, vec3_t b);
+// end acqu-sdk (issue 11)
 
 /*
 ==============
@@ -933,14 +935,16 @@ static qboolean TryConstructing( gentity_t *ent ) {
 				return( qtrue );	// likely will come back soon - so override other plier bits anyway
 
 			// Gordon: are we scripted only?
-			if( !(ent->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
-				if ( !(ent->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
-					// RF, if we are blocking AAS areas when built, then clear AAS blocking so we can set it again after the stage has been increased
-					if( constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD ) {
-						G_SetAASBlockingEntity( ent, AAS_AREA_ENABLED );
-					}
-				}
-			}
+			// sta acqu-sdk (issue 11): remove deprecated bot code
+			//if( !(ent->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
+			//	if ( !(ent->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
+			//		// RF, if we are blocking AAS areas when built, then clear AAS blocking so we can set it again after the stage has been increased
+			//		if( constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD ) {
+			//			G_SetAASBlockingEntity( ent, AAS_AREA_ENABLED );
+			//		}
+			//	}
+			//}
+			// end acqu-sdk (issue 11)
 
 			// swap brushmodels if staged
 			if( constructible->count2 ) {
@@ -1208,23 +1212,25 @@ static qboolean TryConstructing( gentity_t *ent ) {
 		}
 
 		// Gordon: are we scripted only?
-		if( !(ent->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
-			if ( !(ent->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
-				// RF, a stage has been completed, either enable or disable AAS areas appropriately
-				if( !(constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD) ) {
-					// builing creates AAS paths
-					// Gordon: HACK from ryan
-	//				if( !constructible->count2 || ( constructible->grenadeFired == constructible->count2 ) )
-					{
-						// completely built, enable paths
-						G_SetAASBlockingEntity( constructible, AAS_AREA_ENABLED );
-					}
-				} else {
-					// builing blocks AAS paths
-					G_SetAASBlockingEntity( constructible, AAS_AREA_DISABLED );
-				}
-			}
-		}
+		// sta acqu-sdk (issue 11): remove deprecated bot code
+	//	if( !(ent->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
+	//		if ( !(ent->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
+	//			// RF, a stage has been completed, either enable or disable AAS areas appropriately
+	//			if( !(constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD) ) {
+	//				// builing creates AAS paths
+	//				// Gordon: HACK from ryan
+	////				if( !constructible->count2 || ( constructible->grenadeFired == constructible->count2 ) )
+	//				{
+	//					// completely built, enable paths
+	//					G_SetAASBlockingEntity( constructible, AAS_AREA_ENABLED );
+	//				}
+	//			} else {
+	//				// builing blocks AAS paths
+	//				G_SetAASBlockingEntity( constructible, AAS_AREA_DISABLED );
+	//			}
+	//		}
+	//	}
+		// end acqu-sdk (issue 11)
 
 		return( qtrue );	// building
 	}
@@ -1398,21 +1404,23 @@ void AutoBuildConstruction( gentity_t* constructible ) {
 	}
 
 	// Gordon: are we scripted only?
-	if( !(constructible->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
-		if ( !(constructible->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
-			// RF, a stage has been completed, either enable or disable AAS areas appropriately
-			if( !(constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD) ) {
-				// builing creates AAS paths
-				if( !constructible->count2 || ( constructible->grenadeFired == constructible->count2 ) ) {
-					// completely built, enable paths
-					G_SetAASBlockingEntity( constructible, AAS_AREA_ENABLED );
-				}
-			} else {
-				// builing blocks AAS paths
-				G_SetAASBlockingEntity( constructible, AAS_AREA_DISABLED );
-			}
-		}
-	}
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//if( !(constructible->spawnflags & CONSTRUCTIBLE_AAS_SCRIPTED) ) {
+	//	if ( !(constructible->spawnflags & CONSTRUCTIBLE_NO_AAS_BLOCKING) ) {
+	//		// RF, a stage has been completed, either enable or disable AAS areas appropriately
+	//		if( !(constructible->spawnflags & CONSTRUCTIBLE_BLOCK_PATHS_WHEN_BUILD) ) {
+	//			// builing creates AAS paths
+	//			if( !constructible->count2 || ( constructible->grenadeFired == constructible->count2 ) ) {
+	//				// completely built, enable paths
+	//				G_SetAASBlockingEntity( constructible, AAS_AREA_ENABLED );
+	//			}
+	//		} else {
+	//			// builing blocks AAS paths
+	//			G_SetAASBlockingEntity( constructible, AAS_AREA_DISABLED );
+	//		}
+	//	}
+	//}
+	// end acqu-sdk (issue 11)
 }
 
 qboolean G_LandmineTriggered( gentity_t* ent ) {

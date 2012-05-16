@@ -1311,10 +1311,12 @@ qboolean	ConsoleCommand( void ) {
 		return qtrue;
 	}
 
-	if (Q_stricmp (cmd, "spawnbot") == 0) {
-		Svcmd_SpawnBot();
-		return qtrue;
-	}
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//if (Q_stricmp (cmd, "spawnbot") == 0) {
+	//	//Svcmd_SpawnBot();
+	//	return qtrue;
+	//}
+	// end acqu-sdk (issue 11)
 
 
 // START - Mad Doc - TDF

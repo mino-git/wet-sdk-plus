@@ -141,69 +141,72 @@ g_serverEntity_t *FindServerEntity( g_serverEntity_t *from, int fieldofs, char *
 	return NULL;
 }
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 // TAT 11/18/2002
 //		For the (possibly temporary) system of loading a separate file of these server entities
-extern void SP_SeekCover_Setup(g_serverEntity_t *ent);
-extern void SP_AIMarker_Setup(g_serverEntity_t *ent);
+//extern void SP_SeekCover_Setup(g_serverEntity_t *ent);
+//extern void SP_AIMarker_Setup(g_serverEntity_t *ent);
 
 // We have to hardcode the setup functions for these
-void InitServerEntitySetupFunc(g_serverEntity_t *ent)
-{
-	if (strcmp(ent->classname, "ai_marker") == 0)
-	{
-		ent->setup = SP_AIMarker_Setup;
-	}
-	else if (strcmp(ent->classname, "bot_seek_cover_spot") == 0)
-	{
-		// set the team to allies
-		ent->team = TEAM_ALLIES;
-		// set the setup func
-		ent->setup = SP_SeekCover_Setup;
-	}
-	else if (strcmp(ent->classname, "bot_axis_seek_cover_spot") == 0)
-	{
-		// set the team to axis
-		ent->team = TEAM_AXIS;
-		// set the setup func
-		ent->setup = SP_SeekCover_Setup;
-	}
-}
+//void InitServerEntitySetupFunc(g_serverEntity_t *ent)
+//{
+//	if (strcmp(ent->classname, "ai_marker") == 0)
+//	{
+//		ent->setup = SP_AIMarker_Setup;
+//	}
+//	else if (strcmp(ent->classname, "bot_seek_cover_spot") == 0)
+//	{
+//		// set the team to allies
+//		ent->team = TEAM_ALLIES;
+//		// set the setup func
+//		ent->setup = SP_SeekCover_Setup;
+//	}
+//	else if (strcmp(ent->classname, "bot_axis_seek_cover_spot") == 0)
+//	{
+//		// set the team to axis
+//		ent->team = TEAM_AXIS;
+//		// set the setup func
+//		ent->setup = SP_SeekCover_Setup;
+//	}
+//}
+// end acqu-sdk (issue 11): remove deprecated bot code
 
-
+// sta acqu-sdk (issue 18): remove unused code
 // Create a server entity from some basic data
-void CreateServerEntityFromData(char* classname, char* targetname, char* target, vec3_t origin, int spawnflags, vec3_t angle)
-{
-	// get the entity out of our pool
-	g_serverEntity_t *newEnt = GetFreeServerEntity();
-
-	// if we managed to get one, copy over data
-	if (newEnt)
-	{
-		// G_NewString crashes if you pass in NULL, so let's check...
-		if (classname)
-			newEnt->classname = G_NewString(classname);
-
-		if (targetname)
-			newEnt->name = G_NewString(targetname);
-
-		if (target)
-			newEnt->target = G_NewString(target);
-
-		newEnt->spawnflags = spawnflags;
-		//newEnt->team = ent->aiTeam;
-		VectorCopy(origin, newEnt->origin);
-		VectorCopy(angle, newEnt->angles);
-		// DON'T set the number - that should have been set when it was spawned
-
-		// set the areanum to -1, which means we haven't calculated it yet
-		//		these don't move, so we should only have to calc it once, the first
-		//		time someone asks for it
-		newEnt->areaNum = -1;
-
-		// and do class specific stuff
-		InitServerEntitySetupFunc(newEnt);
-	}
-}
+//void CreateServerEntityFromData(char* classname, char* targetname, char* target, vec3_t origin, int spawnflags, vec3_t angle)
+//{
+//	// get the entity out of our pool
+//	g_serverEntity_t *newEnt = GetFreeServerEntity();
+//
+//	// if we managed to get one, copy over data
+//	if (newEnt)
+//	{
+//		// G_NewString crashes if you pass in NULL, so let's check...
+//		if (classname)
+//			newEnt->classname = G_NewString(classname);
+//
+//		if (targetname)
+//			newEnt->name = G_NewString(targetname);
+//
+//		if (target)
+//			newEnt->target = G_NewString(target);
+//
+//		newEnt->spawnflags = spawnflags;
+//		//newEnt->team = ent->aiTeam;
+//		VectorCopy(origin, newEnt->origin);
+//		VectorCopy(angle, newEnt->angles);
+//		// DON'T set the number - that should have been set when it was spawned
+//
+//		// set the areanum to -1, which means we haven't calculated it yet
+//		//		these don't move, so we should only have to calc it once, the first
+//		//		time someone asks for it
+//		newEnt->areaNum = -1;
+//
+//		// and do class specific stuff
+//		InitServerEntitySetupFunc(newEnt);
+//	}
+//}
+// end acqu-sdk (issue 18)
 
 // TAT - create the server entities for the current map
 void CreateMapServerEntities()

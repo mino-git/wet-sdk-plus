@@ -1048,8 +1048,10 @@ void G_SetEntState( gentity_t *ent, entState_t state ) {
 										}
 									}
 
+									// sta acqu-sdk (issue 11): remove deprecated bot code
 									// if this is an mg42, then we should try and calculate mg42 spots again
-									BotCalculateMg42Spots();
+									//BotCalculateMg42Spots();
+									// end acqu-sdk (issue 11)
 
 									break;
 	case STATE_UNDERCONSTRUCTION:	ent->entstate = STATE_UNDERCONSTRUCTION;

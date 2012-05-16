@@ -1,7 +1,9 @@
 #include "g_local.h"
 
 // Include the "External"/"Public" components of AI_Team
-#include "../botai/ai_teamX.h"
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//#include "../botai/ai_teamX.h"
+// end acqu-sdk (issue 11)
 
 level_locals_t	level;
 
@@ -499,24 +501,16 @@ int vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int a
 		return 0;
 	case GAME_CONSOLE_COMMAND:
  		return ConsoleCommand();
+
+	// sta acqu-sdk (issue 11): remove deprecated bot code
 	case BOTAI_START_FRAME:
-#ifdef NO_BOT_SUPPORT
 		return 0;
-#else
-		return BotAIStartFrame( arg0 );
-#endif // NO_BOT_SUPPORT
 	case BOT_VISIBLEFROMPOS:
-#ifdef NO_BOT_SUPPORT
-		return qfalse;
-#else
-		return BotVisibleFromPos( (float *)arg0, arg1, (float *)arg2, arg3, arg4 );
-#endif // NO_BOT_SUPPORT
+		return 0;
 	case BOT_CHECKATTACKATPOS:
-#ifdef NO_BOT_SUPPORT
-		return qfalse;
-#else
-		return BotCheckAttackAtPos( arg0, arg1, (float *)arg2, arg3, arg4 );
-#endif // NO_BOT_SUPPORT
+		return 0;
+	// end acqu-sdk (issue 11)
+
 	case GAME_SNAPSHOT_CALLBACK:
 		return G_SnapshotCallback( arg0, arg1 );
 	case GAME_MESSAGERECEIVED:
@@ -1882,13 +1876,15 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	trap_PbStat ( -1 , "INIT" , "GAME" ) ;
 
-#ifndef NO_BOT_SUPPORT
-	if ( bot_enable.integer ) {
-		BotAISetup( restart );
-//		BotAILoadMap( restart );
-		G_InitBots( restart );
-	}
-#endif // NO_BOT_SUPPORT
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//#ifndef NO_BOT_SUPPORT
+//	if ( bot_enable.integer ) {
+//		BotAISetup( restart );
+////		BotAILoadMap( restart );		
+//		G_InitBots( restart );	
+//	}
+//#endif // NO_BOT_SUPPORT
+// end acqu-sdk (issue 11)
 
 	G_RemapTeamShaders();
 
@@ -1946,11 +1942,13 @@ void G_ShutdownGame( int restart ) {
 	// write all the client session data so we can get it back
 	G_WriteSessionData( restart );
 
-#ifndef NO_BOT_SUPPORT
-	if ( bot_enable.integer ) {
-		BotAIShutdown( restart );
-	}
-#endif // NO_BOT_SUPPORT
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//#ifndef NO_BOT_SUPPORT
+//	if ( bot_enable.integer ) {
+//		BotAIShutdown( restart );
+//	}
+//#endif // NO_BOT_SUPPORT
+// end acqu-sdk (issue 11)
 }
 
 
@@ -2312,8 +2310,10 @@ void MoveClientToIntermission( gentity_t *ent ) {
 	ent->s.events[0] = ent->s.events[1] = ent->s.events[2] = ent->s.events[3] = 0;		// DHM - Nerve
 	ent->r.contents = 0;
 
+	// sta acqu-sdk (issue 11): remove deprecated bot code
 	// todo: call bot routine so they can process the transition to intermission (send voice chats, etc)
-	BotMoveToIntermission( ent->s.number );
+	//BotMoveToIntermission( ent->s.number );
+	// end acqu-sdk (issue 11)
 }
 
 /*

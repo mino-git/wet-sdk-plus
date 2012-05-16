@@ -17,7 +17,9 @@ should proceed to the next item on the list.
 */
 
 void script_linkentity(gentity_t *ent);
-int G_RemoveNamedBot( char *name );
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//int G_RemoveNamedBot( char *name );
+// end acqu-sdk (issue 11)
 
 
 
@@ -1381,9 +1383,12 @@ qboolean G_ScriptAction_Trigger( gentity_t *ent, char *params )
 				if ((trent == ent) && (oldId != trent->scriptStatus.scriptId)) {
 					terminate = qtrue;
 				}
-			} else {
-				Bot_ScriptEvent( trent->s.number, "trigger", trigger );
 			}
+			// sta acqu-sdk (issue 11): remove deprecated bot code
+			//else {
+			//	Bot_ScriptEvent( trent->s.number, "trigger", trigger );
+			//}
+			// end acqu-sdk (issue 11)
 		}
 		//
 		if (terminate) return qfalse;
@@ -1396,9 +1401,11 @@ qboolean G_ScriptAction_Trigger( gentity_t *ent, char *params )
 		}
 		return qtrue;	// always true, as players aren't always there
 	} else if (!Q_stricmp( name, "activator" )) {
-		if(ent->activator && ent->activator->client && (ent->activator->r.svFlags & SVF_BOT) && ent->inuse && ent->activator->client->ps.stats[STAT_HEALTH] > 0) {
-			Bot_ScriptEvent( ent->activator-g_entities, "trigger", trigger );
-		}
+		// sta acqu-sdk (issue 11): remove deprecated bot code
+		//if(ent->activator && ent->activator->client && (ent->activator->r.svFlags & SVF_BOT) && ent->inuse && ent->activator->client->ps.stats[STAT_HEALTH] > 0) {
+		//	Bot_ScriptEvent( ent->activator-g_entities, "trigger", trigger );
+		//}
+		// end acqu-sdk (issue 11)
 		return qtrue;	// always true, as players aren't always there
 	} else {
 		terminate = qfalse;
@@ -1414,9 +1421,12 @@ qboolean G_ScriptAction_Trigger( gentity_t *ent, char *params )
 				if ((trent == ent) && (oldId != trent->scriptStatus.scriptId)) {
 					terminate = qtrue;
 				}
-			} else {
-				Bot_ScriptEvent( trent->s.number, "trigger", trigger );
 			}
+			// sta acqu-sdk (issue 11): remove deprecated bot code
+			//else {
+			//	Bot_ScriptEvent( trent->s.number, "trigger", trigger );
+			//}
+			// end acqu-sdk (issue 11)
 		}
 		//
 		if (terminate) return qfalse;
@@ -1945,6 +1955,8 @@ G_ScriptAction_Accum
 =================
 */
 
+
+
 int BotGetTargetDynamite( int *list, int listSize, gentity_t* target );
 
 qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
@@ -2107,9 +2119,14 @@ qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
 		target = G_FindByTargetname( NULL, token );
 		if( !target ) {
 			G_Error( "Scripting: accum %s could not find target\n", lastToken );
-		}
+		}		
 
-		ent->scriptAccumBuffer[bufferIndex] = BotGetTargetDynamite( NULL, 0, target );
+		// sta acqu-sdk (issue 11): vogel-strauﬂ algorithm		
+		ent->scriptAccumBuffer[bufferIndex] = 1;
+		G_Printf("Vogel-Strauﬂ can't hide anymore. Need to do something. Report this message to tha baus.\n");
+		//ent->scriptAccumBuffer[bufferIndex] = BotGetTargetDynamite( NULL, 0, target );
+		// end acqu-sdk (issue 11): vogel-strauﬂ algorithm
+		
 	} else {
 		G_Error( "Scripting: accum %s: unknown command\n", params );
 	}
@@ -3540,6 +3557,7 @@ qboolean G_ScriptAction_PrintGlobalAccum( gentity_t *ent, char *params )
 	return qtrue;
 }
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 // Mad Doc - TDF
 /*
 ===================
@@ -3550,25 +3568,24 @@ G_ScriptAction_RemoveBot
   removes the bot called 'botname'
 ===================
 */
-qboolean G_ScriptAction_RemoveBot(gentity_t *ent, char *params )
-{
-	char *token, *pString;
-
-	if (!params || !params[0]) {
-		G_Error( "G_ScriptAction_RemoveBot: syntax: RemoveBot <botname>\n" );
-	}
-
-	pString = params;
-
-	token = COM_ParseExt( &pString, qfalse );
-	if (!token[0]) {
-		G_Error( "G_ScriptAction_RemoveBot: syntax: RemoveBot <botname>\n" );
-	}
-
-	G_RemoveNamedBot(token);
-	return qtrue;
-}
-
+//qboolean G_ScriptAction_RemoveBot(gentity_t *ent, char *params )
+//{
+//	char *token, *pString;
+//
+//	if (!params || !params[0]) {
+//		G_Error( "G_ScriptAction_RemoveBot: syntax: RemoveBot <botname>\n" );
+//	}
+//
+//	pString = params;
+//
+//	token = COM_ParseExt( &pString, qfalse );
+//	if (!token[0]) {
+//		G_Error( "G_ScriptAction_RemoveBot: syntax: RemoveBot <botname>\n" );
+//	}
+//
+//	G_RemoveNamedBot(token);
+//	return qtrue;
+//}
 
 // Mad Doc - TDF
 /*
@@ -3580,36 +3597,37 @@ G_ScriptAction_BotDebugging
   toggles bot debugging
 ===================
 */
-qboolean G_ScriptAction_BotDebugging(gentity_t *ent, char *params )
-{
-	char *token, *pString;
-
-	if (!params || !params[0]) {
-		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
-	}
-
-	pString = params;
-
-	token = COM_ParseExt( &pString, qfalse );
-	if (!token[0]) {
-		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
-	}
-
-	if (!Q_stricmp(token, "ON"))
-	{
-		trap_Cvar_Set("bot_debug", "1");
-	}
-	else if (!Q_stricmp(token, "OFF"))
-	{
-		trap_Cvar_Set("bot_debug", "0");
-	}
-	else
-	{
-		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
-	}
-
-	return qtrue;
-}
+//qboolean G_ScriptAction_BotDebugging(gentity_t *ent, char *params )
+//{
+//	char *token, *pString;
+//
+//	if (!params || !params[0]) {
+//		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
+//	}
+//
+//	pString = params;
+//
+//	token = COM_ParseExt( &pString, qfalse );
+//	if (!token[0]) {
+//		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
+//	}
+//
+//	if (!Q_stricmp(token, "ON"))
+//	{
+//		trap_Cvar_Set("bot_debug", "1");
+//	}
+//	else if (!Q_stricmp(token, "OFF"))
+//	{
+//		trap_Cvar_Set("bot_debug", "0");
+//	}
+//	else
+//	{
+//		G_Error( "G_ScriptAction_BotDebugging: syntax: RemoveBot <ON/OFF>\n" );
+//	}
+//
+//	return qtrue;
+//}
+// end acqu-sdk (issue 11)
 
 qboolean G_IsValidBotStateGoal( gentity_t* ent ) {
 	switch( ent->s.eType ) {
@@ -3740,11 +3758,15 @@ qboolean G_ScriptAction_SetAASState( gentity_t *ent, char *params ) {
 	hash = BG_StringHashValue( targetname );
 	while ((target = G_FindByTargetnameFast( target, targetname, hash ))) {
 		if( target->r.linked ) {
-			G_SetAASBlockingEntity( target, flags );
+			// sta acqu-sdk (issue 11): remove deprecated bot code
+			//G_SetAASBlockingEntity( target, flags );
+			// end acqu-sdk (issue 11)
 		} else {
 			trap_LinkEntity( target );
 
-			G_SetAASBlockingEntity( target, flags );
+			// sta acqu-sdk (issue 11): remove deprecated bot code
+			//G_SetAASBlockingEntity( target, flags );
+			// end acqu-sdk (issue 11)
 
 			trap_UnlinkEntity( target );
 		}
@@ -4033,17 +4055,20 @@ qboolean G_ScriptAction_ConstructibleDuration( gentity_t *ent, char *params )
 	return qtrue;
 }
 
+
+// sta acqu-sdk (issue 11): remove deprecated bot code
 /*
 ===================
 G_ScriptAction_SpawnBot
 ===================
 */
-qboolean G_ScriptAction_SpawnBot( gentity_t *ent, char *params )
-{
-	//trap_SendConsoleCommand( EXEC_APPEND, va("spawnbot %s\n", params) );
-	G_SpawnBot( params );
-	return qtrue;
-}
+//qboolean G_ScriptAction_SpawnBot( gentity_t *ent, char *params )
+//{
+//	//trap_SendConsoleCommand( EXEC_APPEND, va("spawnbot %s\n", params) );
+//	//G_SpawnBot( params );
+//	return qtrue;
+//}
+// end acqu-sdk (issue 11)
 
 /*
 ===================

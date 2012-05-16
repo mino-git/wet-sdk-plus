@@ -2614,3 +2614,429 @@ void G_TempTraceIgnorePlayersAndBodies( void ) {
 		G_TempTraceIgnoreEntity( level.bodyQue[ i ] );
 	}
 }
+
+// ======================================================================
+// sta acqu-sdk (issue 11): these are leftovers from the removed bot code
+// ======================================================================
+
+qboolean G_ConstructionIsDestroyable( gentity_t* ent ) {
+	if(!G_ConstructionIsPartlyBuilt( ent )) {
+		return qfalse;
+	}
+
+	if( ent->s.angles2[0] ) {
+		return qfalse;
+	}
+
+	return qtrue;
+}
+
+// Gordon: adding some support functions
+// returns qtrue if a construction is under way on this ent, even before it hits any stages
+qboolean G_ConstructionBegun( gentity_t* ent ) {
+	if( G_ConstructionIsPartlyBuilt( ent ) ) {
+		return qtrue;
+	}
+	
+	if( ent->s.angles2[0] ) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+
+// returns qtrue if all stage are built
+qboolean G_ConstructionIsFullyBuilt( gentity_t* ent ) {
+	if( ent->s.angles2[1] != 1 ) {
+		return qfalse;
+	}
+	return qtrue;
+}
+
+// returns qtrue if 1 stage or more is built
+qboolean G_ConstructionIsPartlyBuilt( gentity_t* ent ) {
+	if( G_ConstructionIsFullyBuilt( ent ) ) {
+		return qtrue;
+	}
+
+	if( ent->count2 ) {
+		if( !ent->grenadeFired ) {
+			return qfalse;
+		} else {
+			return qtrue;
+		}
+	}
+
+	return qfalse;
+}
+
+// returns the constructible for this team that is attached to this toi
+gentity_t* G_ConstructionForTeam( gentity_t* toi, team_t team ) {
+	gentity_t* targ = toi->target_ent;
+	if(!targ || targ->s.eType != ET_CONSTRUCTIBLE) {
+		return NULL;
+	}
+
+	if( targ->spawnflags & 4 ) {
+		if( team == TEAM_ALLIES ) {
+			return targ->chain;
+		}
+	} else if( targ->spawnflags & 8 ) {
+		if( team == TEAM_AXIS ) {
+			return targ->chain;
+		}
+	}
+
+	return targ;
+}
+
+gentity_t* G_IsConstructible( team_t team, gentity_t* toi ) {
+	gentity_t* ent;
+
+	if( !toi || toi->s.eType != ET_OID_TRIGGER ) { 
+		return NULL;
+	}
+
+	if( !(ent = G_ConstructionForTeam( toi, team )) ) {
+		return NULL;
+	}
+
+	if( G_ConstructionIsFullyBuilt( ent ) ) {
+		return NULL;
+	}
+
+	if( ent->chain && G_ConstructionBegun( ent->chain ) ) {
+		return NULL;
+	}
+
+	return ent;
+}
+
+/*
+==================
+stristr
+==================
+*/
+char *stristr(char *str, char *charset) {
+	int i;
+
+	while(*str) {
+		for (i = 0; charset[i] && str[i]; i++) {
+			if (toupper(charset[i]) != toupper(str[i])) break;
+		}
+		if (!charset[i]) return str;
+		str++;
+	}
+	return NULL;
+}
+
+/*
+==================
+ClientName
+==================
+*/
+char *ClientName(int client, char *name, int size) {
+	char buf[MAX_INFO_STRING];
+
+	if (client < 0 || client >= MAX_CLIENTS) {
+		G_Printf("ClientName: client out of range\n");
+		return "[client out of range]";
+	}
+	trap_GetConfigstring(CS_PLAYERS+client, buf, sizeof(buf));
+	strncpy(name, Info_ValueForKey(buf, "n"), size-1);
+	name[size-1] = '\0';
+	Q_CleanStr( name );
+	return name;
+}
+
+/*
+==================
+FindClientByName
+==================
+*/
+int FindClientByName(char *name) {
+	int i, j;
+	char buf[MAX_INFO_STRING];
+
+	for(j = 0; j < level.numConnectedClients; j++) {
+		i = level.sortedClients[j];
+		ClientName(i, buf, sizeof(buf));
+		if (!Q_stricmp(buf, name)) {
+			return i;
+		}
+	}
+
+	for(j = 0; j < level.numConnectedClients; j++) {
+		i = level.sortedClients[j];
+		ClientName(i, buf, sizeof(buf));
+		if( stristr(buf, name) ) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+/*
+==============
+AngleDifference
+==============
+*/
+float AngleDifference(float ang1, float ang2) {
+	float diff;
+
+	diff = ang1 - ang2;
+	if (ang1 > ang2) {
+		if (diff > 180.0) diff -= 360.0;
+	}
+	else {
+		if (diff < -180.0) diff += 360.0;
+	}
+	return diff;
+}
+
+// end acqu-sdk (issue 11)
+
+// ======================================================================
+// sta acqu-sdk (issue 11): these are leftovers from the removed bot code
+// but ended up in "trash" during clean up. They will stay a bit, just in
+// case something stupid happens. Later these will get removed.
+// ======================================================================
+
+//// acqu-sdk: ugly, needs to be removed
+//gentity_t *botStaticEntityList[16];
+//char *botStaticEntityStrings[16] = {
+//	"team_WOLF_checkpoint",
+//	"trigger_flagonly",
+//	"misc_mg42",
+//	"trigger_objective_info",
+//	"team_CTF_redflag",
+//	"team_CTF_blueflag",
+//	"func_explosive",
+//	"func_door",
+//	"func_door_rotating",
+//	"func_constructible",
+//	"trigger_multiple",
+//	"trigger_flagonly_multiple",
+//	"bot_landmine_area",
+//	"bot_attractor",
+//	"bot_sniper_spot",
+//	"bot_landminespot_spot",
+//};
+//
+///*
+//===============
+//BotBuildStaticEntityCache
+//===============
+//*/
+//void BotBuildStaticEntityCache(void) {
+//	int i;
+//	gentity_t *trav, *p;
+//	//
+//	memset(botStaticEntityList, 0, sizeof(botStaticEntityList) );
+//	//
+//	// acqu-sdk: ugly, NUM_BOTSTATICENTITY = 16 currently, ... hardcoded
+//	for(i = 0; i < 16; i++) {
+//		trav = NULL;
+//		while ((trav = G_Find( trav, FOFS(classname), botStaticEntityStrings[i] ))) {
+//			trav->botNextStaticEntity = NULL;
+//			p = botStaticEntityList[i];
+//			if (!p) {
+//				botStaticEntityList[i] = trav;
+//			} else {	// add trav to the end of the list
+//				while (p->botNextStaticEntity) p = p->botNextStaticEntity;
+//				p->botNextStaticEntity = trav;
+//			}
+//		}
+//	}
+//	//
+//	level.initStaticEnts = qtrue;
+//}
+//
+///*
+//================
+//BotFindNextStaticEntity
+//================
+//*/
+//gentity_t* BotFindNextStaticEntity( gentity_t *start, int entityEnum ) {
+//	gentity_t *trav;
+//
+//	// Gordon: give stuff time to spawn, just in case
+//	if(level.time - level.startTime < FRAMETIME*5) {
+//		return NULL;
+//	}
+//
+//	if(!level.initStaticEnts) {
+//		BotBuildStaticEntityCache();
+//	}
+//
+//	trav = botStaticEntityList[entityEnum];
+//	while (trav && start && trav->s.number <= start->s.number) {
+//		trav = trav->botNextStaticEntity;
+//	}
+//
+//	return trav;
+//}
+//
+//gentity_t* G_FindDynamiteTargetForTeam( gentity_t* trav, team_t team ) {
+//	gentity_t* targ;
+//	while ((trav = BotFindNextStaticEntity( trav, 3 ))) {
+//		if(!trav->r.linked) {
+//			continue;
+//		}
+//
+//		if ((targ = trav->target_ent)) {
+//			if( targ->s.eType == ET_EXPLOSIVE ) {
+//				if(!(targ->spawnflags & 64)) {	// DY-NO-MITE
+//					continue;
+//				}
+//
+//				if(!targ->parent) {
+//					continue;
+//				}
+//
+//				if(targ->aiInactive & (1 << team)) {
+//					continue;
+//				}
+//
+//				// Gordon: dont wanna dynamite our own things
+//				if((targ->parent->spawnflags & AXIS_OBJECTIVE) && (team == TEAM_AXIS)) {
+//					continue;
+//				} else if((targ->parent->spawnflags & ALLIED_OBJECTIVE) && (team == TEAM_ALLIES)) {
+//					continue;
+//				}
+//
+//				return targ;
+//			} else if( targ->s.eType == ET_CONSTRUCTIBLE ) {
+//				targ = G_ConstructionForTeam( trav, team == TEAM_AXIS ? TEAM_ALLIES : TEAM_AXIS ); 
+//				// no constructible for the other team attached to this
+//				if(!targ) {
+//					continue;
+//				}
+//
+//				// dynamite only
+//				if( !(targ->spawnflags & 32) ) {
+//					continue;
+//				}
+//
+//				// if it isn't built yet, there's nothing to blow up
+//				if( !G_ConstructionIsDestroyable( targ ) ) {
+//					continue;
+//				}
+//
+//				// not active from the script
+//				if( targ->aiInactive & (1 << team) ) {
+//					continue;
+//				}
+//
+//				return targ;
+//			}
+//		}
+//	}
+//
+//	return NULL;
+//}
+//
+///*
+//==================
+//BotGetTargetDynamite
+//==================
+//*/
+//gentity_t* G_FindDynamite( gentity_t* start ) {
+//	return G_FindMissile( start, WP_DYNAMITE );
+//}
+//
+//int BotGetTargetDynamite( int *list, int listSize, gentity_t* target ) {
+//	gentity_t *dyn, *trav;
+//	vec3_t vec;
+//	int count = 0;
+//	team_t team;
+//
+//	for( dyn = G_FindDynamite( NULL ); dyn; dyn = G_FindDynamite( dyn ) ) {
+//		// RF, if the dynamite is unarmed, ignore
+//		if ( dyn->s.teamNum >= 4 ) {
+//			continue;
+//		}
+//		for( team = TEAM_AXIS; team <= TEAM_ALLIES; team++ ) {
+//			vec3_t mins, maxs;
+//			VectorAdd( dyn->r.currentOrigin, dyn->r.mins, mins );
+//			VectorAdd( dyn->r.currentOrigin, dyn->r.maxs, maxs );
+//
+//			if( target ) {
+//				if(target->s.eType == ET_EXPLOSIVE) {
+//					if(!target->parent) {
+//						continue;
+//					}
+//
+//					if(BG_BBoxCollision( dyn->r.absmin, dyn->r.absmax, target->parent->r.absmin, target->parent->r.absmax )) {
+//						if(list) {
+//							list[count] = dyn->s.number;
+//						}
+//						count++;
+//						break;
+//					}
+//				} else {
+//					G_AdjustedDamageVec( target, dyn->r.currentOrigin, vec );
+//					if((VectorLengthSquared( vec ) <= SQR(dyn->splashRadius)) && CanDamage( target, dyn->r.currentOrigin )) {
+//						if(list) {
+//							list[count] = dyn->s.number;
+//						}
+//						count++;
+//						break;
+//					}
+//				}
+//			} else {
+//				for( trav = G_FindDynamiteTargetForTeam( NULL, team ); trav; trav = G_FindDynamiteTargetForTeam( trav->parent, team )) {
+//					if(trav->s.eType == ET_EXPLOSIVE) {
+//						if(!trav->parent) {
+//							continue;
+//						}
+//
+//						if(BG_BBoxCollision( dyn->r.absmin, dyn->r.absmax, trav->parent->r.absmin, trav->parent->r.absmax )) {
+//							if(list) {
+//								list[count] = dyn->s.number;
+//							}
+//							count++;
+//							break;
+//						}
+//					} else {
+//						G_AdjustedDamageVec( trav, dyn->r.currentOrigin, vec );
+//						if((VectorLengthSquared( vec ) <= SQR(dyn->splashRadius)) && CanDamage( trav, dyn->r.currentOrigin )) {
+//							if(list) {
+//								list[count] = dyn->s.number;
+//							}
+//							count++;
+//							break;
+//						}
+//					}
+//				}
+//			}
+//
+//			if(list && count >= listSize) {
+//				break;
+//			}
+//		}
+//	}
+//
+//	return count;
+//}
+//
+//gentity_t* G_FindMissile( gentity_t* start, weapon_t weap ) {
+//	int i = start ? (start-g_entities) + 1 : 0;
+//	gentity_t* ent = &g_entities[i];
+//
+//	for( ; i < level.num_entities; i++, ent++) {
+//		if( ent->s.eType != ET_MISSILE ) {
+//			continue;
+//		}
+//
+//		if( ent->s.weapon != weap ) {
+//			continue;
+//		}
+//
+//		return ent;
+//	}
+//
+//	return NULL;
+//}
+// end acqu-sdk (issue 11)

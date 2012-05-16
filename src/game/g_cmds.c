@@ -1,7 +1,10 @@
 #include "g_local.h"
 
-void BotDebug(int clientNum);
-void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);	
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//void BotDebug(int clientNum);
+//void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);
+// end acqu-sdk (issue 11)
+
 qboolean G_IsOnFireteam(int entityNum, fireteamData_t** teamNum);
 
 /*
@@ -691,7 +694,9 @@ void Cmd_Kill_f( gentity_t *ent )
 	player_die(ent, ent, ent, (g_gamestate.integer == GS_PLAYING) ? 100000 : 135, MOD_SUICIDE);
 }
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 void BotRecordTeamChange( int client );
+// end acqu-sdk (issue 11)
 
 void G_TeamDataForString( const char* teamstr, int clientNum, team_t* team, spectatorState_t* sState, int* specClient ) {
 	*sState = SPECTATOR_NOT;
@@ -918,7 +923,9 @@ qboolean SetTeam( gentity_t *ent, char *s, qboolean force, weapon_t w1, weapon_t
 	}
 
 	G_verifyMatchState(oldTeam);
-	BotRecordTeamChange( clientNum );
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//BotRecordTeamChange( clientNum );
+	// end acqu-sdk (issue 11)
 
 	// Reset stats when changing teams
 	if(team != oldTeam) {
@@ -1563,7 +1570,9 @@ void Cmd_Say_f( gentity_t *ent, int mode, qboolean arg0 )
 	G_Say(ent, NULL, mode, ConcatArgs(((arg0) ? 0 : 1)));
 }
 
-extern void BotRecordVoiceChat( int client, int destclient, const char *id, int mode, qboolean noResponse );
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//extern void BotRecordVoiceChat( int client, int destclient, const char *id, int mode, qboolean noResponse );
+// end acqu-sdk (issue 11)
 
 // NERVE - SMF
 void G_VoiceTo( gentity_t *ent, gentity_t *other, int mode, const char *id, qboolean voiceonly ) {
@@ -1616,9 +1625,11 @@ void G_VoiceTo( gentity_t *ent, gentity_t *other, int mode, const char *id, qboo
 		cmd = "vchat";
 	}
 
+	// sta acqu-sdk (issue 11): remove deprecated bot code
 	// RF, record this chat so bots can parse them
 	// bots respond with voiceonly, so we check for this so they dont keep responding to responses
-	BotRecordVoiceChat( ent->s.number, other->s.number, id, mode, voiceonly == 2 );
+	//BotRecordVoiceChat( ent->s.number, other->s.number, id, mode, voiceonly == 2 );
+	// end acqu-sdk (issue 11)
 
 	if (voiceonly == 2) {
 		voiceonly = qfalse;
@@ -2436,7 +2447,9 @@ void Cmd_SetCameraOrigin_f( gentity_t *ent ) {
 	}
 }
 
-extern gentity_t *BotFindEntityForName( char *name );
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//extern gentity_t *BotFindEntityForName( char *name );
+// end acqu-sdk (issue 11)
 
 /*
 ==============
@@ -2444,17 +2457,21 @@ Cmd_InterruptCamera_f
 ==============
 */
 void Cmd_InterruptCamera_f( gentity_t *ent ) {
-	gentity_t *player;
 
-	if( g_gametype.integer != GT_SINGLE_PLAYER && g_gametype.integer != GT_COOP )
-		return;
+	// sta acqu-sdk (issue 11): removing this temporarily	
+	return;
+	//gentity_t *player;
 
-	player = BotFindEntityForName( "player" );
+	//if( g_gametype.integer != GT_SINGLE_PLAYER && g_gametype.integer != GT_COOP )
+	//	return;
 
-	if( !player )
-		return;
+	//player = BotFindEntityForName( "player" );
 
-	G_Script_ScriptEvent( player, "trigger", "cameraInterrupt" );
+	//if( !player )
+	//	return;
+
+	//G_Script_ScriptEvent( player, "trigger", "cameraInterrupt" );
+	// end acqu-sdk (issue 11)
 }
 
 extern vec3_t playerMins;
@@ -3014,6 +3031,7 @@ void Cmd_SetSpawnPoint_f( gentity_t* ent ) {
 Cmd_SetSniperSpot_f
 ============
 */
+
 void Cmd_SetSniperSpot_f( gentity_t *clent ) {
 	gentity_t *spot;
 

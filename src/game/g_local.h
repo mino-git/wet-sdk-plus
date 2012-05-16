@@ -1504,61 +1504,63 @@ void G_WriteSessionData( qboolean restart );
 
 void G_CalcRank( gclient_t* client );
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 //
 // g_bot.c
 //
-void G_InitBots( qboolean restart );
-char *G_GetBotInfoByNumber( int num );
-char *G_GetBotInfoByName( const char *name );
-void G_CheckBotSpawn( void );
-void G_QueueBotBegin( int clientNum );
-qboolean G_BotConnect( int clientNum, qboolean restart );
-void Svcmd_AddBot_f( void );
-void Svcmd_SpawnBot( );
-void G_SpawnBot( const char *text );
-int Bot_GetWeaponForClassAndTeam( int classNum, int teamNum, const char *weaponName );
-void G_BotParseCharacterParms( char *characterFile, int *characterInt );
+//void G_InitBots( qboolean restart );
+//char *G_GetBotInfoByNumber( int num );
+//char *G_GetBotInfoByName( const char *name );
+//void G_CheckBotSpawn( void );
+//void G_QueueBotBegin( int clientNum );
+//qboolean G_BotConnect( int clientNum, qboolean restart );
+//void Svcmd_AddBot_f( void );
+//void Svcmd_SpawnBot( );
+//void G_SpawnBot( const char *text );
+//int Bot_GetWeaponForClassAndTeam( int classNum, int teamNum, const char *weaponName );
+//void G_BotParseCharacterParms( char *characterFile, int *characterInt );
 
 // ai_main.c
-#define MAX_FILEPATH			144
-int BotAIThinkFrame(int time);
-void G_SetAASBlockingEntity( gentity_t *ent, int blocking );
-qboolean BotSinglePlayer();
-qboolean BotCoop();
-//gentity_t *BotCheckBotGameEntity( gentity_t *ent );
-gentity_t *BotFindEntity( gentity_t *from, int fieldofs, char *match );
-void GetBotAmmoPct(int clientNum, int *ammoPct, int *ammoclipPct);
-void BotCalculateMg42Spots(void);
+//#define MAX_FILEPATH			144
+//int BotAIThinkFrame(int time);
+//void G_SetAASBlockingEntity( gentity_t *ent, int blocking );
+//qboolean BotSinglePlayer();
+//qboolean BotCoop();
+////gentity_t *BotCheckBotGameEntity( gentity_t *ent );
+//gentity_t *BotFindEntity( gentity_t *from, int fieldofs, char *match );
+//void GetBotAmmoPct(int clientNum, int *ammoPct, int *ammoclipPct);
+//void BotCalculateMg42Spots(void);
 
 // ai_dmq3.c
 //returns the number of the client with the given name
-int ClientFromName(char *name);
-void BotMoveToIntermission( int client );
-qboolean BotVisibleFromPos( vec3_t srcorigin, int srcnum, vec3_t destorigin, int destent, qboolean dummy );
-qboolean BotCheckAttackAtPos(	int entnum, int enemy, vec3_t pos, qboolean ducking, qboolean allowHitWorld);
+//int ClientFromName(char *name);
+//void BotMoveToIntermission( int client );
+//qboolean BotVisibleFromPos( vec3_t srcorigin, int srcnum, vec3_t destorigin, int destent, qboolean dummy );
+//qboolean BotCheckAttackAtPos(	int entnum, int enemy, vec3_t pos, qboolean ducking, qboolean allowHitWorld);
 
 // ai_main.c
 // TTimo - wraps to BotGetTargetExplosives, without dependency to bot_target_s (which breaks gcc build)
-int GetTargetExplosives( team_t team, qboolean ignoreDynamite );
-
-//bot settings
-typedef struct bot_settings_s
-{
-	char characterfile[MAX_FILEPATH];
-	float skill;
-	char team[MAX_FILEPATH];
-	int squadNum;		// xkan, 10/10/2002
-} bot_settings_t;
-
-int BotAISetup( int restart );
-//void BotInitBotGameEntities(void);
-int BotAIShutdown( int restart );
-int BotAILoadMap( int restart );
-int BotAISetupClient(int client, struct bot_settings_s *settings);
-int BotAIShutdownClient( int client);
-int BotAIStartFrame( int time );
-void BotTestAAS(vec3_t origin);
-void BotSetIdealViewAngles(int clientNum, vec3_t angle);
+//int GetTargetExplosives( team_t team, qboolean ignoreDynamite );
+//
+////bot settings
+//typedef struct bot_settings_s
+//{
+//	char characterfile[MAX_FILEPATH];
+//	float skill;
+//	char team[MAX_FILEPATH];
+//	int squadNum;		// xkan, 10/10/2002
+//} bot_settings_t;
+//
+//int BotAISetup( int restart );
+////void BotInitBotGameEntities(void);
+//int BotAIShutdown( int restart );
+//int BotAILoadMap( int restart );
+//int BotAISetupClient(int client, struct bot_settings_s *settings);
+//int BotAIShutdownClient( int client);
+//int BotAIStartFrame( int time );
+//void BotTestAAS(vec3_t origin);
+//void BotSetIdealViewAngles(int clientNum, vec3_t angle);
+// end acqu-sdk (issue 11)
 
 
 // g_cmd.c
@@ -1594,12 +1596,14 @@ float AngleDifference(float ang1, float ang2);
 // g_props.c
 void Props_Chair_Skyboxtouch (gentity_t *ent);
 
+// sta acqu-sdk (issue 11): remove deprecated bot code
 // ai_script.c
-void Bot_ScriptLoad( void );
-qboolean Bot_ScriptInitBot( int entnum );
-void Bot_ScriptEvent( int entityNum, char *eventStr, char *params );
-
-void Bot_TeamScriptEvent( int team, char *eventStr, char *params );
+//void Bot_ScriptLoad( void );
+//qboolean Bot_ScriptInitBot( int entnum );
+//void Bot_ScriptEvent( int entityNum, char *eventStr, char *params );
+//
+//void Bot_TeamScriptEvent( int team, char *eventStr, char *params );
+// end acqu-sdk (issue 11)
 
 
 #include "g_team.h" // teamplay specific stuff
@@ -2183,7 +2187,11 @@ qboolean G_SweepForLandmines( vec3_t origin, float radius, int team );
 
 void G_AddClientToFireteam( int entityNum, int leaderNum );
 void G_InviteToFireTeam( int entityNum, int otherEntityNum );
-void GetBotAmmo(int clientNum, int *weapon, int *ammo, int *ammoclip);
+
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//void GetBotAmmo(int clientNum, int *weapon, int *ammo, int *ammoclip);
+// end acqu-sdk (issue 11)
+
 void G_UpdateFireteamConfigString(fireteamData_t* ft);
 void G_RemoveClientFromFireteams( int entityNum, qboolean update, qboolean print );
 
@@ -2461,15 +2469,19 @@ qboolean G_LandmineArmed( gentity_t* ent );
 qboolean G_LandmineUnarmed( gentity_t* ent );
 team_t G_LandmineTeam( gentity_t* ent );
 qboolean G_LandmineSpotted( gentity_t* ent );
-gentity_t* G_FindSmokeBomb( gentity_t* start );
-gentity_t* G_FindLandmine( gentity_t* start );
+
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//gentity_t* G_FindSmokeBomb( gentity_t* start );
+//gentity_t* G_FindLandmine( gentity_t* start );
+//gentity_t* G_FindSatchels( gentity_t* start );
+// end acqu-sdk (issue 11)
+
 gentity_t* G_FindDynamite( gentity_t* start );
-gentity_t* G_FindSatchels( gentity_t* start );
+gentity_t* G_FindMissile( gentity_t* start, weapon_t weap );
+
 void G_SetTargetName( gentity_t* ent, char* targetname );
 void G_KillEnts( const char* target, gentity_t* ignore, gentity_t* killer, meansOfDeath_t mod );
 void trap_EngineerTrace( trace_t *results, const vec3_t start, const vec3_t mins, const vec3_t maxs, const vec3_t end, int passEntityNum, int contentmask );
-
-qboolean G_ConstructionIsPartlyBuilt( gentity_t* ent );
 
 int G_CountTeamMedics( team_t team, qboolean alivecheck );
 qboolean G_TankIsOccupied( gentity_t* ent );
@@ -2480,6 +2492,17 @@ qboolean G_ConstructionIsFullyBuilt( gentity_t* ent );
 qboolean G_ConstructionIsPartlyBuilt( gentity_t* ent );
 gentity_t* G_ConstructionForTeam( gentity_t* toi, team_t team );
 gentity_t* G_IsConstructible( team_t team, gentity_t* toi );
+
+// sta acqu-sdk (issue 11): additional declarations
+int BotGetTargetDynamite( int *list, int listSize, gentity_t* target );
+void BotBuildStaticEntityCache(void);
+gentity_t* BotFindNextStaticEntity( gentity_t *start, int entityEnum );
+qboolean G_ConstructionIsDestroyable( gentity_t* ent );
+gentity_t* G_FindDynamiteTargetForTeam( gentity_t* trav, team_t team );
+char *stristr(char *str, char *charset);
+char *ClientName(int client, char *name, int size);
+// end acqu-sdk (issue 11)
+
 qboolean G_EmplacedGunIsRepairable( gentity_t* ent, gentity_t* other );
 qboolean G_EmplacedGunIsMountable( gentity_t* ent, gentity_t* other );
 void G_CheckForCursorHints(gentity_t *ent);

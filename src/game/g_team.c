@@ -524,7 +524,11 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			G_Script_ScriptEvent( level.gameManager, "trigger", "allied_object_stolen" );
 		}
 		G_Script_ScriptEvent( ent, "trigger", "stolen" );
-		Bot_TeamScriptEvent( TEAM_ALLIES, "objective", "stolen" );
+
+		// sta acqu-sdk (issue 11): remove deprecated bot code
+		//Bot_TeamScriptEvent( TEAM_ALLIES, "objective", "stolen" );
+		// end acqu-sdk (issue 11)
+
 	} else {
 		gentity_t* pm = G_PopupMessage( PM_OBJECTIVE );
 		pm->s.effect3Time = G_StringIndex( ent->message );
@@ -539,7 +543,10 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 			G_Script_ScriptEvent( level.gameManager, "trigger", "axis_object_stolen" );
 		}
 		G_Script_ScriptEvent( ent, "trigger", "stolen" );
-		Bot_TeamScriptEvent( TEAM_AXIS, "objective", "stolen" );
+
+		// sta acqu-sdk (issue 11): remove deprecated bot code
+		//Bot_TeamScriptEvent( TEAM_AXIS, "objective", "stolen" );
+		// end acqu-sdk (issue 11)
 	}
 	// dhm
 // jpw
@@ -817,7 +824,9 @@ gentity_t *SelectCTFSpawnPoint ( team_t team, int teamstate, vec3_t origin, vec3
 
 /*---------------------------------------------------------------------------*/
 
-void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);
+// end acqu-sdk (issue 11)
 /*
 ==================
 TeamplayLocationsMessage

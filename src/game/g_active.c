@@ -182,7 +182,10 @@ void G_SetClientSound( gentity_t *ent ) {
 PushBot
 ==============
 */
-void BotVoiceChatAfterIdleTime( int client, const char *id, int mode, int delay, qboolean voiceonly, int idleTime, qboolean forceIfDead );
+
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//void BotVoiceChatAfterIdleTime( int client, const char *id, int mode, int delay, qboolean voiceonly, int idleTime, qboolean forceIfDead );
+// end acqu-sdk (issue 11)
 
 void PushBot( gentity_t *ent, gentity_t *other ) {
 	vec3_t dir, ang, f, r;
@@ -207,10 +210,12 @@ void PushBot( gentity_t *ent, gentity_t *other ) {
 		VectorScale( other->client->ps.velocity, oldspeed, other->client->ps.velocity );
 	}
 	//
-	// also, if "ent" is a bot, tell "other" to move!
-	if (rand()%50 == 0 && (ent->r.svFlags & SVF_BOT) && oldspeed < 10) {
-		BotVoiceChatAfterIdleTime( ent->s.number, "Move", SAY_TEAM, 1000, qfalse, 20000, qfalse );
-	}
+	// also, if "ent" is a bot, tell "other" to move!	
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//if (rand()%50 == 0 && (ent->r.svFlags & SVF_BOT) && oldspeed < 10) {
+	//	BotVoiceChatAfterIdleTime( ent->s.number, "Move", SAY_TEAM, 1000, qfalse, 20000, qfalse );
+	//}
+	// end acqu-sdk (issue 11)
 }
 
 /*
@@ -274,22 +279,25 @@ qboolean ReadyToConstruct(gentity_t *ent, gentity_t *constructible, qboolean upd
 	return qtrue;
 }
 
-void BotSetBlockEnt( int client, int blocker );
-/*
-==============
-CheckBotImpacts
-==============
-*/
-void CheckBotImpacts( gentity_t *ent, gentity_t *other ) {
-	char *blockEnts[] = {"func_explosive", NULL};
-	int j;
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//void BotSetBlockEnt( int client, int blocker );
 
-	for (j=0; blockEnts[j]; j++) {
-		if (other->classname && !Q_stricmp( other->classname, blockEnts[j] )) {
-			BotSetBlockEnt( ent->s.number, other->s.number );
-		}
-	}
-}
+///*
+//==============
+//CheckBotImpacts
+//==============
+//*/
+//void CheckBotImpacts( gentity_t *ent, gentity_t *other ) {
+//	char *blockEnts[] = {"func_explosive", NULL};
+//	int j;
+//
+//	for (j=0; blockEnts[j]; j++) {
+//		if (other->classname && !Q_stricmp( other->classname, blockEnts[j] )) {
+//			BotSetBlockEnt( ent->s.number, other->s.number );
+//		}
+//	}
+//}
+// end acqu-sdk (issue 11)
 
 //==============================================================
 
@@ -337,9 +345,11 @@ void ClientImpacts( gentity_t *ent, pmove_t *pm ) {
 			PushBot( other, ent );
 		}
 
-		if ( ent->r.svFlags & SVF_BOT ) {
-			CheckBotImpacts( ent, other );
-		}
+		// sta acqu-sdk (issue 11): remove deprecated bot code
+		//if ( ent->r.svFlags & SVF_BOT ) {
+		//	CheckBotImpacts( ent, other );
+		//}
+		// end acqu-sdk (issue 11)
 
 		if ( !other->touch ) {
 			continue;
@@ -1321,13 +1331,15 @@ void ClientThink( int clientNum ) {
 		ClientThink_real( ent );
 	}
 
-	// if this is the locally playing client, do bot thinks
-#ifndef NO_BOT_SUPPORT
-	if( bot_enable.integer && !g_dedicated.integer && clientNum == 0 ) {
-		BotAIThinkFrame(ent->client->pers.cmd.serverTime);
-		level.lastClientBotThink = level.time;
-	}
-#endif // NO_BOT_SUPPORT
+// if this is the locally playing client, do bot thinks
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//#ifndef NO_BOT_SUPPORT
+//	if( bot_enable.integer && !g_dedicated.integer && clientNum == 0 ) {
+//		BotAIThinkFrame(ent->client->pers.cmd.serverTime);
+//		level.lastClientBotThink = level.time;
+//	}
+//#endif // NO_BOT_SUPPORT
+// end acqu-sdk (issue 11)
 }
 
 

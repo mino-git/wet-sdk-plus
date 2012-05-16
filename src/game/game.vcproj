@@ -214,38 +214,6 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90"
 			>
 			<File
-				RelativePath="..\botai\ai_cmd.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmgoal_mp.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmnet_mp.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmq3.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_main.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_script.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_script_actions.c"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_team.c"
-				>
-			</File>
-			<File
 				RelativePath=".\bg_animation.c"
 				>
 			</File>
@@ -319,10 +287,6 @@
 			</File>
 			<File
 				RelativePath=".\g_antilag.c"
-				>
-			</File>
-			<File
-				RelativePath=".\g_bot.c"
 				>
 			</File>
 			<File
@@ -483,58 +447,6 @@
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File
-				RelativePath="..\botai\ai_botScriptTrigger.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_botScriptTriggerX.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_cmd.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_distances.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmgoal_mp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmgoal_sp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmnet_mp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmnet_sp.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_dmq3.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_main.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_matrix.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_team.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\ai_teamX.h"
-				>
-			</File>
-			<File
 				RelativePath=".\be_aas.h"
 				>
 			</File>
@@ -579,15 +491,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\botai\botai.h"
-				>
-			</File>
-			<File
 				RelativePath=".\botlib.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\chars.h"
 				>
 			</File>
 			<File
@@ -603,23 +507,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\botai\inv.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\match.h"
-				>
-			</File>
-			<File
 				RelativePath=".\q_shared.h"
 				>
 			</File>
 			<File
 				RelativePath=".\surfaceflags.h"
-				>
-			</File>
-			<File
-				RelativePath="..\botai\syn.h"
 				>
 			</File>
 		</Filter>

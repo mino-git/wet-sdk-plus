@@ -77,8 +77,10 @@ qboolean G_ScriptAction_RepairMG42( gentity_t *ent, char *params );
 qboolean G_ScriptAction_SetHQStatus( gentity_t *ent, char *params );
 qboolean G_ScriptAction_PrintAccum(gentity_t *ent, char *params );
 qboolean G_ScriptAction_PrintGlobalAccum(gentity_t *ent, char *params );
-qboolean G_ScriptAction_RemoveBot(gentity_t *ent, char *params );
-qboolean G_ScriptAction_BotDebugging(gentity_t *ent, char *params );
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//qboolean G_ScriptAction_RemoveBot(gentity_t *ent, char *params );
+//qboolean G_ScriptAction_BotDebugging(gentity_t *ent, char *params );
+// end acqu-sdk (issue 11)
 qboolean G_ScriptAction_ObjectiveStatus( gentity_t *ent, char *params );
 qboolean G_ScriptAction_SetModelFromBrushmodel( gentity_t *ent, char *params );
 qboolean G_ScriptAction_SetPosition( gentity_t *ent, char *params );
@@ -92,7 +94,11 @@ qboolean G_ScriptAction_AddTankAmmo( gentity_t *ent, char *params );
 qboolean G_ScriptAction_Kill( gentity_t *ent, char *params );
 qboolean G_ScriptAction_DisableMessage( gentity_t *ent, char *params );
 qboolean G_ScriptAction_SetGlobalFog( gentity_t *ent, char *params );
-qboolean G_ScriptAction_SpawnBot( gentity_t *ent, char *params );
+
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//qboolean G_ScriptAction_SpawnBot( gentity_t *ent, char *params );
+// end acqu-sdk (issue 11)
+
 qboolean G_ScriptAction_Cvar( gentity_t *ent, char *params );
 qboolean G_ScriptAction_AbortIfWarmup( gentity_t *ent, char *params );
 qboolean G_ScriptAction_AbortIfNotSinglePlayer( gentity_t *ent, char *params );
@@ -181,9 +187,11 @@ g_script_stack_action_t gScriptActions[] =
 
 	{"printaccum",						G_ScriptAction_PrintAccum},
 	{"printglobalaccum",				G_ScriptAction_PrintGlobalAccum},
-	{"removebot",						G_ScriptAction_RemoveBot},
-	{"botgebugging",					G_ScriptAction_BotDebugging},
-	{"spawnbot",						G_ScriptAction_SpawnBot},
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//{"removebot",						G_ScriptAction_RemoveBot},	
+	//{"botgebugging",					G_ScriptAction_BotDebugging},	
+	//{"spawnbot",						G_ScriptAction_SpawnBot},
+	// end acqu-sdk (issue 11): remove deprecated bot code
 	{"cvar",							G_ScriptAction_Cvar},
 	{"abortifwarmup",					G_ScriptAction_AbortIfWarmup},
 	{"abortifnotsingleplayer",			G_ScriptAction_AbortIfNotSinglePlayer},
@@ -612,8 +620,9 @@ void G_Script_ScriptParse( gentity_t *ent )
 				} else
 				// hackly precaching of custom characters
 				if( !Q_stricmp(token, "spawnbot") )	{
-					// this is fairly indepth, so I'll move it to a separate function for readability
+					// this is fairly indepth, so I'll move it to a separate function for readability					
 					G_Script_ParseSpawnbot( &pScript, params, MAX_INFO_STRING );
+					
 				} else 	{
 					token = COM_ParseExt( &pScript, qfalse );
 					for (i=0; token[0]; i++)
@@ -924,9 +933,11 @@ void script_mover_die(gentity_t *self, gentity_t *inflictor, gentity_t *attacker
 }
 
 void script_mover_set_blocking( gentity_t *ent ) {
-	if (ent->r.linked && ent->r.contents == CONTENTS_SOLID) {
-		G_SetAASBlockingEntity( ent, AAS_AREA_AVOID );
-	}
+	// sta acqu-sdk (issue 11): remove deprecated bot code
+	//if (ent->r.linked && ent->r.contents == CONTENTS_SOLID) {
+	//	G_SetAASBlockingEntity( ent, AAS_AREA_AVOID );
+	//}
+	// end acqu-sdk (issue 11): remove deprecated bot code
 }
 
 void script_mover_aas_blocking( gentity_t *ent ) {
@@ -935,7 +946,9 @@ void script_mover_aas_blocking( gentity_t *ent ) {
 		if (ent->s.pos.trType != TR_STATIONARY /*VectorLengthSquared( ent->s.pos.trDelta )*/) {
 			// never block while moving
 			if (ent->AASblocking) {
-				G_SetAASBlockingEntity( ent, AAS_AREA_ENABLED );
+				// sta acqu-sdk (issue 11): remove deprecated bot code
+				//G_SetAASBlockingEntity( ent, AAS_AREA_ENABLED );
+				// end acqu-sdk (issue 11): remove deprecated bot code
 			}
 		} else if (!VectorCompare( ent->s.pos.trBase, ent->botAreaPos )) {
 			script_mover_set_blocking( ent );
