@@ -561,7 +561,13 @@ void Weapon_Syringe(gentity_t *ent) {
 					AddScore(ent, WOLF_MEDIC_BONUS); // JPW NERVE props to the medic for the swift and dexterous bit o healitude
 
 					G_AddSkillPoints( ent, SK_FIRST_AID, 4.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 					G_DebugAddSkillPoints( ent, SK_FIRST_AID, 4.f, "reviving a player" );
+#endif
+// end acqu-sdk (issue 10)
+					
 				}
 
 				// Arnout: calculate ranks to update numFinalDead arrays. Have to do it manually as addscore has an early out
@@ -1087,7 +1093,13 @@ static qboolean TryConstructing( gentity_t *ent ) {
 		AddScore( ent, constructible->accuracy ); // give drop score to guy who built it
 
 		G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, constructible->constructibleStats.constructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, constructible->constructibleStats.constructxpbonus, "finishing a construction" );
+#endif
+// end acqu-sdk (issue 10)
+		
 
 		// unlink the objective info to get rid of the indicator for now
 		// Arnout: don't unlink, we still want the location popup. Instead, constructible_indicator_think got changed to free
@@ -1535,7 +1547,13 @@ void Weapon_Engineer( gentity_t *ent ) {
 			if( traceEnt->sound3to2 != ent->client->sess.sessionTeam ) {
 				AddScore( ent, WOLF_REPAIR_BONUS ); // JPW NERVE props to the E for the fixin'
 				G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 3.f, "repairing a MG42" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			}
 
 			traceEnt->takedamage = qtrue;
@@ -1672,7 +1690,13 @@ evilbanigoto:
 
 						if( G_LandmineTeam( traceEnt ) != ent->client->sess.sessionTeam ) {
 							G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 4.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 							G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 4.f, "defusing an enemy landmine" );
+#endif
+// end acqu-sdk (issue 10)
+							
 						}
 
 						// update our map
@@ -1736,7 +1760,13 @@ evilbanigoto:
 				G_PrintClientSpammyCenterPrint(ent-g_entities, "Satchel charge disarmed...");
 
 				G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f, "disarming satchel charge" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			} else {
 				return;
 			}
@@ -2078,7 +2108,13 @@ evilbanigoto:
 								if ((hit->spawnflags & AXIS_OBJECTIVE) && (!scored)) {
 									AddScore(ent,WOLF_DYNAMITE_DIFFUSE);
 									G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 									G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f, "defusing enemy dynamite" );
+#endif
+// end acqu-sdk (issue 10)
+									
 									scored++;
 								}
 								if(hit->target_ent) {
@@ -2099,7 +2135,13 @@ evilbanigoto:
 								if ((hit->spawnflags & ALLIED_OBJECTIVE) && (!scored)) {
 									AddScore(ent,WOLF_DYNAMITE_DIFFUSE);
 									G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 									G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f, "defusing enemy dynamite" );
+#endif
+// end acqu-sdk (issue 10)
+									
 									scored++; 
 									hit->spawnflags &= ~OBJECTIVE_DESTROYED; // "re-activate" objective since it wasn't destroyed
 								}
@@ -2162,7 +2204,13 @@ evilbanigoto:
 									AddScore(ent,WOLF_DYNAMITE_DIFFUSE);
 									if(ent && ent->client) G_LogPrintf("Dynamite_Diffuse: %d\n", ent - g_entities);	// OSP
 									G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 									G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f, "defusing enemy dynamite" );
+#endif
+// end acqu-sdk (issue 10)
+									
 									scored++;
 								}
 								G_Script_ScriptEvent( hit, "defused", "" );
@@ -2180,7 +2228,13 @@ evilbanigoto:
 									AddScore(ent,WOLF_DYNAMITE_DIFFUSE);
 									if(ent && ent->client) G_LogPrintf("Dynamite_Diffuse: %d\n", ent - g_entities);	// OSP
 									G_AddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 									G_DebugAddSkillPoints( ent, SK_EXPLOSIVES_AND_CONSTRUCTION, 6.f, "defusing enemy dynamite" );
+#endif
+// end acqu-sdk (issue 10)
+									
 									scored++; 
 								}
 								G_Script_ScriptEvent( hit, "defused", "" );

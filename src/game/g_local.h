@@ -2171,10 +2171,14 @@ void G_AddKillSkillPoints( gentity_t *attacker, meansOfDeath_t mod, hitRegion_t 
 void G_AddKillSkillPointsForDestruction( gentity_t *attacker, meansOfDeath_t mod, g_constructible_stats_t *constructibleStats );
 void G_LoseKillSkillPoints( gentity_t *tker, meansOfDeath_t mod, hitRegion_t hr, qboolean splash );
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 void G_DebugOpenSkillLog( void );
 void G_DebugCloseSkillLog( void );
 void G_DebugAddSkillLevel( gentity_t *ent, skillType_t skill );
 void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, const char *reason );
+#endif /* DEBUG */
+// end acqu-sdk (issue 10)
 
 typedef enum {
 	SM_NEED_MEDIC,

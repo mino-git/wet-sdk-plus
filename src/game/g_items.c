@@ -544,10 +544,15 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 				}
 				ent->parent->client->PCSpecialPickedUpCount++;
 				G_AddSkillPoints( ent->parent, SK_SIGNALS, 1.f );
-				G_DebugAddSkillPoints( ent->parent, SK_SIGNALS, 1.f, "ammo pack picked up" ); 
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+				G_DebugAddSkillPoints( ent->parent, SK_SIGNALS, 1.f, "ammo pack picked up" );
 				// extracted code originally here into AddMagicAmmo -xkan, 9/18/2002
 				// add 1 clip of magic ammo for any two-handed weapon
+#endif
+// end acqu-sdk (issue 10)
+				
 			}
 			return RESPAWN_SP;
 		}
@@ -659,7 +664,13 @@ int Pickup_Health (gentity_t *ent, gentity_t *other) {
 				G_LogPrintf("Health_Pack: %d %d\n", ent->parent - g_entities, other - g_entities);	// OSP
 			}
 			G_AddSkillPoints( ent->parent, SK_FIRST_AID, 1.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( ent->parent, SK_FIRST_AID, 1.f, "health pack picked up" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			ent->parent->client->PCSpecialPickedUpCount++;
 		}
 	}	

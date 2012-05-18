@@ -1745,7 +1745,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 
 	trap_SetConfigstring( CS_SCRIPT_MOVER_NAMES, "" );	// clear out
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	G_DebugOpenSkillLog();
+#endif
+// end acqu-sdk (issue 10)
 
 	if ( g_log.string[0] ) {
 		if ( g_logSync.integer ) {
@@ -1934,8 +1938,12 @@ void G_ShutdownGame( int restart ) {
 	}
 
 	G_Printf ("==== ShutdownGame ====\n");
-
+	
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	G_DebugCloseSkillLog();
+#endif
+// end acqu-sdk (issue 10)	
 
 	if ( level.logFile ) {
 		G_LogPrintf("ShutdownGame:\n" );

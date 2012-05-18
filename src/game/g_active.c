@@ -1111,21 +1111,35 @@ void ClientThink_real( gentity_t *ent ) {
 	pm.covertopsChargeTime = level.covertopsChargeTime[client->sess.sessionTeam-1];
 
 	if( client->ps.pm_type != PM_DEAD && level.timeCurrent - client->pers.lastBattleSenseBonusTime > 45000 ) {
-		/*switch( client->combatState )
-		{
-		case COMBATSTATE_COLD:	G_AddSkillPoints( ent, SK_BATTLE_SENSE, 0.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 0.f, "combatstate cold" ); break;
-		case COMBATSTATE_WARM:	G_AddSkillPoints( ent, SK_BATTLE_SENSE, 2.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 2.f, "combatstate warm" ); break;
-		case COMBATSTATE_HOT:	G_AddSkillPoints( ent, SK_BATTLE_SENSE, 5.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 5.f, "combatstate hot" ); break;
-		case COMBATSTATE_SUPERHOT:	G_AddSkillPoints( ent, SK_BATTLE_SENSE, 8.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 8.f, "combatstate super-hot" ); break;
-		}*/
 
 		if( client->combatState != COMBATSTATE_COLD ) {
 			if( client->combatState & (1<<COMBATSTATE_KILLEDPLAYER) && client->combatState & (1<<COMBATSTATE_DAMAGERECEIVED) ) {
-				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 8.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 8.f, "combatstate super-hot" );
+				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 8.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+				G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 8.f, "combatstate super-hot" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			} else if( client->combatState & (1<<COMBATSTATE_DAMAGEDEALT) && client->combatState & (1<<COMBATSTATE_DAMAGERECEIVED) ) {
-				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 5.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 5.f, "combatstate hot" );
+				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 5.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+				G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 5.f, "combatstate hot" );
+#endif
+// end acqu-sdk (issue 10)
+
 			} else {
-				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 2.f ); G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 2.f, "combatstate warm" );
+				G_AddSkillPoints( ent, SK_BATTLE_SENSE, 2.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+				G_DebugAddSkillPoints( ent, SK_BATTLE_SENSE, 2.f, "combatstate warm" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			}
 		}
 
@@ -1134,30 +1148,6 @@ void ClientThink_real( gentity_t *ent ) {
 	}
 
 	pm.leadership = qfalse;
-	/*for ( i = 0 ; i < level.numConnectedClients; i++ ) {
-		gclient_t *cl = &level.clients[level.sortedClients[i]];
-		vec3_t dist;
-
-		if( cl->sess.sessionTeam != client->sess.sessionTeam ) {
-			continue;
-		}
-
-		if( cl->sess.skill[SK_SIGNALS] < 5 ) {
-			continue;
-		}
-
-		if( !trap_InPVS( g_entities[level.sortedClients[i]].r.currentOrigin, ent->r.currentOrigin ) ) {
-			continue;
-		}
-
-		VectorSubtract( g_entities[level.sortedClients[i]].r.currentOrigin, ent->r.currentOrigin, dist );
-		if( VectorLengthSquared( dist ) > SQR(512) )
-			continue;
-
-		pm.leadership = qtrue;
-
-        break;        
-	}*/
 
 // sta acqu-sdk (issue 18): remove unused code
 //#ifdef SAVEGAME_SUPPORT

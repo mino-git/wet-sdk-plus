@@ -370,7 +370,13 @@ void Cmd_Give_f (gentity_t *ent)
 					amount = skillLevels[ent->client->sess.skill[skill] + 1] - ent->client->sess.skillpoints[skill];
 				
 				G_AddSkillPoints( ent, skill, amount );
-				G_DebugAddSkillPoints( ent, skill, amount, "give skill" );				
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+				G_DebugAddSkillPoints( ent, skill, amount, "give skill" );	
+#endif
+// end acqu-sdk (issue 10)
+							
 			}
 			// end acqu-sdk (issue 2): CHRUKER: b064
 		} else {
@@ -385,7 +391,13 @@ void Cmd_Give_f (gentity_t *ent)
 					amount = skillLevels[ent->client->sess.skill[i] + 1] - ent->client->sess.skillpoints[i];
 				
 				G_AddSkillPoints( ent, i, amount );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( ent, i, amount, "give skill" );
+#endif
+// end acqu-sdk (issue 10)
+				
 				// end acqu-sdk (issue 2): CHRUKER: b064
 			}
 		}
@@ -2547,11 +2559,16 @@ qboolean Do_Activate2_f(gentity_t *ent, gentity_t *traceEnt) {
 						// sound effect
 						G_AddEvent( ent, EV_DISGUISE_SOUND, 0 );
 
-						G_AddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f );
+						G_AddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f );						
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 						// sta acqu-sdk (issue 2): CHRUKER: b068 - Passed 5 as integer instead of float
 						G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f, "stealing uniform" );
-						//G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5, "stealing uniform" ); 
+						//G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5, "stealing uniform" );
 						// end acqu-sdk (issue 2): CHRUKER: b068
+#endif
+// end acqu-sdk (issue 10)
 
 						Q_strncpyz( ent->client->disguiseNetname, g_entities[traceEnt->s.clientNum].client->pers.netname, sizeof(ent->client->disguiseNetname) );
 						ent->client->disguiseRank = g_entities[traceEnt->s.clientNum].client ? g_entities[traceEnt->s.clientNum].client->sess.rank : 0;

@@ -1055,7 +1055,13 @@ void G_UpdateTeamMapData( void ) {
 													//G_AddExperience( ent, 1.f );
 
 													G_AddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 													G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "spotting a landmine" );
+#endif
+// end acqu-sdk (issue 10)
+													
 												}
 											}
 											break;
@@ -1102,7 +1108,13 @@ void G_UpdateTeamMapData( void ) {
 													//G_AddExperience( ent, 1.f );
 
 													G_AddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 													G_DebugAddSkillPoints( ent, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "spotting a landmine" );
+#endif
+// end acqu-sdk (issue 10)
+													
 												}
 											}
 											break;

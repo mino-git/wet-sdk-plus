@@ -145,8 +145,11 @@ static void G_UpgradeSkill( gentity_t *ent, skillType_t skill ) {
 		if( ent->client->sess.skill[skill] <= ent->client->sess.skill[i] )
 			break;
 	}
-
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	G_DebugAddSkillLevel( ent, skill );
+#endif
+// end acqu-sdk (issue 10)	
 
 	if( i == SK_NUM_SKILLS ) {
 		// increase rank
@@ -299,7 +302,6 @@ void G_LoseKillSkillPoints( gentity_t *tker, meansOfDeath_t mod, hitRegion_t hr,
 //bani - airstrike marker kills
 		case MOD_SMOKEGRENADE:
 			G_LoseSkillPoints( tker, SK_LIGHT_WEAPONS, 3.f ); 
-//			G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 2.f, "kill" );
 			break;
 
 		// scoped weapons
@@ -308,7 +310,6 @@ void G_LoseKillSkillPoints( gentity_t *tker, meansOfDeath_t mod, hitRegion_t hr,
 		case MOD_FG42SCOPE:
 		case MOD_SATCHEL:
 			G_LoseSkillPoints( tker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
-//			G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 2.f, "legshot kill" );
 			break;
 
 		case MOD_MOBILE_MG42:
@@ -319,7 +320,6 @@ void G_LoseKillSkillPoints( gentity_t *tker, meansOfDeath_t mod, hitRegion_t hr,
 		case MOD_FLAMETHROWER:
 		case MOD_MORTAR:
 			G_LoseSkillPoints( tker, SK_HEAVY_WEAPONS, 3.f );
-//			G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "emplaced mg42 kill" );
 			break;
 
 		case MOD_DYNAMITE:
@@ -327,13 +327,11 @@ void G_LoseKillSkillPoints( gentity_t *tker, meansOfDeath_t mod, hitRegion_t hr,
 		case MOD_GPG40:
 		case MOD_M7:
 			G_LoseSkillPoints( tker, SK_EXPLOSIVES_AND_CONSTRUCTION, 3.f );
-//			G_DebugAddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, 4.f, "dynamite or landmine kill" );
 			break;
 
 		case MOD_ARTY:
 		case MOD_AIRSTRIKE:
 			G_LoseSkillPoints( tker, SK_SIGNALS, 3.f );
-//			G_DebugAddSkillPoints( attacker, SK_SIGNALS, 4.f, "artillery kill" );
 			break;
 
 		// no skills for anything else
@@ -350,7 +348,14 @@ void G_AddKillSkillPoints( gentity_t *attacker, meansOfDeath_t mod, hitRegion_t 
 	switch( mod ) {
 		// light weapons
 		case MOD_KNIFE:
-			G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "knife kill" ); 
+			G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+			G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "knife kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 
 		case MOD_LUGER:
@@ -371,18 +376,69 @@ void G_AddKillSkillPoints( gentity_t *attacker, meansOfDeath_t mod, hitRegion_t 
 		case MOD_AKIMBO_SILENCEDCOLT:
 		case MOD_AKIMBO_SILENCEDLUGER:
 			switch( hr ) {
-				case HR_HEAD:	G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 5.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 5.f, "headshot kill" ); break;
-				case HR_ARMS:	G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "armshot kill" ); break;
-				case HR_BODY:	G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "bodyshot kill" ); break;
-				case HR_LEGS:	G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "legshot kill" );  break;
-				default:		G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "kill" ); break;	// for weapons that don't have localized damage
+				case HR_HEAD:
+					G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 5.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 5.f, "headshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				case HR_ARMS:
+					G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "armshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				case HR_BODY:
+					G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "bodyshot kill" );
+#endif
+// end acqu-sdk (issue 10)					
+					
+					break;
+				case HR_LEGS:
+					G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "legshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+
+					break;
+				default:
+					G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;	// for weapons that don't have localized damage
 			}
 			break;
 
 		// heavy weapons
 		case MOD_MOBILE_MG42:
 			G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "mobile mg42 kill" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 
 		// scoped weapons
@@ -390,47 +446,134 @@ void G_AddKillSkillPoints( gentity_t *attacker, meansOfDeath_t mod, hitRegion_t 
 		case MOD_K43_SCOPE:
 		case MOD_FG42SCOPE:
 			switch( hr ) {
-				case HR_HEAD:	G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f ); G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f, "headshot kill" ); break;
-				case HR_ARMS:	G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS,2.f, "armshot kill" ); break;
-				case HR_BODY:	G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "bodyshot kill" ); break;
-				case HR_LEGS:	G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 2.f, "legshot kill" ); break;
-				default:		G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f ); G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "kill" ); break;	// for weapons that don't have localized damage
+				case HR_HEAD:
+					G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f, "headshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				case HR_ARMS:
+					G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS,2.f, "armshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				case HR_BODY:
+					G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "bodyshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				case HR_LEGS:
+					G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 2.f, "legshot kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;
+				default:
+					G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
+					G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 3.f, "kill" );
+#endif
+// end acqu-sdk (issue 10)
+					
+					break;	// for weapons that don't have localized damage
 			}
 			break;
 
 		// misc weapons (individual handling)
 		case MOD_SATCHEL:
 			G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, 5.f, "satchel charge kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 
 		case MOD_MACHINEGUN:
 		case MOD_BROWNING:
 		case MOD_MG42:
 			G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "emplaced machinegun kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 
 		case MOD_PANZERFAUST:
 			if( splash ) {
 				G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "panzerfaust splash damage kill" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			} else {
 				G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "panzerfaust direct hit kill" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			}
 			break;
 		case MOD_FLAMETHROWER:
 			G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "flamethrower kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_MORTAR:
 			if( splash ) {
 				G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "mortar splash damage kill" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			} else {
 				G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 				G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, 3.f, "mortar direct hit kill" );
+#endif
+// end acqu-sdk (issue 10)
+				
 			}
 			break;
 		case MOD_GRENADE_LAUNCHER:
@@ -438,25 +581,55 @@ void G_AddKillSkillPoints( gentity_t *attacker, meansOfDeath_t mod, hitRegion_t 
 //bani - airstrike marker kills
 		case MOD_SMOKEGRENADE:
 			G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, 3.f, "hand grenade kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_DYNAMITE:
 		case MOD_LANDMINE:
 			G_AddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, 4.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, 4.f, "dynamite or landmine kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_ARTY:
 			G_AddSkillPoints( attacker, SK_SIGNALS, 4.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_SIGNALS, 4.f, "artillery kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_AIRSTRIKE:
 			G_AddSkillPoints( attacker, SK_SIGNALS, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_SIGNALS, 3.f, "airstrike kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_GPG40:
 		case MOD_M7:
 			G_AddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, 3.f );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, 3.f, "rifle grenade kill" );
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 
 		// no skills for anything else
@@ -471,34 +644,66 @@ void G_AddKillSkillPointsForDestruction( gentity_t *attacker, meansOfDeath_t mod
 		case MOD_GRENADE_LAUNCHER:
 		case MOD_GRENADE_PINEAPPLE:
 			G_AddSkillPoints( attacker, SK_LIGHT_WEAPONS, constructibleStats->destructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_LIGHT_WEAPONS, constructibleStats->destructxpbonus, "destroying a constructible/explosive" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_GPG40:
 		case MOD_M7:
 		case MOD_DYNAMITE:
 		case MOD_LANDMINE:
 			G_AddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, constructibleStats->destructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_EXPLOSIVES_AND_CONSTRUCTION, constructibleStats->destructxpbonus, "destroying a constructible/explosive" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_PANZERFAUST:
 		case MOD_MORTAR:
 			G_AddSkillPoints( attacker, SK_HEAVY_WEAPONS, constructibleStats->destructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_HEAVY_WEAPONS, constructibleStats->destructxpbonus, "destroying a constructible/explosive" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_ARTY:
 		case MOD_AIRSTRIKE:
 			G_AddSkillPoints( attacker, SK_SIGNALS, constructibleStats->destructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_SIGNALS, constructibleStats->destructxpbonus, "destroying a constructible/explosive" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		case MOD_SATCHEL:
 			G_AddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, constructibleStats->destructxpbonus );
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			G_DebugAddSkillPoints( attacker, SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS, constructibleStats->destructxpbonus, "destroying a constructible/explosive" ); 
+#endif
+// end acqu-sdk (issue 10)
+			
 			break;
 		default:
 			break;
 	}
 }
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 /////// SKILL DEBUGGING ///////
 static fileHandle_t skillDebugLog = -1;
 
@@ -604,6 +809,8 @@ void G_DebugAddSkillPoints( gentity_t *ent, skillType_t skill, float points, con
 		trap_FS_Write( s, strlen( s ), skillDebugLog );
 	}
 }
+#endif /* DEBUG */
+// end acqu-sdk (issue 10)
 
 // sta acqu-sdk (issue 2): CHRUKER: b017 - Added a check to make sure that the best result is larger than 0
 #define CHECKSTAT1( XX )														\
