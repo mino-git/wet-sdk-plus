@@ -362,10 +362,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\g_save.c"
-				>
-			</File>
-			<File
 				RelativePath=".\g_script.c"
 				>
 			</File>
