@@ -1362,7 +1362,11 @@ void AddKillScore( gentity_t *ent, int score );
 void CalculateRanks( void );
 qboolean SpotWouldTelefrag( gentity_t *spot );
 qboolean G_CheckForExistingModelInfo( bg_playerclass_t* classInfo, const char *modelName, animModelInfo_t **modelInfo );
-void G_StartPlayerAppropriateSound(gentity_t *ent, char* soundType);
+
+// sta acqu-sdk (issue 18): remove unused code
+//void G_StartPlayerAppropriateSound(gentity_t *ent, char* soundType);
+// end acqu-sdk (issue 18)
+
 void SetWolfSpawnWeapons( gclient_t *client );
 void limbo( gentity_t *ent, qboolean makeCorpse ); // JPW NERVE
 void reinforce(gentity_t *ent); // JPW NERVE

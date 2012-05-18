@@ -1251,8 +1251,10 @@ static void ClientCleanName( const char *in, char *out, int outSize )
 	}
 }
 
-void G_StartPlayerAppropriateSound(gentity_t *ent, char *soundType) {
-}
+// sta acqu-sdk (issue 18): remove unused code
+//void G_StartPlayerAppropriateSound(gentity_t *ent, char *soundType) {
+//}
+// end acqu-sdk (issue 18)
 
 // sta acqu-sdk (issue 6): code addition
 const char *GetParsedIP(const char *ipadd)
