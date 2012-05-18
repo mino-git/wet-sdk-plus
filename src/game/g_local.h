@@ -6,7 +6,9 @@
 #include "bg_public.h"
 #include "g_public.h"
 
-#include "../game/be_aas.h"
+// sta acqu-sdk (issue 11): remove deprecated bot code
+//#include "../game/be_aas.h"
+// end acqu-sdk (issue 11)
 
 //==================================================================
 

@@ -7,13 +7,14 @@
 
 #include "g_local.h"
 #include "../game/q_shared.h"
-#include "../game/botlib.h"		//bot lib interface
-#include "../game/be_aas.h"
-#include "../game/be_ea.h"
-#include "../game/be_ai_gen.h"
-#include "../game/be_ai_goal.h"
-#include "../game/be_ai_move.h"
 // sta acqu-sdk (issue 11): remove deprecated bot code
+//#include "../game/botlib.h"		//bot lib interface
+//#include "../game/be_aas.h"
+//#include "../game/be_ea.h"
+//#include "../game/be_ai_gen.h"
+//#include "../game/be_ai_goal.h"
+//#include "../game/be_ai_move.h"
+
 //#include "../botai/botai.h"			//bot ai interface
 //#include "../botai/ai_main.h"
 //#include "../botai/chars.h"
