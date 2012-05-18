@@ -683,10 +683,12 @@ void Cmd_Kill_f( gentity_t *ent )
 		return;
 	}
 
-#ifdef SAVEGAME_SUPPORT
-	if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
-		return;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
+//		return;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 	ent->flags &= ~FL_GODMODE;
 	ent->client->ps.stats[STAT_HEALTH] = ent->health = 0;

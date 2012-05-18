@@ -1039,10 +1039,12 @@ void CG_PredictPlayerState( void ) {
 			cg_pmove.covertopsChargeTime =	cg.covertopsChargeTime[cg.snap->ps.persistant[PERS_TEAM]-1];
 		}
 
-#ifdef SAVEGAME_SUPPORT
-		if( CG_IsSinglePlayer() && cg_reloading.integer )
-			cg_pmove.reloading = qtrue;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//		if( CG_IsSinglePlayer() && cg_reloading.integer )
+//			cg_pmove.reloading = qtrue;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 //		memcpy( &pmext, &cg.pmext, sizeof(pmoveExt_t) );	// grab data, we only want the final result
 		// rain - copy the pmext as it was just before we

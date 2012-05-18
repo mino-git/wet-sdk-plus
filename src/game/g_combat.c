@@ -1045,10 +1045,12 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 		return;
 	}
 
-#ifdef SAVEGAME_SUPPORT
-	if( g_gametype.integer == GT_SINGLE_PLAYER && ( g_reloading.integer || saveGamePending ) )
-		return;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	if( g_gametype.integer == GT_SINGLE_PLAYER && ( g_reloading.integer || saveGamePending ) )
+//		return;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 //	trap_SendServerCommand( -1, va("print \"%i\n\"\n", targ->health) );
 	

@@ -500,10 +500,12 @@ void SpectatorThink( gentity_t *ent, usercmd_t *ucmd ) {
 		pm.trace = trap_TraceCapsuleNoEnts;
 		pm.pointcontents = trap_PointContents;
 
-#ifdef SAVEGAME_SUPPORT
-		if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
-			pm.reloading = qtrue;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//		if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
+//			pm.reloading = qtrue;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 		Pmove( &pm ); // JPW NERVE
 
@@ -1004,12 +1006,17 @@ void ClientThink_real( gentity_t *ent ) {
 		return;
 	}
 
-	if((client->ps.eFlags & EF_VIEWING_CAMERA) || level.match_pause != PAUSE_NONE
-#ifdef SAVEGAME_SUPPORT
-	  || (g_gametype.integer == GT_SINGLE_PLAYER && saveGamePending && g_reloading.integer && (g_reloading.integer != RELOAD_FAILED))) {
-#else
-		) {
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//	if((client->ps.eFlags & EF_VIEWING_CAMERA) || level.match_pause != PAUSE_NONE
+//#ifdef SAVEGAME_SUPPORT
+//	  || (g_gametype.integer == GT_SINGLE_PLAYER && saveGamePending && g_reloading.integer && (g_reloading.integer != RELOAD_FAILED))) {
+//#else
+//		) {
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
+
+	if((client->ps.eFlags & EF_VIEWING_CAMERA) || level.match_pause != PAUSE_NONE ) {
+
 		ucmd->buttons = 0;
 		ucmd->forwardmove = 0;
 		ucmd->rightmove = 0;
@@ -1020,12 +1027,17 @@ void ClientThink_real( gentity_t *ent ) {
 		// freeze player (RELOAD_FAILED still allowed to move/look)
 		if(level.match_pause != PAUSE_NONE) {
 			client->ps.pm_type = PM_FREEZE;
-		} else if((client->ps.eFlags & EF_VIEWING_CAMERA)
-#ifdef SAVEGAME_SUPPORT
-			|| (g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer & (RELOAD_NEXTMAP_WAITING|RELOAD_ENDGAME))) {
-#else
-			) {
-#endif // SAVEGAME_SUPPORT
+
+// sta acqu-sdk (issue 18): remove unused code
+//		} else if((client->ps.eFlags & EF_VIEWING_CAMERA)
+//#ifdef SAVEGAME_SUPPORT
+//			|| (g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer & (RELOAD_NEXTMAP_WAITING|RELOAD_ENDGAME))) {
+//#else
+//			) {
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
+
+		} else if((client->ps.eFlags & EF_VIEWING_CAMERA)) {
 			VectorClear(client->ps.velocity);
 			client->ps.pm_type = PM_FREEZE;
 		}
@@ -1147,10 +1159,12 @@ void ClientThink_real( gentity_t *ent ) {
         break;        
 	}*/
 
-#ifdef SAVEGAME_SUPPORT
-	if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
-		pm.reloading = qtrue;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	if( g_gametype.integer == GT_SINGLE_PLAYER && g_reloading.integer )
+//		pm.reloading = qtrue;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 	// Gordon: bit hacky, stop the slight lag from client -> server even on locahost, switching back to the weapon you were holding
 	//			and then back to what weapon you should have, became VERY noticible for the kar98/carbine + gpg40, esp now i've added the

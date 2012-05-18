@@ -622,13 +622,15 @@ respawn
 */
 void respawn( gentity_t *ent ) {
 
-#ifdef SAVEGAME_SUPPORT
-	if( g_gametype.integer == GT_SINGLE_PLAYER ) {
-		if (g_reloading.integer || saveGamePending) {
-			return;
-		}
-	}
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	if( g_gametype.integer == GT_SINGLE_PLAYER ) {
+//		if (g_reloading.integer || saveGamePending) {
+//			return;
+//		}
+//	}
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 	ent->client->ps.pm_flags &= ~PMF_LIMBO; // JPW NERVE turns off limbo
 

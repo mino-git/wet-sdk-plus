@@ -269,9 +269,11 @@ vmCvar_t	cg_atmosphericEffects;
 vmCvar_t	cg_drawRoundTimer;
 // END Mad Doc - TDF
 
-#ifdef SAVEGAME_SUPPORT
-vmCvar_t	cg_reloading;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//vmCvar_t	cg_reloading;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 vmCvar_t	cg_fastSolids;
 vmCvar_t	cg_instanttapout;
@@ -490,9 +492,11 @@ cvarTable_t		cvarTable[] = {
 
 	{ &cg_drawRoundTimer, "cg_drawRoundTimer", "1", CVAR_ARCHIVE },
 
-#ifdef SAVEGAME_SUPPORT
-	{ &cg_reloading, "g_reloading", "0", 0 },
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	{ &cg_reloading, "g_reloading", "0", 0 },
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 	// Gordon: optimization cvars: 18/12/02 enabled by default now
 	{ &cg_fastSolids,		"cg_fastSolids",	"1",	CVAR_ARCHIVE },

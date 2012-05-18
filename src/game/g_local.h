@@ -1575,12 +1575,14 @@ void G_LeaveTank( gentity_t* ent, qboolean position );
 // Ridah
 
 // g_save.c
-#ifdef SAVEGAME_SUPPORT
-qboolean G_SaveGame(char *username);
-void G_LoadGame(void);
-qboolean G_SavePersistant(char *nextmap);
-void G_LoadPersistant(void);
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//qboolean G_SaveGame(char *username);
+//void G_LoadGame(void);
+//qboolean G_SavePersistant(char *nextmap);
+//void G_LoadPersistant(void);
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 // g_script.c
 void G_Script_ScriptParse( gentity_t *ent );
@@ -1719,9 +1721,11 @@ extern vmCvar_t g_lms_currentMatch;
 extern vmCvar_t g_lms_lockTeams;
 extern vmCvar_t g_lms_followTeamOnly;
 
-#ifdef SAVEGAME_SUPPORT
-extern	vmCvar_t	g_reloading;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//extern	vmCvar_t	g_reloading;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 // NERVE - SMF
 extern vmCvar_t		g_warmupLatch;

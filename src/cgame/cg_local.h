@@ -2204,9 +2204,11 @@ extern vmCvar_t			cg_debugSkills;
 extern vmCvar_t			cg_drawFireteamOverlay;
 extern vmCvar_t			cg_drawSmallPopupIcons;
 
-#ifdef SAVEGAME_SUPPORT
-extern	vmCvar_t		cg_reloading;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//extern	vmCvar_t		cg_reloading;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 // Gordon: some optimization cvars
 extern	vmCvar_t		cg_fastSolids;

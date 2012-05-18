@@ -26,8 +26,10 @@
 #define _attribute(x)
 #endif
 
+// sta acqu-sdk (issue 18): remove unused code
 //#define SAVEGAME_SUPPORT	// uncomment to enable savegames
 							// enabling this requires you to run extractfuncs.bat as well before compiling qagame
+// end acqu-sdk (issue 18)
 
 #define SPRINTTIME 20000.0f
 
@@ -545,9 +547,11 @@ typedef struct {
 
 	int			*skill;				// player skills
 
-#ifdef SAVEGAME_SUPPORT
-	qboolean	reloading;
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	qboolean	reloading;
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 #ifdef GAMEDLL	// the whole stamina thing is only in qagame
 	qboolean	leadership;			// within 512 units of a player with level 5 Signals skill (that player has to be in PVS as well to make sue we can predict it)

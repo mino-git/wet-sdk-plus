@@ -3782,11 +3782,13 @@ static void PM_Weapon( void ) {
 		return;
 	}
 
-#ifdef SAVEGAME_SUPPORT
-	if( pm->reloading ) {
-		return;
-	}
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//	if( pm->reloading ) {
+//		return;
+//	}
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
 
 	// player is zooming - no fire
 	// JPW NERVE in MP, LT needs to zoom to call artillery

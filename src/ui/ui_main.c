@@ -7755,10 +7755,13 @@ void _UI_SetActiveMenu( uiMenuCommand_t menu ) {
 
 			trap_S_FadeAllSound( 1.0f, 1000, qfalse );	// make sure sound fades up
 
-#ifdef SAVEGAME_SUPPORT
-			// ensure savegames are loadable
-			trap_Cvar_Set( "g_reloading", "0" );
-#endif // SAVEGAME_SUPPORT
+// sta acqu-sdk (issue 18): remove unused code
+//#ifdef SAVEGAME_SUPPORT
+//			// ensure savegames are loadable
+//			trap_Cvar_Set( "g_reloading", "0" );
+//#endif // SAVEGAME_SUPPORT
+// end acqu-sdk (issue 18)
+
 			return;
 
 	  case UIMENU_TEAM:
