@@ -447,38 +447,6 @@
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File
-				RelativePath=".\be_aas.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_char.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_chat.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_gen.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_goal.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_move.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ai_weap.h"
-				>
-			</File>
-			<File
-				RelativePath=".\be_ea.h"
-				>
-			</File>
-			<File
 				RelativePath=".\bg_classes.h"
 				>
 			</File>
@@ -488,10 +456,6 @@
 			</File>
 			<File
 				RelativePath=".\bg_public.h"
-				>
-			</File>
-			<File
-				RelativePath=".\botlib.h"
 				>
 			</File>
 			<File
