@@ -6,7 +6,10 @@
 */
 
 #include "cg_local.h"
-#include "../game/bg_classes.h"
+
+// sta acqu-sdk (issue 18): this file was empty
+//#include "../game/bg_classes.h"
+// end acqu-sdk (issue 18)
 
 #define	SWING_RIGHT	1
 #define SWING_LEFT	2

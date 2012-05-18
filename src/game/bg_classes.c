@@ -1,6 +1,9 @@
 #include "q_shared.h"
 #include "bg_public.h"
-#include "bg_classes.h"
+
+// sta acqu-sdk (issue 18): this file was empty
+//#include "bg_classes.h"
+// end acqu-sdk (issue 18)
 
 bg_playerclass_t bg_allies_playerclasses[NUM_PLAYER_CLASSES] = {
 	{	

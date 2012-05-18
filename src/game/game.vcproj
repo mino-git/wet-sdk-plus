@@ -443,10 +443,6 @@
 			Filter="h;hpp;hxx;hm;inl;fi;fd"
 			>
 			<File
-				RelativePath=".\bg_classes.h"
-				>
-			</File>
-			<File
 				RelativePath=".\bg_local.h"
 				>
 			</File>
