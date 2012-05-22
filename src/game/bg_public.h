@@ -33,7 +33,9 @@
 
 #define SPRINTTIME 20000.0f
 
-#define DEBUG_BOT_RETREATBEHAVIOR 1
+// sta acqu-sdk (issue 18): remove unused code
+//#define DEBUG_BOT_RETREATBEHAVIOR 1
+// end acqu-sdk (issue 18)
 
 #define	DEFAULT_GRAVITY		800
 #define FORCE_LIMBO_HEALTH	-75 // JPW NERVE
