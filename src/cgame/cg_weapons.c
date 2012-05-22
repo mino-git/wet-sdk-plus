@@ -1682,9 +1682,14 @@ static void CG_SetWeapLerpFrameAnimation( weaponInfo_t *wi, lerpFrame_t *lf, int
 	lf->animation		= anim;
 	lf->animationTime	= lf->frameTime + anim->initialLerp;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if ( cg_debugAnim.integer & 2) {
 		CG_Printf( "Weap Anim: %d\n", newAnimation );
 	}
+#endif
+// end acqu-sdk (issue 10)
+
 }
 
 
@@ -1767,9 +1772,15 @@ static void CG_RunWeapLerpFrame( clientInfo_t *ci, weaponInfo_t *wi, lerpFrame_t
 		lf->frameModel = anim->mdxFile;
 		if ( cg.time > lf->frameTime ) {
 			lf->frameTime = cg.time;
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			if ( cg_debugAnim.integer ) {
 				CG_Printf( "Clamp lf->frameTime\n");
 			}
+#endif
+// end acqu-sdk (issue 10)
+
 		}
 	}
 
@@ -1813,9 +1824,14 @@ static void CG_WeaponAnimation(playerState_t *ps, weaponInfo_t *weapon, int *wea
 	*weap			= cent->pe.weap.frame;
 	*weapBackLerp	= cent->pe.weap.backlerp;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if ( cg_debugAnim.integer == 3) {
 		CG_Printf( "oldframe: %d   frame: %d   backlerp: %f\n", cent->pe.weap.oldFrame, cent->pe.weap.frame, cent->pe.weap.backlerp);
 	}
+#endif
+// end acqu-sdk (issue 10)
+
 }
 
 ////////////////////////////////////////////////////////////////////////

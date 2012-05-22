@@ -430,9 +430,14 @@ static void CG_SetLerpFrameAnimation( centity_t *cent, clientInfo_t *ci, lerpFra
 	lf->animation = anim;
 	lf->animationTime = lf->frameTime + anim->initialLerp;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if( cg_debugAnim.integer == 1 ) {
 		CG_Printf( "Anim: %i, %s\n", newAnimation, character->animModelInfo->animations[newAnimation]->name );
 	}
+#endif
+// end acqu-sdk (issue 10)
+
 }
 
 /*
@@ -494,9 +499,15 @@ void CG_RunLerpFrame( centity_t *cent, clientInfo_t *ci, lerpFrame_t *lf, int ne
 
 		if( cg.time > lf->frameTime ) {
 			lf->frameTime = cg.time;
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			if( cg_debugAnim.integer ) {
 				CG_Printf( "Clamp lf->frameTime\n");
 			}
+#endif
+// end acqu-sdk (issue 10)
+
 		}
 	}
 
@@ -600,9 +611,14 @@ void CG_SetLerpFrameAnimationRate( centity_t *cent, clientInfo_t *ci, lerpFrame_
 		lf->frameModel = anim->mdxFile;
 	}
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if( cg_debugAnim.integer == 1 ) {			// DHM - Nerve :: extra debug info
 		CG_Printf( "Anim: %i, %s\n", newAnimation, character->animModelInfo->animations[newAnimation]->name );
 	}
+#endif
+// end acqu-sdk (issue 10)
+
 }
 
 /*
@@ -809,9 +825,14 @@ void CG_RunLerpFrameRate( clientInfo_t *ci, lerpFrame_t *lf, int newAnimation, c
 			else
 				CG_RunLerpFrameRate( ci, lf, newAnimation, cent, recursion + 1 );
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			if ( cg_debugAnim.integer > 3 ) {
 				CG_Printf( "Clamp lf->frameTime\n");
 			}
+#endif
+// end acqu-sdk (issue 10)
+
 		}
 		lf->oldAnimationNumber = lf->animationNumber;
 	}
@@ -2237,10 +2258,14 @@ void CG_ResetPlayerEntity( centity_t *cent ) {
 
 	VectorCopy( cent->lerpOrigin, cent->rawOrigin );
 	VectorCopy( cent->lerpAngles, cent->rawAngles );
-
+	
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if ( cg_debugPosition.integer ) {
 		CG_Printf("%i ResetPlayerEntity yaw=%i\n", cent->currentState.number, cent->pe.torso.yawAngle );
 	}
+#endif
+// end acqu-sdk (issue 10)
 
 	cent->pe.painAnimLegs = -1;
 	cent->pe.painAnimTorso = -1;

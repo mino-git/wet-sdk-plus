@@ -2043,9 +2043,15 @@ extern	vmCvar_t		cg_crosshairSize;
 extern	vmCvar_t		cg_crosshairHealth;
 extern	vmCvar_t		cg_drawStatus;
 extern	vmCvar_t		cg_animSpeed;
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 extern	vmCvar_t		cg_debugAnim;
 extern	vmCvar_t		cg_debugPosition;
 extern	vmCvar_t		cg_debugEvents;
+#endif
+// end acqu-sdk (issue 10)
+
 extern	vmCvar_t		cg_drawSpreadScale;
 extern	vmCvar_t		cg_railTrailTime;
 extern	vmCvar_t		cg_errorDecay;

@@ -114,9 +114,15 @@ vmCvar_t	cg_noVoiceText;			// NERVE - SMF
 vmCvar_t	cg_drawStatus;
 vmCvar_t	cg_animSpeed;
 vmCvar_t	cg_drawSpreadScale;
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 vmCvar_t	cg_debugAnim;
 vmCvar_t	cg_debugPosition;
 vmCvar_t	cg_debugEvents;
+#endif
+// end acqu-sdk (issue 10)
+
 vmCvar_t	cg_errorDecay;
 vmCvar_t	cg_nopredict;
 vmCvar_t	cg_noPlayerAnims;
@@ -370,9 +376,15 @@ cvarTable_t		cvarTable[] = {
 	{ &cg_messagePlayerName, "cg_messagePlayerName", "", CVAR_TEMP },
 
 	{ &cg_animSpeed, "cg_animspeed", "1", CVAR_CHEAT },
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	{ &cg_debugAnim, "cg_debuganim", "0", CVAR_CHEAT },
 	{ &cg_debugPosition, "cg_debugposition", "0", CVAR_CHEAT },
 	{ &cg_debugEvents, "cg_debugevents", "0", CVAR_CHEAT },
+#endif
+// end acqu-sdk (issue 10)	
+
 	{ &cg_errorDecay, "cg_errordecay", "100", 0 },
 	{ &cg_nopredict, "cg_nopredict", "0", CVAR_CHEAT },
 	{ &cg_noPlayerAnims, "cg_noplayeranims", "0", CVAR_CHEAT },
