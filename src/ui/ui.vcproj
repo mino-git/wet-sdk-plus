@@ -295,10 +295,6 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="..\game\bg_classes.h"
-				>
-			</File>
-			<File
 				RelativePath="..\game\bg_public.h"
 				>
 			</File>

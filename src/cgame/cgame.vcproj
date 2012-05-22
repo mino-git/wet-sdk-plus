@@ -450,10 +450,6 @@
 			Filter="h"
 			>
 			<File
-				RelativePath="..\game\bg_classes.h"
-				>
-			</File>
-			<File
 				RelativePath="..\game\bg_local.h"
 				>
 			</File>
