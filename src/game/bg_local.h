@@ -9,7 +9,9 @@
 #define	TIMER_LAND		130
 #define	TIMER_GESTURE	(34*66+50)
 
-#define DOUBLE_TAP_DELAY	400
+// sta acqu-sdk (issue 18): remove unused code
+//#define DOUBLE_TAP_DELAY	400
+// end acqu-sdk (issue 18)
 
 #define MAX_MG42_HEAT	1500.f
 
@@ -46,9 +48,16 @@ extern	float	pm_stopspeed;
 
 //----(SA)	modified
 extern	float	pm_waterSwimScale;
-extern	float	pm_waterWadeScale;
+
+// sta acqu-sdk (issue 18): remove unused code
+//extern	float	pm_waterWadeScale;
+// end acqu-sdk (issue 18)
+
 extern	float	pm_slagSwimScale;
-extern	float	pm_slagWadeScale;
+
+// sta acqu-sdk (issue 18): remove unused code
+//extern	float	pm_slagWadeScale;
+// end acqu-sdk (issue 18)
 
 extern	float	pm_accelerate;
 extern	float	pm_airaccelerate;
@@ -59,7 +68,10 @@ extern	float	pm_flyaccelerate;
 extern	float	pm_friction;
 extern	float	pm_waterfriction;
 extern	float	pm_slagfriction;
-extern	float	pm_flightfriction;
+
+// sta acqu-sdk (issue 18): remove unused code
+//extern	float	pm_flightfriction;
+// end acqu-sdk (issue 18)
 
 //----(SA)	end
 
@@ -71,7 +83,9 @@ void PM_AddEvent( int newEvent );
 qboolean	PM_SlideMove( qboolean gravity );
 void		PM_StepSlideMove( qboolean gravity );
 
-qboolean	PM_SlideMoveProne( qboolean gravity );
-void		PM_StepSlideMoveProne( qboolean gravity );
+// sta acqu-sdk (issue 18): remove unused code
+//qboolean	PM_SlideMoveProne( qboolean gravity );
+//void		PM_StepSlideMoveProne( qboolean gravity );
+// end acqu-sdk (issue 18)
 
 void PM_BeginWeaponChange( int oldweapon, int newweapon, qboolean reload );

@@ -37,9 +37,16 @@ float	pm_stopspeed = 100;
 
 //----(SA)	modified
 float	pm_waterSwimScale	= 0.5;
-float	pm_waterWadeScale	= 0.70;
+
+// sta acqu-sdk (issue 18): remove unused code
+//float	pm_waterWadeScale	= 0.70;
+// end acqu-sdk (issue 18)
+
 float	pm_slagSwimScale	= 0.30;
-float	pm_slagWadeScale	= 0.70;
+
+// sta acqu-sdk (issue 18): remove unused code
+//float	pm_slagWadeScale	= 0.70;
+// end acqu-sdk (issue 18)
 
 float	pm_proneSpeedScale	= 0.21;	// was: 0.18 (too slow) then: 0.24 (too fast)
 
@@ -52,7 +59,11 @@ float	pm_flyaccelerate	= 8;
 float	pm_friction			= 6;
 float	pm_waterfriction	= 1;
 float	pm_slagfriction		= 1;
-float	pm_flightfriction	= 3;
+
+// sta acqu-sdk (issue 18): remove unused code
+//float	pm_flightfriction	= 3;
+// end acqu-sdk (issue 18)
+
 float	pm_ladderfriction	= 14;
 float	pm_spectatorfriction = 5.0f;
 
