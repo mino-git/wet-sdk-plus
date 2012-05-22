@@ -332,35 +332,37 @@ void CG_Draw3DModel( float x, float y, float w, float h, qhandle_t model, qhandl
 	trap_R_RenderScene( &refdef );
 }
 
+// sta acqu-sdk (issue 18): remove unused code
 /*
 ==============
 CG_DrawKeyModel
 ==============
 */
-void CG_DrawKeyModel( int keynum, float x, float y, float w, float h, int fadetime) {
-	qhandle_t		cm;
-	float			len;
-	vec3_t			origin, angles;
-	vec3_t			mins, maxs;
-
-	VectorClear( angles );
-
-	cm = cg_items[keynum].models[0];
-
-	// offset the origin y and z to center the model
-	trap_R_ModelBounds( cm, mins, maxs );
-
-	origin[2] = -0.5 * ( mins[2] + maxs[2] );
-	origin[1] = 0.5 * ( mins[1] + maxs[1] );
-
-//	len = 0.5 * ( maxs[2] - mins[2] );		
-	len = 0.75 * ( maxs[2] - mins[2] );		
-	origin[0] = len / 0.268;	// len / tan( fov/2 )
-
-	angles[YAW] = 30 * sin( cg.time / 2000.0 );;
-
-	CG_Draw3DModel( x, y, w, h, cg_items[keynum].models[0], 0, origin, angles);
-}
+//void CG_DrawKeyModel( int keynum, float x, float y, float w, float h, int fadetime) {
+//	qhandle_t		cm;
+//	float			len;
+//	vec3_t			origin, angles;
+//	vec3_t			mins, maxs;
+//
+//	VectorClear( angles );
+//
+//	cm = cg_items[keynum].models[0];
+//
+//	// offset the origin y and z to center the model
+//	trap_R_ModelBounds( cm, mins, maxs );
+//
+//	origin[2] = -0.5 * ( mins[2] + maxs[2] );
+//	origin[1] = 0.5 * ( mins[1] + maxs[1] );
+//
+////	len = 0.5 * ( maxs[2] - mins[2] );		
+//	len = 0.75 * ( maxs[2] - mins[2] );		
+//	origin[0] = len / 0.268;	// len / tan( fov/2 )
+//
+//	angles[YAW] = 30 * sin( cg.time / 2000.0 );;
+//
+//	CG_Draw3DModel( x, y, w, h, cg_items[keynum].models[0], 0, origin, angles);
+//}
+// end acqu-sdk (issue 18)
 
 /*
 ================
@@ -2510,6 +2512,7 @@ static void CG_DrawIntermission( void )
 */
 }
 
+// sta acqu-sdk (issue 18): remove unused code
 /*
 =================
 CG_ActivateLimboMenu
@@ -2517,30 +2520,31 @@ CG_ActivateLimboMenu
 NERVE - SMF
 =================
 */
-static void CG_ActivateLimboMenu(void) {
-/*	static qboolean latch = qfalse;
-	qboolean test;
-
-	// should we open the limbo menu (make allowances for MV clients)
-	test = ((cg.snap->ps.pm_flags & PMF_LIMBO) ||
-			( (cg.mvTotalClients < 1 && (
-				(cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) ||
-				(cg.warmup))
-			  )
-			&& cg.snap->ps.pm_type != PM_INTERMISSION ) );
-
-
-	// auto open/close limbo mode
-	if(cg_popupLimboMenu.integer && !cg.demoPlayback) {
-		if(test && !latch) {			
-			CG_LimboMenu_f();
-			latch = qtrue;
-		} else if(!test && latch && cg.showGameView) {
-			CG_EventHandling(CGAME_EVENT_NONE, qfalse);
-			latch = qfalse;
-		}
-	}*/
-}
+//static void CG_ActivateLimboMenu(void) {
+//	static qboolean latch = qfalse;
+//	qboolean test;
+//
+//	// should we open the limbo menu (make allowances for MV clients)
+//	test = ((cg.snap->ps.pm_flags & PMF_LIMBO) ||
+//			( (cg.mvTotalClients < 1 && (
+//				(cg.snap->ps.persistant[PERS_TEAM] == TEAM_SPECTATOR) ||
+//				(cg.warmup))
+//			  )
+//			&& cg.snap->ps.pm_type != PM_INTERMISSION ) );
+//
+//
+//	// auto open/close limbo mode
+//	if(cg_popupLimboMenu.integer && !cg.demoPlayback) {
+//		if(test && !latch) {			
+//			CG_LimboMenu_f();
+//			latch = qtrue;
+//		} else if(!test && latch && cg.showGameView) {
+//			CG_EventHandling(CGAME_EVENT_NONE, qfalse);
+//			latch = qfalse;
+//		}
+//	}
+//}
+// end acqu-sdk (issue 18)
 
 /*
 =================
@@ -4563,8 +4567,10 @@ void CG_DrawActive( stereoFrame_t stereoView ) {
 	}
 
 	cg.refdef_current->glfog.registered = 0;	// make sure it doesn't use fog from another scene
-
-	CG_ActivateLimboMenu();
+	
+	// sta acqu-sdk (issue 18): remove unused code
+	//CG_ActivateLimboMenu();
+	// end acqu-sdk (issue 18)
 
 //	if( cgs.ccCurrentCamObjective == -1 ) {
 //		if( cg.showGameView ) {
