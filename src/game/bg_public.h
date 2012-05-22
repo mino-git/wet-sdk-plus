@@ -40,13 +40,18 @@
 #define	DEFAULT_GRAVITY		800
 #define FORCE_LIMBO_HEALTH	-75 // JPW NERVE
 #define	GIB_HEALTH			-175 // JPW NERVE
-#define	ARMOR_PROTECTION	0.66
+
+// sta acqu-sdk (issue 18): remove unused code
+//#define	ARMOR_PROTECTION	0.66
+// end acqu-sdk (issue 18)
 
 #define HOLDBREATHTIME		12000
 
 #define	MAX_ITEMS			256
 
-#define	RANK_TIED_FLAG		0x4000
+// sta acqu-sdk (issue 18): remove unused code
+//#define	RANK_TIED_FLAG		0x4000
+// end acqu-sdk (issue 18)
 
 //#define DEFAULT_SHOTGUN_SPREAD	700
 //#define DEFAULT_SHOTGUN_COUNT	11
@@ -68,7 +73,9 @@
 //#define	PORTAL_ZOMBIE_SPAWNTIME		3000
 //#define	PORTAL_FEMZOMBIE_SPAWNTIME	3000
 
-#define	SCORE_NOT_PRESENT	-9999	// for the CS_SCORES[12] when only one player is present
+// sta acqu-sdk (issue 18): remove unused code
+//#define	SCORE_NOT_PRESENT	-9999	// for the CS_SCORES[12] when only one player is present
+// end acqu-sdk (issue 18)
 
 #define	VOTE_TIME			30000	// 30 seconds before vote times out
 
@@ -95,15 +102,18 @@ extern vec3_t	playerlegsProneMaxs;
 #define MAX_COMMANDMAP_LAYERS	16
 // end acqu-sdk (issue 2): CHRUKER: b043
 
-
-#define	DEFAULT_MODEL		"multi"
-#define DEFAULT_HEAD		"default"	// technically the default head skin.  this means "head_default.skin" for the head
+// sta acqu-sdk (issue 18): remove unused code
+//#define	DEFAULT_MODEL		"multi"
+//#define DEFAULT_HEAD		"default"	// technically the default head skin.  this means "head_default.skin" for the head
+// end acqu-sdk (issue 18)
 
 // RF, on fire effects
 #define FIRE_FLASH_TIME			2000
 #define	FIRE_FLASH_FADEIN_TIME	1000
 
-#define LIGHTNING_FLASH_TIME	150
+// sta acqu-sdk (issue 18): remove unused code
+//#define LIGHTNING_FLASH_TIME	150
+// end acqu-sdk (issue 18)
 
 #define AAGUN_DAMAGE		25
 #define AAGUN_SPREAD		10
@@ -115,7 +125,9 @@ extern vec3_t	playerlegsProneMaxs;
 #define MG42_DAMAGE_MP		20
 #define MG42_RATE_OF_FIRE_MP	66
 
-#define MG42_DAMAGE_SP		40
+// sta acqu-sdk (issue 18): remove unused code
+//#define MG42_DAMAGE_SP		40
+// end acqu-sdk (issue 18)
 #define MG42_RATE_OF_FIRE_SP	100
 
 #define AAGUN_RATE_OF_FIRE	100
@@ -135,59 +147,63 @@ typedef enum {
 	STATE_UNDERCONSTRUCTION	// ent is being constructed
 } entState_t;
 
-typedef enum {
-  SELECT_BUDDY_ALL = 0,
-  SELECT_BUDDY_1,
-  SELECT_BUDDY_2,
-  SELECT_BUDDY_3,
-  SELECT_BUDDY_4,
-  SELECT_BUDDY_5,
-  SELECT_BUDDY_6,
+// sta acqu-sdk (issue 18): remove unused code
+//typedef enum {
+//  SELECT_BUDDY_ALL = 0,
+//  SELECT_BUDDY_1,
+//  SELECT_BUDDY_2,
+//  SELECT_BUDDY_3,
+//  SELECT_BUDDY_4,
+//  SELECT_BUDDY_5,
+//  SELECT_BUDDY_6,
+//
+//  SELECT_BUDDY_LAST	// must be the last one in the enum
+//
+//} SelectBuddyFlag;
+// end acqu-sdk (issue 18)
 
-  SELECT_BUDDY_LAST	// must be the last one in the enum
-
-} SelectBuddyFlag;
-
+// sta acqu-sdk (issue 18): remove unused code
 // START - TAT 10/21/2002
 // New icon based bot action command system
-typedef enum
-{
-	BOT_ACTION_ATTACK = 0,
-	BOT_ACTION_COVER,			// 1
-	BOT_ACTION_MOUNTGUN,		// 2
-	BOT_ACTION_OPENDOOR,		// 3
-	BOT_ACTION_USEDYNAMITE,		// 4
-	BOT_ACTION_DISARM,			// 5
-	BOT_ACTION_CONSTRUCT,		// 6
-	BOT_ACTION_REPAIR,			// 7
-	BOT_ACTION_REVIVE,			// 8
-	BOT_ACTION_GETDISGUISE,		// 9
-	BOT_ACTION_HEAL,			// 10
-	BOT_ACTION_AMMO,			// 11
-	BOT_ACTION_GRENADELAUNCH,	// 12
-	BOT_ACTION_PICKUPITEM,		// 13
-	BOT_ACTION_PANZERFAUST,		// 14
-	BOT_ACTION_FLAMETHROW,		// 15
-	BOT_ACTION_MG42,			// 16
-	BOT_ACTION_MOUNTEDATTACK,	// 17		-- attack when mounted on mg42
-	BOT_ACTION_KNIFEATTACK,		// 18
-	BOT_ACTION_LOCKPICK,		// 19
-
-	BOT_ACTION_MAXENTITY,
-
-	// None of these need an entity...
-	BOT_ACTION_RECON = BOT_ACTION_MAXENTITY,	// 20
-	BOT_ACTION_SMOKEBOMB,		// 21
-	BOT_ACTION_FINDMINES,		// 22
-	BOT_ACTION_PLANTMINE,		// 23
-	BOT_ACTION_ARTILLERY,		// 24
-	BOT_ACTION_AIRSTRIKE,		// 25
-	BOT_ACTION_MOVETOLOC,		// 26
-
-	// NOTE: if this gets bigger than 32 items, need to make botMenuIcons bigger
-	BOT_ACTION_MAX
-} botAction_t;
+//typedef enum
+//{
+//	BOT_ACTION_ATTACK = 0,
+//	BOT_ACTION_COVER,			// 1
+//	BOT_ACTION_MOUNTGUN,		// 2
+//	BOT_ACTION_OPENDOOR,		// 3
+//	BOT_ACTION_USEDYNAMITE,		// 4
+//	BOT_ACTION_DISARM,			// 5
+//	BOT_ACTION_CONSTRUCT,		// 6
+//	BOT_ACTION_REPAIR,			// 7
+//	BOT_ACTION_REVIVE,			// 8
+//	BOT_ACTION_GETDISGUISE,		// 9
+//	BOT_ACTION_HEAL,			// 10
+//	BOT_ACTION_AMMO,			// 11
+//	BOT_ACTION_GRENADELAUNCH,	// 12
+//	BOT_ACTION_PICKUPITEM,		// 13
+//	BOT_ACTION_PANZERFAUST,		// 14
+//	BOT_ACTION_FLAMETHROW,		// 15
+//	BOT_ACTION_MG42,			// 16
+//	BOT_ACTION_MOUNTEDATTACK,	// 17		-- attack when mounted on mg42
+//	BOT_ACTION_KNIFEATTACK,		// 18
+//	BOT_ACTION_LOCKPICK,		// 19
+//
+//	BOT_ACTION_MAXENTITY,
+//
+//	// None of these need an entity...
+//	BOT_ACTION_RECON = BOT_ACTION_MAXENTITY,	// 20
+//	BOT_ACTION_SMOKEBOMB,		// 21
+//	BOT_ACTION_FINDMINES,		// 22
+//	BOT_ACTION_PLANTMINE,		// 23
+//	BOT_ACTION_ARTILLERY,		// 24
+//	BOT_ACTION_AIRSTRIKE,		// 25
+//	BOT_ACTION_MOVETOLOC,		// 26
+//
+//	// NOTE: if this gets bigger than 32 items, need to make botMenuIcons bigger
+//	BOT_ACTION_MAX
+//} botAction_t;
 // END - TAT 10/21/2002
+// end acqu-sdk (issue 18)
 
 // RF
 #define	MAX_TAGCONNECTS		64
@@ -274,7 +290,10 @@ typedef struct {
 } cpsFile_t;
 
 qboolean BG_LoadCampaignSave( const char *filename, cpsFile_t *file, const char *profile );
-qboolean BG_StoreCampaignSave( const char *filename, cpsFile_t *file, const char *profile );
+
+// sta acqu-sdk (issue 18): remove unused code
+//qboolean BG_StoreCampaignSave( const char *filename, cpsFile_t *file, const char *profile );
+// end acqu-sdk (issue 18)
 
 typedef struct {
 	const char		*campaignShortName;
@@ -1524,7 +1543,11 @@ extern	int		bg_numItems;
 gitem_t	*BG_FindItem( const char *pickupName );
 gitem_t	*BG_FindItemForClassName( const char *className );
 gitem_t	*BG_FindItemForWeapon	( weapon_t weapon );
-gitem_t	*BG_FindItemForPowerup	( powerup_t pw );
+
+// sta acqu-sdk (issue 18): remove unused code
+//gitem_t	*BG_FindItemForPowerup	( powerup_t pw );
+// end acqu-sdk (issue 18)
+
 gitem_t	*BG_FindItemForHoldable	( holdable_t pw );
 gitem_t *BG_FindItemForAmmo		( int weapon );
 //gitem_t *BG_FindItemForKey		( wkey_t k, int *index );
@@ -1617,7 +1640,7 @@ typedef enum {
 
 
 void	BG_EvaluateTrajectory( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splinePath );
-void BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splineData );
+void	BG_EvaluateTrajectoryDelta( const trajectory_t *tr, int atTime, vec3_t result, qboolean isAngle, int splineData );
 void	BG_GetMarkDir( const vec3_t dir, const vec3_t normal, vec3_t out );
 
 void	BG_AddPredictableEventToPlayerstate( int newEvent, int eventParm, playerState_t *ps );
@@ -1632,7 +1655,11 @@ weapon_t BG_WeaponForMOD( int MOD );
 
 qboolean	BG_WeaponInWolfMP( int weapon );
 qboolean	BG_PlayerTouchesItem( playerState_t *ps, entityState_t *item, int atTime );
-qboolean	BG_PlayerSeesItem	( playerState_t *ps, entityState_t *item, int atTime );
+
+// sta acqu-sdk (issue 18): remove unused code
+//qboolean	BG_PlayerSeesItem	( playerState_t *ps, entityState_t *item, int atTime );
+// end acqu-sdk (issue 18)
+
 qboolean	BG_AddMagicAmmo ( playerState_t *ps, int *skill, int teamNum, int numOfClips );
 
 #define	OVERCLIP		1.001
@@ -1647,7 +1674,10 @@ void PM_ClipVelocity( vec3_t in, vec3_t normal, vec3_t out, float overbounce );
 #define MAX_BOTS			64
 #define MAX_BOTS_TEXT		8192
 
-#define MAX_CAMPAIGNS_TEXT	8192
+// sta acqu-sdk (issue 18): remove unused code
+//#define MAX_CAMPAIGNS_TEXT	8192
+// end acqu-sdk (issue 18)
+
 
 typedef enum {
 	FOOTSTEP_NORMAL,
@@ -1881,16 +1911,18 @@ typedef struct
 //------------------------------------------------------------------
 // Conditional Constants
 
-typedef enum
-{
-	POSITION_UNUSED,
-	POSITION_BEHIND,
-	POSITION_INFRONT,
-	POSITION_RIGHT,
-	POSITION_LEFT,
-
-	NUM_ANIM_COND_POSITIONS
-} animScriptPosition_t;
+// sta acqu-sdk (issue 18): remove unused code
+//typedef enum
+//{
+//	POSITION_UNUSED,
+//	POSITION_BEHIND,
+//	POSITION_INFRONT,
+//	POSITION_RIGHT,
+//	POSITION_LEFT,
+//
+//	NUM_ANIM_COND_POSITIONS
+//} animScriptPosition_t;
+// end acqu-sdk (issue 18)
 
 typedef enum
 {
@@ -1901,29 +1933,31 @@ typedef enum
 	NUM_ANIM_COND_MOUNTED
 } animScriptMounted_t;
 
-typedef enum
-{
-	LEANING_UNUSED,
-	LEANING_RIGHT,
-	LEANING_LEFT,
-
-	NUM_ANIM_COND_LEANING
-} animScriptLeaning_t;
-
-typedef enum
-{
-	IMPACTPOINT_UNUSED,
-	IMPACTPOINT_HEAD,
-	IMPACTPOINT_CHEST,
-	IMPACTPOINT_GUT,
-	IMPACTPOINT_GROIN,
-	IMPACTPOINT_SHOULDER_RIGHT,
-	IMPACTPOINT_SHOULDER_LEFT,
-	IMPACTPOINT_KNEE_RIGHT,
-	IMPACTPOINT_KNEE_LEFT,
-
-	NUM_ANIM_COND_IMPACTPOINT
-} animScriptImpactPoint_t;
+// sta acqu-sdk (issue 18): remove unused code
+//typedef enum
+//{
+//	LEANING_UNUSED,
+//	LEANING_RIGHT,
+//	LEANING_LEFT,
+//
+//	NUM_ANIM_COND_LEANING
+//} animScriptLeaning_t;
+//
+//typedef enum
+//{
+//	IMPACTPOINT_UNUSED,
+//	IMPACTPOINT_HEAD,
+//	IMPACTPOINT_CHEST,
+//	IMPACTPOINT_GUT,
+//	IMPACTPOINT_GROIN,
+//	IMPACTPOINT_SHOULDER_RIGHT,
+//	IMPACTPOINT_SHOULDER_LEFT,
+//	IMPACTPOINT_KNEE_RIGHT,
+//	IMPACTPOINT_KNEE_LEFT,
+//
+//	NUM_ANIM_COND_IMPACTPOINT
+//} animScriptImpactPoint_t;
+// end acqu-sdk (issue 18)
 
 typedef enum
 {
@@ -1958,7 +1992,9 @@ typedef enum{
 	ACC_MAX			// this is bound by network limits, must change network stream to increase this
 } accType_t;
 
-#define ACC_NUM_MOUTH 3	// matches the above count
+// sta acqu-sdk (issue 18): remove unused code
+//#define ACC_NUM_MOUTH 3	// matches the above count
+// end acqu-sdk (issue 18)
 
 #define MAX_GIB_MODELS		16
 
@@ -2022,8 +2058,10 @@ SAVE
 ==============================================================
 */
 
-#define	SAVE_VERSION			31
-#define	SAVE_INFOSTRING_LENGTH	256
+// sta acqu-sdk (issue 18): remove unused code
+//#define	SAVE_VERSION			31
+//#define	SAVE_INFOSTRING_LENGTH	256
+// end acqu-sdk (issue 18)
 
 //------------------------------------------------------------------
 // Global Function Decs
@@ -2032,7 +2070,11 @@ SAVE
 void BG_InitWeaponStrings(void);
 void BG_AnimParseAnimScript( animModelInfo_t *modelInfo, animScriptData_t *scriptData, const char *filename, char *input );
 int BG_AnimScriptAnimation( playerState_t *ps, animModelInfo_t *modelInfo, scriptAnimMoveTypes_t movetype, qboolean isContinue );
-int	BG_AnimScriptCannedAnimation( playerState_t *ps, animModelInfo_t *modelInfo );
+
+// sta acqu-sdk (issue 18): remove unused code
+//int	BG_AnimScriptCannedAnimation( playerState_t *ps, animModelInfo_t *modelInfo );
+// end acqu-sdk (issue 18)
+
 int	BG_AnimScriptEvent( playerState_t *ps, animModelInfo_t *modelInfo, scriptAnimEventTypes_t event, qboolean isContinue, qboolean force );
 int BG_IndexForString( char *token, animStringItem_t *strings, qboolean allowFail );
 int BG_PlayAnimName( playerState_t *ps, animModelInfo_t *animModelInfo, char *animName, animBodyPart_t bodyPart, qboolean setTimer, qboolean isContinue, qboolean force );
@@ -2060,13 +2102,19 @@ bg_playerclass_t* BG_GetPlayerClassInfo(int team, int cls);
 bg_playerclass_t* BG_PlayerClassForPlayerState(playerState_t* ps);
 qboolean BG_ClassHasWeapon(bg_playerclass_t* classInfo, weapon_t weap);
 qboolean BG_WeaponIsPrimaryForClassAndTeam( int classnum, team_t team, weapon_t weapon );
-int BG_ClassWeaponCount( bg_playerclass_t* classInfo, team_t team );
+
+// sta acqu-sdk (issue 18): remove unused code
+//int BG_ClassWeaponCount( bg_playerclass_t* classInfo, team_t team );
+// end acqu-sdk (issue 18)
+
 const char* BG_ShortClassnameForNumber( int classNum );
 const char* BG_ClassnameForNumber( int classNum );
 const char* BG_ClassLetterForNumber( int classNum );
 
-void BG_DisableClassWeapon( bg_playerclass_t* classinfo, int weapon );
-void BG_DisableWeaponForAllClasses( int weapon );
+// sta acqu-sdk (issue 18): remove unused code
+//void BG_DisableClassWeapon( bg_playerclass_t* classinfo, int weapon );
+//void BG_DisableWeaponForAllClasses( int weapon );
+// end acqu-sdk (issue 18)
 
 extern bg_playerclass_t bg_allies_playerclasses[NUM_PLAYER_CLASSES];
 extern bg_playerclass_t bg_axis_playerclasses[NUM_PLAYER_CLASSES];
@@ -2153,13 +2201,15 @@ void BG_InitLocations( vec2_t world_mins, vec2_t world_maxs );
 char *BG_GetLocationString( vec_t* pos );
 
 // START Mad Doc - TDF
-typedef struct botpool_x
-{
-	int num;
-	int playerclass;
-	int rank;
-	struct botpool_x *next;
-} botpool_t;
+// sta acqu-sdk (issue 18): remove unused code
+//typedef struct botpool_x
+//{
+//	int num;
+//	int playerclass;
+//	int rank;
+//	struct botpool_x *next;
+//} botpool_t;
+// end acqu-sdk (issue 18)
 
 // END Mad Doc - TDF
 
@@ -2248,9 +2298,16 @@ int BG_simpleHintsExpand(int hint, int val);
 int BG_simpleWeaponState(int ws);
 
 // Color escape handling
-int BG_colorstrncpyz(char *in, char *out, int str_max, int out_max);
+// sta acqu-sdk (issue 18): remove unused code
+//int BG_colorstrncpyz(char *in, char *out, int str_max, int out_max);
+// end acqu-sdk (issue 18)
+
 int BG_drawStrlen(const char *str);
-int BG_strRelPos(char *in, int index);
+
+// sta acqu-sdk (issue 18): remove unused code
+//int BG_strRelPos(char *in, int index);
+// end acqu-sdk (issue 18)
+
 // sta acqu-sdk (issue 2): CHRUKER: b069 - Cleaned up a few compiler warnings
 int BG_cleanName(const char *pszIn, char *pszOut, int dwMaxLength, qboolean fCRLF);
 //int BG_cleanName(const char *pszIn, char *pszOut, unsigned int dwMaxLength, qboolean fCRLF);
@@ -2279,7 +2336,10 @@ float BG_GetSkyHeightAtPoint( vec3_t pos );
 float BG_GetSkyGroundHeightAtPoint( vec3_t pos );
 float BG_GetGroundHeightAtPoint( vec3_t pos );
 int BG_GetTracemapGroundFloor( void );
-int BG_GetTracemapGroundCeil( void );
+
+// sta acqu-sdk (issue 18): remove unused code
+//int BG_GetTracemapGroundCeil( void );
+// end acqu-sdk (issue 18)
 
 //
 // bg_animgroup.c

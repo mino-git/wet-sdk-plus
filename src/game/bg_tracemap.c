@@ -667,12 +667,14 @@ int BG_GetTracemapGroundFloor( void ) {
 	return tracemap.groundfloor;
 }
 
-int BG_GetTracemapGroundCeil( void ) {
-	if( !tracemap.loaded ) {
-		return MAX_WORLD_HEIGHT;
-	}
-	return tracemap.groundceil;
-}
+// sta acqu-sdk (issue 18): remove unused code
+//int BG_GetTracemapGroundCeil( void ) {
+//	if( !tracemap.loaded ) {
+//		return MAX_WORLD_HEIGHT;
+//	}
+//	return tracemap.groundceil;
+//}
+// end acqu-sdk (issue 18)
 
 // rain - re-clamp the points, because a rounding error can cause
 // them to go outside the array

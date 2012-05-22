@@ -1593,8 +1593,12 @@ typedef struct {
 	qhandle_t	currentSquadBackground;
 	qhandle_t	SPTeamOverlayUnitBackground;
 	qhandle_t	SPTeamOverlayUnitSelected;
-	qhandle_t	SPTeamOverlayBotOrders[BOT_ACTION_MAX];
-	qhandle_t	SPTeamOverlayBotOrdersBkg;
+
+	// sta acqu-sdk (issue 18): remove unused code
+	//qhandle_t	SPTeamOverlayBotOrders[BOT_ACTION_MAX];
+	//qhandle_t	SPTeamOverlayBotOrdersBkg;
+	// end acqu-sdk (issue 18)
+
 	qhandle_t	SPPlayerInfoSpecialIcon;
 	qhandle_t	SPPlayerInfoHealthIcon;
 	qhandle_t	SPPlayerInfoStaminaIcon;

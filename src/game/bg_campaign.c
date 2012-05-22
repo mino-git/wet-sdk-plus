@@ -70,47 +70,49 @@ qboolean BG_LoadCampaignSave( const char *filename, cpsFile_t *file, const char 
 	return( qtrue );
 }
 
-qboolean BG_StoreCampaignSave( const char *filename, cpsFile_t *file, const char *profile ) {
-	fileHandle_t f;
-	long hash;
-	char *ch;
-	int i, j;
-
-	// open the file
-	if( trap_FS_FOpenFile( filename, &f, FS_WRITE ) < 0 ) {
-		return( qfalse );
-	}
-
-	// write the header
-	file->header.ident = CPS_IDENT;
-	file->header.version = CPS_VERSION;
-
-	trap_FS_Write( &file->header.ident, sizeof(int), f );
-	trap_FS_Write( &file->header.version, 1, f );
-	trap_FS_Write( &file->header.numCampaigns, sizeof(int), f );
-
-	// generate hash for profile
-	for( hash = 0, ch = (char *)profile; *ch != '\0'; ch++ ) {
-		hash += (long)(tolower(*ch))*((ch-profile)+119);
-	}
-
-	file->header.profileHash = (int)hash;
-
-	trap_FS_Write( &file->header.profileHash, sizeof(int), f );
-
-	// write the campaigns and maps
-	for( i = 0; i < file->header.numCampaigns; i++ ) {
-		trap_FS_Write( &file->campaigns[i].shortnameHash, sizeof(int), f );
-		trap_FS_Write( &file->campaigns[i].progress, sizeof(int), f );
-
-		// all completed maps
-		for( j = 0; j < file->campaigns[i].progress; j++ ) {
-			trap_FS_Write( &file->campaigns[i].maps[j].mapnameHash, sizeof(int), f );
-		}
-	}
-
-	// done
-	trap_FS_FCloseFile( f );
-
-	return( qtrue );
-}
+// sta acqu-sdk (issue 18): remove unused code
+//qboolean BG_StoreCampaignSave( const char *filename, cpsFile_t *file, const char *profile ) {
+//	fileHandle_t f;
+//	long hash;
+//	char *ch;
+//	int i, j;
+//
+//	// open the file
+//	if( trap_FS_FOpenFile( filename, &f, FS_WRITE ) < 0 ) {
+//		return( qfalse );
+//	}
+//
+//	// write the header
+//	file->header.ident = CPS_IDENT;
+//	file->header.version = CPS_VERSION;
+//
+//	trap_FS_Write( &file->header.ident, sizeof(int), f );
+//	trap_FS_Write( &file->header.version, 1, f );
+//	trap_FS_Write( &file->header.numCampaigns, sizeof(int), f );
+//
+//	// generate hash for profile
+//	for( hash = 0, ch = (char *)profile; *ch != '\0'; ch++ ) {
+//		hash += (long)(tolower(*ch))*((ch-profile)+119);
+//	}
+//
+//	file->header.profileHash = (int)hash;
+//
+//	trap_FS_Write( &file->header.profileHash, sizeof(int), f );
+//
+//	// write the campaigns and maps
+//	for( i = 0; i < file->header.numCampaigns; i++ ) {
+//		trap_FS_Write( &file->campaigns[i].shortnameHash, sizeof(int), f );
+//		trap_FS_Write( &file->campaigns[i].progress, sizeof(int), f );
+//
+//		// all completed maps
+//		for( j = 0; j < file->campaigns[i].progress; j++ ) {
+//			trap_FS_Write( &file->campaigns[i].maps[j].mapnameHash, sizeof(int), f );
+//		}
+//	}
+//
+//	// done
+//	trap_FS_FCloseFile( f );
+//
+//	return( qtrue );
+//}
+// end acqu-sdk (issue 18)

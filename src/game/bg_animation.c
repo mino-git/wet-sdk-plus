@@ -1485,35 +1485,37 @@ BG_AnimScriptCannedAnimation
   returns the duration in milliseconds that this model should be paused. -1 if no anim found
 ================
 */
-int	BG_AnimScriptCannedAnimation( playerState_t *ps, animModelInfo_t *animModelInfo )
-{
-	animScript_t		*script;
-	animScriptItem_t	*scriptItem;
-	animScriptCommand_t	*scriptCommand;
-	scriptAnimMoveTypes_t movetype;
-
-	if( ps->eFlags & EF_DEAD )
-		return -1;
-
-	movetype = globalScriptData->clientConditions[ ps->clientNum ][ ANIM_COND_MOVETYPE ][0];
-	if (!movetype) {	// no valid movetype yet for this client
-		return -1;
-	}
-	//
-	script = &animModelInfo->scriptCannedAnims[ movetype ];
-	if( !script->numItems ) {
-		return -1;
-	}
-	// find the first script item, that passes all the conditions for this event
-	scriptItem = BG_FirstValidItem( ps->clientNum, script );
-	if( !scriptItem ) {
-		return -1;
-	}
-	// pick a random command
-	scriptCommand = &scriptItem->commands[ rand() % scriptItem->numCommands ];
-	// run it
-	return BG_ExecuteCommand( ps, animModelInfo, scriptCommand, qtrue, qfalse, qfalse );
-}
+// sta acqu-sdk (issue 18): remove unused code
+//int	BG_AnimScriptCannedAnimation( playerState_t *ps, animModelInfo_t *animModelInfo )
+//{
+//	animScript_t		*script;
+//	animScriptItem_t	*scriptItem;
+//	animScriptCommand_t	*scriptCommand;
+//	scriptAnimMoveTypes_t movetype;
+//
+//	if( ps->eFlags & EF_DEAD )
+//		return -1;
+//
+//	movetype = globalScriptData->clientConditions[ ps->clientNum ][ ANIM_COND_MOVETYPE ][0];
+//	if (!movetype) {	// no valid movetype yet for this client
+//		return -1;
+//	}
+//	//
+//	script = &animModelInfo->scriptCannedAnims[ movetype ];
+//	if( !script->numItems ) {
+//		return -1;
+//	}
+//	// find the first script item, that passes all the conditions for this event
+//	scriptItem = BG_FirstValidItem( ps->clientNum, script );
+//	if( !scriptItem ) {
+//		return -1;
+//	}
+//	// pick a random command
+//	scriptCommand = &scriptItem->commands[ rand() % scriptItem->numCommands ];
+//	// run it
+//	return BG_ExecuteCommand( ps, animModelInfo, scriptCommand, qtrue, qfalse, qfalse );
+//}
+// end acqu-sdk (issue 18)
 
 /*
 ================
