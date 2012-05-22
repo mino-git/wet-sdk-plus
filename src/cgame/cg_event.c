@@ -1649,7 +1649,12 @@ extern void CG_AddBulletParticles( vec3_t origin, vec3_t dir, int speed, int dur
 void CG_MachineGunEjectBrass( centity_t *cent );
 void CG_MachineGunEjectBrassNew( centity_t *cent );
 // jpw
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 #define	DEBUGNAME(x) if(cg_debugEvents.integer){CG_Printf(x"\n");}
+#endif
+// end acqu-sdk (issue 10)
 void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	entityState_t		*es;
 	int					event;
@@ -1672,12 +1677,20 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	es = &cent->currentState;
 	event = es->event & ~EV_EVENT_BITS;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 	if ( cg_debugEvents.integer ) {
 		CG_Printf( "time:%i ent:%3i  event:%3i ", cg.time, es->number, event );
 	}
+#endif
+// end acqu-sdk (issue 10)
 
 	if ( !event ) {
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("ZEROEVENT");
+#endif
+// end acqu-sdk (issue 10)
 		return;
 	}
 
@@ -1694,7 +1707,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	// movement generated events
 	//
 	case EV_FOOTSTEP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FOOTSTEP");
+#endif
+// end acqu-sdk (issue 10)
+
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				CG_StartFootStepSound( classInfo, es, cgs.media.footsteps[ es->eventParm ][footstepcnt] );
@@ -1704,20 +1723,44 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_FOOTSPLASH:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FOOTSPLASH");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_StartFootStepSound( classInfo, es, cgs.media.footsteps[ FOOTSTEP_SPLASH ][splashfootstepcnt] );
 		break;
 	case EV_FOOTWADE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FOOTWADE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_StartFootStepSound( classInfo, es, cgs.media.footsteps[ FOOTSTEP_SPLASH ][splashfootstepcnt] );
 		break;
 	case EV_SWIM:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_SWIM");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_StartFootStepSound( classInfo, es, cgs.media.footsteps[ FOOTSTEP_SPLASH ][footstepcnt] );
 		break;
 
 	case EV_FALL_SHORT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_SHORT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1733,7 +1776,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_FALL_DMG_10:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_DMG_10");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1750,7 +1799,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_FALL_DMG_15:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_DMG_15");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1767,7 +1822,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_FALL_DMG_25:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_DMG_25");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1784,7 +1845,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_FALL_DMG_50:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_DMG_50");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1801,7 +1868,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_FALL_NDIE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FALL_NDIE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( es->eventParm != FOOTSTEP_TOTAL ) {
 			if( es->eventParm ) {
 				trap_S_StartSound( NULL, es->number, CHAN_AUTO, cgs.media.landSound[ es->eventParm ] );
@@ -1815,15 +1888,33 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 	
 	case EV_EXERT1:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EXERT1");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*exert1.wav" ) );
 		break;
 	case EV_EXERT2:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EXERT2");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*exert2.wav" ) );
 		break;
 	case EV_EXERT3:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EXERT3");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*exert3.wav" ) );
 		break;
 
@@ -1831,7 +1922,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_STEP_8:
 	case EV_STEP_12:
 	case EV_STEP_16:		// smooth out step up transitions
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_STEP");
+#endif
+// end acqu-sdk (issue 10)
+		
 	{
 		float	oldStep;
 		int		delta;
@@ -1868,23 +1965,53 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	}
 
 	case EV_JUMP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_JUMP");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*jump1.wav" ) );
 		break;
 	case EV_TAUNT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_TAUNT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_VOICE, CG_CustomSound( es->number, "*taunt.wav" ) );
 		break;
 	case EV_WATER_TOUCH:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_WATER_TOUCH");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.watrInSound );
 		break;
 	case EV_WATER_LEAVE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_WATER_LEAVE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.watrOutSound );
 		break;
 	case EV_WATER_UNDER:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_WATER_UNDER");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.watrUnSound );
 		if( cg.clientNum == es->number ) {
 			cg.waterundertime = cg.time + HOLDBREATHTIME;
@@ -1898,7 +2025,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		// DHM - Nerve :: causes problems in multiplayer...
 		break;
 	case EV_WATER_CLEAR:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_WATER_CLEAR");
+#endif
+// end acqu-sdk (issue 10)
+		
 		//trap_S_StartSound (NULL, es->number, CHAN_AUTO, CG_CustomSound( es->number, "*gasp.wav" ) );
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.watrOutSound );
 		if( es->eventParm )
@@ -1907,7 +2040,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	case EV_ITEM_PICKUP:
 	case EV_ITEM_PICKUP_QUIET:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_ITEM_PICKUP");
+#endif
+// end acqu-sdk (issue 10)
+		
 		{
 			gitem_t	*item;
 			int		index;
@@ -1943,7 +2082,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_GLOBAL_ITEM_PICKUP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GLOBAL_ITEM_PICKUP");
+#endif
+// end acqu-sdk (issue 10)
+		
 		{
 			gitem_t	*item;
 			int		index;
@@ -1970,12 +2115,24 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	// weapon events
 	//
 	case EV_VENOM:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_VENOM");
+#endif
+// end acqu-sdk (issue 10)
+		
 //		CG_VenomFire( es, qfalse );
 		break;
 
 	case EV_WEAP_OVERHEAT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_WEAP_OVERHEAT");
+#endif
+// end acqu-sdk (issue 10)
+		
 
 		// start weapon idle animation
 		if(es->number == cg.snap->ps.clientNum) {
@@ -1997,17 +2154,35 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 // JPW NERVE
-	case EV_SPINUP: 
+	case EV_SPINUP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_SPINUP");
+#endif
+// end acqu-sdk (issue 10)
+		
 			trap_S_StartSound (NULL, es->number, CHAN_AUTO, cg_weapons[es->weapon].spinupSound );
 		break;
 // jpw
 	case EV_EMPTYCLIP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EMPTYCLIP");
+#endif
+// end acqu-sdk (issue 10)
+		
 		break;
 
 	case EV_FILL_CLIP:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FILL_CLIP");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( cgs.clientinfo[cg.clientNum].skill[SK_LIGHT_WEAPONS] >= 2 && BG_isLightWeaponSupportingFastReload( es->weapon ) && cg_weapons[es->weapon].reloadFastSound )
 			trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cg_weapons[es->weapon].reloadFastSound );
 		else if(cg_weapons[es->weapon].reloadSound)
@@ -2016,14 +2191,26 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 // JPW NERVE play a sound when engineer fixes MG42
 	case EV_MG42_FIXED:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MG42_FIXED");
+#endif
+// end acqu-sdk (issue 10)
+		
 		//trap_S_StartSound(NULL,es->number,CHAN_WEAPON,cg_weapons[WP_MAUSER].reloadSound); // Arnout: needs updating
 		break;
 // jpw
 
 	case EV_NOAMMO:
 	case EV_WEAPONSWITCHED:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_NOAMMO");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if((es->weapon != WP_GRENADE_LAUNCHER) &&
 			(es->weapon != WP_GRENADE_PINEAPPLE) &&
 			(es->weapon != WP_DYNAMITE) &&
@@ -2057,11 +2244,22 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		}
 		break;
 	case EV_CHANGE_WEAPON:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_CHANGE_WEAPON");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.selectSound );
 		break;
 	case EV_CHANGE_WEAPON_2:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_CHANGE_WEAPON");
+#endif
+// end acqu-sdk (issue 10)		
 
 		trap_S_StartSound (NULL, es->number, CHAN_AUTO, cgs.media.selectSound );
 
@@ -2104,16 +2302,34 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 				trap_S_StartSoundEx( gorg, cent->currentState.number, CHAN_WEAPON, cgs.media.hWeaponEchoSnd, SND_NOCUT);
 			}
 		}
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FIRE_WEAPON_MG42");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_FireWeapon( cent );
 		break;
 	case EV_FIRE_WEAPON_AAGUN:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FIRE_WEAPON_AAGUN");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_FireWeapon( cent);
 		break;
 	case EV_FIRE_WEAPON:
 	case EV_FIRE_WEAPONB:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FIRE_WEAPON");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( cent->currentState.clientNum == cg.snap->ps.clientNum && cg.snap->ps.eFlags & EF_ZOOMING ) // to stop airstrike sfx
 			break;
 		CG_FireWeapon( cent);
@@ -2123,12 +2339,24 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			cent->akimboFire = qfalse;
 		break;
 	case EV_FIRE_WEAPON_LASTSHOT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_FIRE_WEAPON_LASTSHOT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_FireWeapon( cent);
 		break;
 
 	case EV_NOFIRE_UNDERWATER:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_NOFIRE_UNDERWATER");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if(cgs.media.noFireUnderwater)
 			trap_S_StartSound (NULL, es->number, CHAN_WEAPON, cgs.media.noFireUnderwater);
 		break;
@@ -2145,7 +2373,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_GRENADE_BOUNCE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GRENADE_BOUNCE");
+#endif
+// end acqu-sdk (issue 10)		
 
 		// DYNAMITE // Gordon: or LANDMINE FIXME: change this? (mebe a metallic sound)
 		if( es->weapon == WP_SATCHEL ) {
@@ -2183,7 +2416,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	// missile impacts
 	//
 	case EV_MISSILE_HIT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MISSILE_HIT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_MissileHitPlayer( cent, es->weapon, position, dir, es->otherEntityNum );
 		if( es->weapon == WP_MORTAR_SET ) {
@@ -2196,13 +2435,25 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_MISSILE_MISS_SMALL:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MISSILE_MISS");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_MissileHitWallSmall( es->weapon, 0, position, dir );
 		break;
 
 	case EV_MISSILE_MISS:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MISSILE_MISS");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_MissileHitWall( es->weapon, 0, position, dir, 0 );	// (SA) modified to send missilehitwall surface parameters
 		if( es->weapon == WP_MORTAR_SET ) {
@@ -2215,7 +2466,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_MISSILE_MISS_LARGE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MISSILE_MISS_LARGE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		if( es->weapon == WP_ARTY || es->weapon == WP_SMOKE_MARKER ) {
 			CG_MissileHitWall( es->weapon, 0, position, dir, 0);	// (SA) modified to send missilehitwall surface parameters
@@ -2225,34 +2482,70 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_MORTAR_IMPACT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MORTAR_IMPACT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_MortarImpact( cent, position, rand()%3, qfalse );
 		break;
 	case EV_MORTAR_MISS:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MORTAR_MISS");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_MortarMiss( cent, position );
 		break;
 
 	case EV_MG42BULLET_HIT_WALL:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MG42BULLET_HIT_WALL");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qfalse, ENTITYNUM_WORLD, es->otherEntityNum2, es->origin2[0], es->effect1Time );
 		break;
 
 	case EV_MG42BULLET_HIT_FLESH:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MG42BULLET_HIT_FLESH");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qtrue, es->eventParm, es->otherEntityNum2, 0, es->effect1Time);
 		break;
 
 
 	case EV_BULLET_HIT_WALL:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_BULLET_HIT_WALL");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qfalse, ENTITYNUM_WORLD, es->otherEntityNum2, es->origin2[0], 0 );
 		break;
 
 	case EV_BULLET_HIT_FLESH:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_BULLET_HIT_FLESH");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_Bullet( es->pos.trBase, es->otherEntityNum, dir, qtrue, es->eventParm, es->otherEntityNum2, 0, 0);
 		break;
 
@@ -2262,7 +2555,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_GENERAL_SOUND:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GENERAL_SOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 		// Ridah, check for a sound script
 		s = CG_ConfigString( CS_SOUNDS + es->eventParm );
 		if( !strstr( s, ".wav" ) ) {
@@ -2290,7 +2589,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		{
 			sfxHandle_t sound;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			DEBUGNAME("EV_FX_SOUND");
+#endif
+// end acqu-sdk (issue 10)
+			
 
 			sound = random()*fxSounds[ es->eventParm ].max;
 
@@ -2308,7 +2612,12 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			int sound = es->eventParm;
 			int volume = es->onFireStart;
 
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			DEBUGNAME("EV_GENERAL_SOUND_VOLUME");
+#endif
+// end acqu-sdk (issue 10)
+			
 			// Ridah, check for a sound script
 			s = CG_ConfigString( CS_SOUNDS + sound );
 			if( !strstr( s, ".wav" ) ) {
@@ -2332,12 +2641,24 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 		
 	case EV_GLOBAL_TEAM_SOUND:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GLOBAL_TEAM_SOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if( cgs.clientinfo[ cg.snap->ps.clientNum ].team != es->teamNum ) {
 			break;
 		}
 	case EV_GLOBAL_SOUND:	// play from the player's head so it never diminishes
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GLOBAL_SOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 		// Ridah, check for a sound script
 		s = CG_ConfigString( CS_SOUNDS + es->eventParm );
 		if( !strstr( s, ".wav" ) ) {
@@ -2361,7 +2682,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	// DHM - Nerve
 	case EV_GLOBAL_CLIENT_SOUND:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GLOBAL_CLIENT_SOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 
 		if ( cg.snap->ps.clientNum == es->teamNum ) {
 			s = CG_ConfigString( CS_SOUNDS + es->eventParm );
@@ -2389,7 +2716,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_PAIN:
 		// local player sounds are triggered in CG_CheckLocalSounds,
 		// so ignore events on the player
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_PAIN");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if ( cent->currentState.number != cg.snap->ps.clientNum ) {
 			CG_PainEvent( cent, es->eventParm, qfalse );
 		}
@@ -2398,7 +2731,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_CROUCH_PAIN:
 		// local player sounds are triggered in CG_CheckLocalSounds,
 		// so ignore events on the player
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_PAIN");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if ( cent->currentState.number != cg.snap->ps.clientNum ) {
 			CG_PainEvent( cent, es->eventParm, qtrue );
 		}
@@ -2407,50 +2746,98 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 	case EV_DEATH1:
 	case EV_DEATH2:
 	case EV_DEATH3:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_DEATHx");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound( NULL, es->number, CHAN_VOICE, 
 				CG_CustomSound( es->number, va("*death%i.wav", event - EV_DEATH1 + 1) ) );
 		break;
 
 
 	case EV_OBITUARY:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_OBITUARY");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_Obituary( es );
 		break;
 
 	// JPW NERVE -- swiped from SP/Sherman
 	case EV_STOPSTREAMINGSOUND:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_STOPLOOPINGSOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 //		trap_S_StopStreamingSound( es->number );
 		trap_S_StartSoundEx( NULL, es->number, CHAN_WEAPON, 0, SND_CUTOFF_ALL );	// kill weapon sound (could be reloading)
 		break;
 
 	case EV_LOSE_HAT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_LOSE_HAT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_LoseHat(cent, dir);
 		break;
 
 	case EV_GIB_PLAYER:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_GIB_PLAYER");
+#endif
+// end acqu-sdk (issue 10)
+		
 		trap_S_StartSound( es->pos.trBase, -1, CHAN_AUTO, cgs.media.gibSound );
 		ByteToDir( es->eventParm, dir );
 		CG_GibPlayer( cent, cent->lerpOrigin, dir );
 		break;
 
 	case EV_STOPLOOPINGSOUND:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_STOPLOOPINGSOUND");
+#endif
+// end acqu-sdk (issue 10)
+		
 		es->loopSound = 0;
 		break;
 
 	case EV_DEBUG_LINE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_DEBUG_LINE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_Beam( cent );
 		break;
 
 	// Rafael particles
 	case EV_SMOKE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_SMOKE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		if (cent->currentState.density == 3) {
 			CG_ParticleSmoke (cgs.media.smokePuffShaderdirty, cent);
 		} else if (!(cent->currentState.density)) {
@@ -2581,26 +2968,50 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 
 	// for func_exploding
 	case EV_EXPLODE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EXPLODE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_Explode(cent, position, dir, 0);
 		break;
 
 	case EV_RUBBLE:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_RUBBLE");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_Rubble(cent, position, dir, 0);
 		break;
 
 		// for target_effect
 	case EV_EFFECT:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_EFFECT");
+#endif
+// end acqu-sdk (issue 10)
+		
 		ByteToDir( es->eventParm, dir );
 		CG_Effect(cent, position, dir);
 		break;
 
 	case EV_MORTAREFX:	// mortar firing
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_MORTAREFX");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_MortarEFX (cent);
 		break;
 
@@ -2640,7 +3051,11 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 			vec3_t v;
 			float len;
 			
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 			DEBUGNAME("EV_SHAKE");
+#endif
+// end acqu-sdk (issue 10)			
 
 			VectorSubtract( cg.snap->ps.origin, cent->lerpOrigin, v );
 			len = VectorLength (v);
@@ -2658,7 +3073,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	case EV_ALERT_SPEAKER:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("EV_ALERT_SPEAKER");
+#endif
+// end acqu-sdk (issue 10)
+		
 		switch( cent->currentState.otherEntityNum2 )
 		{
 		case 1:		CG_UnsetActiveOnScriptSpeaker( cent->currentState.otherEntityNum );	break;
@@ -2762,7 +3183,13 @@ void CG_EntityEvent( centity_t *cent, vec3_t position ) {
 		break;
 
 	default:
+
+// sta acqu-sdk (issue 10): wrapped around DEBUG
+#ifdef DEBUG
 		DEBUGNAME("UNKNOWN");
+#endif
+// end acqu-sdk (issue 10)
+		
 		CG_Error( "Unknown event: %i", event );
 		break;
 	}
