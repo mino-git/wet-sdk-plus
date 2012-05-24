@@ -8,6 +8,12 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 char *hintStrings[HINT_NUM_HINTS] = {
 	"",					// HINT_NONE
 	"HINT_NONE",		// actually HINT_FORCENONE, but since this is being specified in the ent, the designer actually means HINT_FORCENONE
@@ -752,6 +758,17 @@ void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
 			f = 1000.0 / ent->s.pos.trDuration;
 			VectorScale( delta, f, ent->s.pos.trDelta );
 			ent->s.pos.trType = TR_LINEAR_STOP;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+				const char *pName = _GetEntityName(ent);
+				if (Q_stricmp(pName, ""))
+						Bot_Util_SendTrigger(ent, NULL, va("%s_Moving", pName), "opening");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 			break;
 		case MOVER_2TO1:	// closing
 			VectorCopy( ent->pos2, ent->s.pos.trBase );
@@ -765,16 +782,49 @@ void SetMoverState( gentity_t *ent, moverState_t moverState, int time ) {
 			}
 			VectorScale( delta, f, ent->s.pos.trDelta );
 			ent->s.pos.trType = TR_LINEAR_STOP;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+				const char *pName = _GetEntityName(ent);
+				if (Q_stricmp(pName, ""))
+						Bot_Util_SendTrigger(ent, NULL, va("%s_Moving", pName), "closing");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 			break;
 
 
 		case MOVER_POS1ROTATE:	// at close
 			VectorCopy( ent->r.currentAngles , ent->s.apos.trBase);
 			ent->s.apos.trType = TR_STATIONARY;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+				const char *pName = _GetEntityName(ent);
+				if (Q_stricmp(pName, ""))
+						Bot_Util_SendTrigger(ent, NULL, va("%s_Moving", pName), "closed");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 			break;
 		case MOVER_POS2ROTATE:	// at open
 			VectorCopy( ent->r.currentAngles , ent->s.apos.trBase);
 			ent->s.apos.trType = TR_STATIONARY;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+				const char *pName = _GetEntityName(ent);
+				if (Q_stricmp(pName, ""))
+						Bot_Util_SendTrigger(ent, NULL, va("%s_Moving", pName), "opened");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 			break;
 		case MOVER_1TO2ROTATE:	// opening
 			VectorClear(ent->s.apos.trBase);			// set base to start position {0,0,0}
@@ -1397,6 +1447,14 @@ void Use_BinaryMover( gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 		Use_BinaryMover( ent->teammaster, other, activator );
 		return;
 	}
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if (ent->target) {
+		Bot_Util_SendTrigger(ent, NULL, va("%s activated", ent->target), "pushed");
+	}
+	// end acqu-sdk (issue 3)
+#endif
 
 	// only check for blocking when opening, otherwise the door has no choice
 	if(ent->moverState == MOVER_POS1 || ent->moverState == MOVER_POS1ROTATE)
@@ -3965,6 +4023,14 @@ void func_explosive_explode(gentity_t *self, gentity_t *inflictor, gentity_t *at
 	}
 
 	G_AddEvent( self, EV_EXPLODE, DirToByte( dir ));
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if  ( self->constructibleStats.constructxpbonus == 5 ) {
+		G_Script_ScriptEvent( self, "exploded", "" );
+	}
+	// end acqu-sdk (issue 3)
+#endif
 
 	// Skills stuff
 

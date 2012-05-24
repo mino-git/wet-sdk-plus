@@ -309,6 +309,13 @@ void Team_CheckHurtCarrier(gentity_t *targ, gentity_t *attacker)
 	return rent;
 }*/
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+const char *_GetEntityName(gentity_t *_ent);
+void Bot_Util_SendTrigger(gentity_t *_ent, gentity_t *_activator, const char *_tagname, const char *_action);
+// end acqu-sdk (issue 3)
+#endif
+
 void Team_ResetFlag( gentity_t *ent )
 {
 	if (ent->flags & FL_DROPPED_ITEM) {
@@ -320,6 +327,15 @@ void Team_ResetFlag( gentity_t *ent )
 		// do we need to respawn?
 		if( ent->s.density == 1 )
 			RespawnItem(ent);
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		{
+			Bot_Util_SendTrigger(ent, NULL, va("Flag returned %s!", _GetEntityName(ent)), "returned");
+		}
+		// end acqu-sdk (issue 3)
+#endif
+
 	}
 }
 
@@ -468,6 +484,16 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 				G_Script_ScriptEvent( level.gameManager, "trigger", "axis_object_returned" );
 			}
 			G_Script_ScriptEvent( &g_entities[ent->s.otherEntityNum], "trigger", "returned" );
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+			const char *pName = ent->message?ent->message:_GetEntityName(ent);
+			Bot_Util_SendTrigger(ent, NULL, va("Axis have returned %s!", pName ? pName : ""), "returned");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 		} else {
 //			te->s.eventParm = G_SoundIndex( "sound/chat/allies/a-objective_secure.wav" );
 
@@ -477,6 +503,16 @@ int Team_TouchOurFlag( gentity_t *ent, gentity_t *other, int team ) {
 				G_Script_ScriptEvent( level.gameManager, "trigger", "allied_object_returned" );
 			}
 			G_Script_ScriptEvent( &g_entities[ent->s.otherEntityNum], "trigger", "returned" );
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			{
+				const char *pName = ent->message?ent->message:_GetEntityName(ent);
+				Bot_Util_SendTrigger(ent, NULL, va("Allies have returned %s!", pName ? pName : ""), "returned");
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 		}
 		// dhm
 // jpw 800 672 2420
@@ -529,6 +565,15 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 		//Bot_TeamScriptEvent( TEAM_ALLIES, "objective", "stolen" );
 		// end acqu-sdk (issue 11)
 
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		// omnibot
+		{
+			Bot_Util_SendTrigger(ent, NULL, va("Axis have stolen %s!", ent->message), "stolen");
+		}
+		// end acqu-sdk (issue 3)
+#endif
+
 	} else {
 		gentity_t* pm = G_PopupMessage( PM_OBJECTIVE );
 		pm->s.effect3Time = G_StringIndex( ent->message );
@@ -547,6 +592,15 @@ int Team_TouchEnemyFlag( gentity_t *ent, gentity_t *other, int team ) {
 		// sta acqu-sdk (issue 11): remove deprecated bot code
 		//Bot_TeamScriptEvent( TEAM_AXIS, "objective", "stolen" );
 		// end acqu-sdk (issue 11)
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		{
+			Bot_Util_SendTrigger(ent, NULL, va("Allies have stolen %s!", ent->message), "stolen");
+		}
+		// end acqu-sdk (issue 3)
+#endif
+
 	}
 	// dhm
 // jpw
@@ -1351,6 +1405,12 @@ void checkpoint_spawntouch (gentity_t *self, gentity_t *other, trace_t *trace) {
 	qboolean	playsound = qtrue;
 	qboolean	firsttime = qfalse;
 
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	char            *flagAction = "touch";
+	// end acqu-sdk (issue 3)
+#endif
+
 	if ( self->count == other->client->sess.sessionTeam )
 		return;
 
@@ -1372,29 +1432,77 @@ void checkpoint_spawntouch (gentity_t *self, gentity_t *other, trace_t *trace) {
 
 	// Set animation
 	if ( self->count == TEAM_AXIS ) {
-		if ( self->s.frame == WCP_ANIM_NOFLAG && !(self->spawnflags & ALLIED_ONLY) )
+		if ( self->s.frame == WCP_ANIM_NOFLAG && !(self->spawnflags & ALLIED_ONLY) ) {
 			self->s.frame = WCP_ANIM_RAISE_AXIS;
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		flagAction = "capture";
+		// end acqu-sdk (issue 3)
+#endif
+
+		}
 		else if ( self->s.frame == WCP_ANIM_NOFLAG ) {
 			self->s.frame = WCP_ANIM_NOFLAG;
 			playsound = qfalse;
 		}
-		else if ( self->s.frame == WCP_ANIM_AMERICAN_RAISED && !(self->spawnflags & ALLIED_ONLY) )
+		else if ( self->s.frame == WCP_ANIM_AMERICAN_RAISED && !(self->spawnflags & ALLIED_ONLY) ) {
 			self->s.frame = WCP_ANIM_AMERICAN_TO_AXIS;
-		else if ( self->s.frame == WCP_ANIM_AMERICAN_RAISED )
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			flagAction = "reclaims";
+			// end acqu-sdk (issue 3)
+#endif
+
+		}
+		else if ( self->s.frame == WCP_ANIM_AMERICAN_RAISED ) {
 			self->s.frame = WCP_ANIM_AMERICAN_FALLING;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			flagAction = "neutralized";
+			// end acqu-sdk (issue 3)
+#endif
+
+		}
 		else
 			self->s.frame = WCP_ANIM_AXIS_RAISED;
 	} else {
-		if ( self->s.frame == WCP_ANIM_NOFLAG && !(self->spawnflags & AXIS_ONLY) )
+		if ( self->s.frame == WCP_ANIM_NOFLAG && !(self->spawnflags & AXIS_ONLY) ) {
 			self->s.frame = WCP_ANIM_RAISE_AMERICAN;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			flagAction = "capture";
+			// end acqu-sdk (issue 3)
+#endif
+
+		}
 		else if ( self->s.frame == WCP_ANIM_NOFLAG ) {
 			self->s.frame = WCP_ANIM_NOFLAG;
 			playsound = qfalse;
 		}
-		else if ( self->s.frame == WCP_ANIM_AXIS_RAISED && !(self->spawnflags & AXIS_ONLY) )
+		else if ( self->s.frame == WCP_ANIM_AXIS_RAISED && !(self->spawnflags & AXIS_ONLY) ) {
 			self->s.frame = WCP_ANIM_AXIS_TO_AMERICAN;
-		else if ( self->s.frame == WCP_ANIM_AXIS_RAISED )
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			flagAction = "reclaims";
+			// end acqu-sdk (issue 3)
+#endif
+			
+		}
+		else if ( self->s.frame == WCP_ANIM_AXIS_RAISED ) {
 			self->s.frame = WCP_ANIM_AXIS_FALLING;
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			flagAction = "neutralized";
+			// end acqu-sdk (issue 3)
+#endif
+
+		}
 		else
 			self->s.frame = WCP_ANIM_AMERICAN_RAISED;
 	}
@@ -1413,10 +1521,26 @@ void checkpoint_spawntouch (gentity_t *self, gentity_t *other, trace_t *trace) {
 	// Gordon: reset player disguise on touching flag
 	other->client->ps.powerups[PW_OPS_DISGUISED] = 0;
 	// Run script trigger
-	if ( self->count == TEAM_AXIS )
+	if ( self->count == TEAM_AXIS ) {
 		G_Script_ScriptEvent( self, "trigger", "axis_capture" );
-	else
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Util_SendTrigger(self, NULL, va("axis_%s_%s", flagAction, _GetEntityName(self)), flagAction);
+		// end acqu-sdk (issue 3)
+#endif
+
+	}
+	else {
 		G_Script_ScriptEvent( self, "trigger", "allied_capture" );
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Util_SendTrigger(self, NULL, va("allies_%s_%s", flagAction, _GetEntityName(self)), flagAction);
+		// end acqu-sdk (issue 3)
+#endif
+		
+	}
 
 	// Don't allow touch again until animation is finished
 	self->touch = NULL;

@@ -140,6 +140,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;"
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;GAMEDLL"
 				StringPooling="true"
@@ -278,6 +279,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\omnibot\Common\BotLoadLibrary.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\g_active.c"
 				>
 			</File>
@@ -315,6 +320,10 @@
 			</File>
 			<File
 				RelativePath=".\g_config.c"
+				>
+			</File>
+			<File
+				RelativePath=".\g_etbot_interface.cpp"
 				>
 			</File>
 			<File
@@ -448,6 +457,10 @@
 			</File>
 			<File
 				RelativePath=".\bg_public.h"
+				>
+			</File>
+			<File
+				RelativePath=".\g_etbot_interface.h"
 				>
 			</File>
 			<File

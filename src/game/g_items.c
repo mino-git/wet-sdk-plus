@@ -12,6 +12,12 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 
 
 #define RESPAWN_SP			-1
@@ -491,6 +497,13 @@ void G_DropWeapon( gentity_t *ent, weapon_t weapon )
 
 //	ent2->item->quantity = client->ps.ammoclip[BG_FindClipForWeapon(weapon)]; // Gordon: um, modifying an item is not a good idea
 	client->ps.ammoclip[BG_FindClipForWeapon(weapon)] = 0;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_RemoveWeapon(client->ps.clientNum, Bot_WeaponGameToBot(weapon));
+	// end acqu-sdk (issue 3)
+#endif
+
 }
 
 // sta acqu-sdk (issue 11): remove deprecated bot code
@@ -552,7 +565,15 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 				// add 1 clip of magic ammo for any two-handed weapon
 #endif
 // end acqu-sdk (issue 10)
-				
+
+#ifdef OMNIBOT_SUPPORT
+				// sta acqu-sdk (issue 3): omnibot support
+				if ( ent->parent ) {
+					Bot_Event_RecievedAmmo(other-g_entities, ent->parent);
+				}
+				// end acqu-sdk (issue 3)
+#endif
+
 			}
 			return RESPAWN_SP;
 		}
@@ -646,6 +667,12 @@ int Pickup_Weapon( gentity_t *ent, gentity_t *other ) {
 	//	BotPickupWeapon( other->s.number, ent->item->giTag, alreadyHave );
 	// end acqu-sdk (issue 11)
 
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_AddWeapon(other->client->ps.clientNum, Bot_WeaponGameToBot(ent->item->giTag));
+	// end acqu-sdk (issue 3)
+#endif
+
 	return -1;
 }
 
@@ -685,6 +712,14 @@ int Pickup_Health (gentity_t *ent, gentity_t *other) {
 		other->health = max;
 	}
 	other->client->ps.stats[STAT_HEALTH] = other->health;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if ( ent->parent ) {
+		Bot_Event_Healed(other-g_entities, ent->parent);
+	}
+	// end acqu-sdk (issue 3)
+#endif
 
 	return -1;
 }

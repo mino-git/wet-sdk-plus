@@ -9,6 +9,12 @@
 #include "../game/g_local.h"
 #include "../game/q_shared.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 /*
 Scripting that allows the designers to control the behaviour of entities
 according to each different scenario.
@@ -805,6 +811,43 @@ void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params )
 
 	if (i>=0)
 		G_Script_ScriptChange( ent, i );
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	// skip these
+	if(!Q_stricmp(eventStr, "trigger") ||
+		!Q_stricmp(eventStr, "activate") ||
+		!Q_stricmp(eventStr, "spawn") ||
+		!Q_stricmp(eventStr, "death") ||
+		!Q_stricmp(eventStr, "pain") ||
+		!Q_stricmp(eventStr, "playerstart"))
+		return;
+
+	if(!Q_stricmp(eventStr, "defused"))
+	{
+		Bot_Util_SendTrigger(ent, NULL,
+			va("Defused at %s.", ent->parent ? ent->parent->track : ent->track), 
+			eventStr);
+	}
+	else if(!Q_stricmp(eventStr, "dynamited"))
+	{
+		Bot_Util_SendTrigger(ent, NULL,
+			va("Planted at %s.", ent->parent ? ent->parent->track : ent->track), 
+			eventStr);
+	}
+	else if(!Q_stricmp(eventStr, "destroyed"))
+	{
+		Bot_Util_SendTrigger(ent, NULL,
+			va("%s Destroyed.", ent->parent ? ent->parent->track : ent->track), 
+			eventStr);
+	}
+	else if(!Q_stricmp(eventStr, "exploded"))
+	{ 
+		Bot_Util_SendTrigger(ent, NULL,
+			va("Explode_%s Exploded.", _GetEntityName(ent) ),eventStr);
+	}
+	// end acqu-sdk (issue 3)
+#endif
 }
 
 /*

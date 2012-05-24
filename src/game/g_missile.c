@@ -1,5 +1,11 @@
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 #define	MISSILE_PRESTEP_TIME	50
 
 
@@ -425,6 +431,13 @@ void G_ExplodeMissile( gentity_t *ent ) {
 					G_UseTargets( hit, ent );
 					hit->think = G_FreeEntity;
 					hit->nextthink = level.time + FRAMETIME;
+
+#ifdef OMNIBOT_SUPPORT
+					// sta acqu-sdk (issue 3): omnibot support
+					G_Script_ScriptEvent( hit, "destroyed", "" );
+					// end acqu-sdk (issue 3)
+#endif
+
 				}
 			}
 		}
@@ -1589,6 +1602,18 @@ void G_LandmineThink( gentity_t *self ) {
 			continue;
 		}
 
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		if( !(g_OmniBotFlags.integer & OBF_TRIGGER_MINES) && ent->r.svFlags & SVF_BOT ) { 
+		if (G_LandmineTeam( self ) == ent->client->sess.sessionTeam ) 
+			continue;
+
+		if ( G_LandmineSpotted(self) )
+			continue;
+		}
+		// end acqu-sdk (issue 3)
+#endif
+
 		//%	if( !g_friendlyFire.integer && G_LandmineTeam( self ) == ent->client->sess.sessionTeam ) {
 		//%		continue;
 		//%	}
@@ -1600,9 +1625,19 @@ void G_LandmineThink( gentity_t *self ) {
 		}
 	}
 
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if( trigger && ent ) {		
+		Bot_Event_PreTriggerMine(ent-g_entities, self);
+		LandMineTrigger( self );
+	}
+	// end acqu-sdk (issue 3)
+#else
 	if( trigger ) {
 		LandMineTrigger( self );
 	}
+#endif
+
 }
 
 void LandminePostThink( gentity_t *self ) {
@@ -1634,10 +1669,19 @@ void LandminePostThink( gentity_t *self ) {
 			break;
 		}
 	}
-
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if(!trigger && ent) {
+		Bot_Event_PostTriggerMine(ent-g_entities, self);
+		LandMinePostTrigger(self);
+	// end acqu-sdk (issue 3)
+	}
+#else
 	if(!trigger) {
 		LandMinePostTrigger(self);
 	}
+#endif
+
 }
 
 /*

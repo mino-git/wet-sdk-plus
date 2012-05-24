@@ -1,5 +1,11 @@
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 // sta acqu-sdk (issue 11): remove deprecated bot code
 //void BotDebug(int clientNum);
 //void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);
@@ -692,6 +698,20 @@ void Cmd_Kill_f( gentity_t *ent )
 	if(ent->client->sess.sessionTeam == TEAM_SPECTATOR ||
 	  (ent->client->ps.pm_flags & PMF_LIMBO) ||
 	  ent->health <= 0 || level.match_pause != PAUSE_NONE) {
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		// put this here to avoid using #ifdef -> #else
+		if (ent->health <= 0) {
+			
+			// bots always need to go to limbo or it causes problems
+			// since we use latchedPlayerClass in GetEntityClass
+			if (ent->r.svFlags & SVF_BOT) {
+				limbo(ent,qtrue);
+			}	
+		}
+		// end acqu-sdk (issue 3)
+#endif
 		return;
 	}
 
@@ -1107,9 +1127,18 @@ int G_TeamCount( gentity_t* ent, weapon_t weap ) {
 qboolean G_IsWeaponDisabled( gentity_t* ent, weapon_t weapon ) {
 	int count, wcount;
 
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	// redeye - allow selecting weapons as spectator for bots (to avoid endless loops in pfnChangeTeam())
+	if( ent->client->sess.sessionTeam == TEAM_SPECTATOR && ! (ent->r.svFlags & SVF_BOT)) {
+		return qtrue;
+	}
+	// end acqu-sdk (issue 3)
+#else
 	if( ent->client->sess.sessionTeam == TEAM_SPECTATOR ) {
 		return qtrue;
 	}
+#endif
 
 	if( !G_IsHeavyWeapon( weapon ) ) {
 		return qfalse;
@@ -1508,6 +1537,13 @@ void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, const char 
 		}
 
 		trap_SendServerCommand( other-g_entities, va("%s \"%s%c%c%s\" %i %i", mode == SAY_TEAM || mode == SAY_BUDDY ? "tchat" : "chat", name, Q_COLOR_ESCAPE, color, message, ent-g_entities, localize ));
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Event_ChatMessage(other-g_entities, ent, mode, message);
+		// end acqu-sdk (issue 3)
+#endif
+
 	}
 }
 
@@ -1644,6 +1680,12 @@ void G_VoiceTo( gentity_t *ent, gentity_t *other, int mode, const char *id, qboo
 	// bots respond with voiceonly, so we check for this so they dont keep responding to responses
 	//BotRecordVoiceChat( ent->s.number, other->s.number, id, mode, voiceonly == 2 );
 	// end acqu-sdk (issue 11)
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_VoiceMacro(other-g_entities, ent, mode, id);
+	// end acqu-sdk (issue 3)
+#endif
 
 	if (voiceonly == 2) {
 		voiceonly = qfalse;

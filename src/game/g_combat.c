@@ -7,6 +7,13 @@
 
 #include "g_local.h"
 #include "../game/q_shared.h"
+
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 // sta acqu-sdk (issue 11): remove deprecated bot code
 //#include "../game/botlib.h"		//bot lib interface
 //#include "../game/be_aas.h"
@@ -475,6 +482,13 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			obit = modNames[meansOfDeath];
 		}
 
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Event_Death(self-g_entities, &g_entities[attacker-g_entities], obit);
+		Bot_Event_KilledSomeone(attacker-g_entities, &g_entities[self-g_entities], obit);
+		// end acqu-sdk (issue 3)
+#endif
+
 		G_LogPrintf("Kill: %i %i %i: %s killed %s by %s\n", killer, self->s.number, meansOfDeath, killerName, self->client->pers.netname, obit );
 	}
 
@@ -600,6 +614,16 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	if (self->client != NULL) {
 		if( self->health > GIB_HEALTH && meansOfDeath != MOD_SUICIDE && meansOfDeath != MOD_SWITCHTEAM ) {
 			G_AddEvent( self, EV_MEDIC_CALL, 0 );
+
+#ifdef OMNIBOT_SUPPORT
+			// sta acqu-sdk (issue 3): omnibot support
+			// ATM: only register the goal if the target isn't in water.
+			if(self->waterlevel <= 1) {
+				Bot_AddFallenTeammateGoals(self, self->client->sess.sessionTeam);
+			}
+			// end acqu-sdk (issue 3)
+#endif
+
 		}
 	}
 
@@ -1694,6 +1718,14 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 		if ( targ->client ) {
 			targ->client->ps.stats[STAT_HEALTH] = targ->health;
 		}
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		if (targ->s.number < level.maxclients) {
+			Bot_Event_TakeDamage(targ-g_entities, attacker);
+		}
+		// end acqu-sdk (issue 3)
+#endif
 	}
 }
 

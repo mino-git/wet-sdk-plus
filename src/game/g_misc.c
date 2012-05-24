@@ -1831,6 +1831,12 @@ void mg42_use (gentity_t *ent, gentity_t *other, gentity_t *activator ) {
 	trap_LinkEntity (ent);
 }
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+void UpdateGoalEntity(gentity_t *oldent, gentity_t *newent);
+// end acqu-sdk (issue 3)
+#endif
+
 void mg42_spawn (gentity_t *ent) {
 	gentity_t *base, *gun;
 	vec3_t	offset;
@@ -1947,6 +1953,13 @@ void mg42_spawn (gentity_t *ent) {
 		}
 
 		trap_LinkEntity (gun);
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		UpdateGoalEntity( ent, gun );
+		// end acqu-sdk (issue 3)
+#endif
+
 	} 
 
 	G_FreeEntity (ent);

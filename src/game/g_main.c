@@ -5,6 +5,12 @@
 //#include "../botai/ai_teamX.h"
 // end acqu-sdk (issue 11)
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 level_locals_t	level;
 
 typedef struct {
@@ -25,6 +31,15 @@ g_campaignInfo_t g_campaigns[MAX_CAMPAIGNS];
 int				saveGamePending;	// 0 = no, 1 = check, 2 = loading
 
 mapEntityData_Team_t mapEntityData[2];
+
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+vmCvar_t	g_OmniBotPath;
+vmCvar_t	g_OmniBotEnable;
+vmCvar_t	g_OmniBotFlags;
+vmCvar_t	g_OmniBotPlaying;
+// end acqu-sdk (issue 3)
+#endif
 
 vmCvar_t	g_gametype;
 vmCvar_t	g_fraglimit;
@@ -433,6 +448,15 @@ cvarTable_t		gameCvarTable[] = {
 	// sta acqu-sdk (issue 6): potential fake clients fix
 	{ &g_maxConnsPerIP, "g_maxConnsPerIP", "2", CVAR_SERVERINFO | CVAR_ARCHIVE},
 	// end acqu-sdk (issue 6)
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	{ &g_OmniBotPath, "omnibot_path", "", CVAR_ARCHIVE | CVAR_NORESTART, 0, qfalse },
+	{ &g_OmniBotEnable, "omnibot_enable", "1", CVAR_ARCHIVE | CVAR_SERVERINFO_NOUPDATE | CVAR_NORESTART, 0, qfalse },
+	{ &g_OmniBotPlaying, "omnibot_playing", "0", CVAR_SERVERINFO_NOUPDATE | CVAR_ROM, 0, qfalse },	
+	{ &g_OmniBotFlags, "omnibot_flags", "0", CVAR_ARCHIVE | CVAR_NORESTART, 0, qfalse },
+	// end acqu-sdk (issue 3)
+#endif
 };
 
 // bk001129 - made static to avoid aliasing
@@ -477,9 +501,32 @@ int vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int a
 #endif
 	switch ( command ) {
 	case GAME_INIT:
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Interface_InitHandles();
+		// end acqu-sdk (issue 3)
+#endif
+
 		G_InitGame( arg0, arg1, arg2 );
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		if (!Bot_Interface_Init())
+			G_Printf(S_COLOR_RED "Unable to Initialize Omni-Bot.\n");
+		// end acqu-sdk (issue 3)
+#endif
+
 		return 0;
 	case GAME_SHUTDOWN:
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		if (!Bot_Interface_Shutdown())
+			G_Printf(S_COLOR_RED "Error shutting down Omni-Bot.\n");
+		// end acqu-sdk (issue 3)
+#endif
+
 		G_ShutdownGame( arg0 );
 		return 0;
 	case GAME_CLIENT_CONNECT:
@@ -501,6 +548,13 @@ int vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int a
 		return 0;
 	case GAME_RUN_FRAME:
 		G_RunFrame( arg0 );
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Interface_Update();
+		// end acqu-sdk (issue 3)
+#endif
+
 		return 0;
 	case GAME_CONSOLE_COMMAND:
  		return ConsoleCommand();
@@ -2799,6 +2853,13 @@ void LogExit( const char *string ) {
 	}
 
 	G_BuildEndgameStats();
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Util_SendTrigger(NULL, NULL, "Round End.", "roundend");
+	// end acqu-sdk (issue 3)
+#endif
+
 }
 
 

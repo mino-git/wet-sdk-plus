@@ -1,6 +1,12 @@
 #include "g_local.h"
 #include "../../etmain/ui/menudef.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 // g_client.c -- client functions that don't happen every frame
 
 // Ridah, new bounding box
@@ -787,6 +793,12 @@ qboolean AddWeaponToPlayer( gclient_t *client, weapon_t weapon, int ammo, int am
 	// skill handling
 	AddExtraSpawnAmmo( client, weapon );
 
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_AddWeapon(client->ps.clientNum, Bot_WeaponGameToBot(weapon));
+	// end acqu-sdk (issue 3)
+#endif
+
 	return qtrue;
 }
 
@@ -802,11 +814,27 @@ SetWolfSpawnWeapons
 void SetWolfSpawnWeapons( gclient_t *client ) 
 {
 	int		pc = client->sess.playerType;
-	qboolean	isBot = (g_entities[client->ps.clientNum].r.svFlags & SVF_BOT) ? qtrue : qfalse;
-	qboolean	isPOW = (g_entities[client->ps.clientNum].r.svFlags & SVF_POW) ? qtrue : qfalse;
+
+	// sta acqu-sdk (issue 3): omnibot support
+	//qboolean	isBot = (g_entities[client->ps.clientNum].r.svFlags & SVF_BOT) ? qtrue : qfalse;
+	//qboolean	isPOW = (g_entities[client->ps.clientNum].r.svFlags & SVF_POW) ? qtrue : qfalse;
+	// end acqu-sdk (issue 3)
+	
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	qboolean        isBot = (g_entities[client->ps.clientNum].r.svFlags & SVF_BOT) ? qtrue : qfalse;
+	// end acqu-sdk (issue 3)
+#endif
 
 	if ( client->sess.sessionTeam == TEAM_SPECTATOR )
 		return;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if (isBot)
+		Bot_Event_ResetWeapons(client->ps.clientNum);
+	// end acqu-sdk (issue 3)
+#endif
 
 	// Reset special weapon time
 	client->ps.classWeaponTime = -999999;
@@ -1676,6 +1704,13 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	// get and distribute relevent paramters
 	G_LogPrintf( "ClientConnect: %i\n", clientNum );
 	G_UpdateCharacter( client );
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_ClientConnected(clientNum, isBot);
+	// end acqu-sdk (issue 3)
+#endif
+
 	ClientUserinfoChanged( clientNum );
 
 	if (g_gametype.integer == GT_SINGLE_PLAYER) {
@@ -1780,6 +1815,17 @@ void ClientBegin( int clientNum )
 
 	client->pers.complaintClient = -1;
 	client->pers.complaintEndTime = -1;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	client->sess.botSuicide = qfalse; // make sure this is not set
+
+	if ( ent->r.svFlags & SVF_BOT )
+		client->sess.botPush = qtrue; // make sure this is set for bots
+	else
+		client->sess.botPush = qfalse;
+	// end acqu-sdk (issue 3)
+#endif
 
 	// locate ent at a spawn point
 	ClientSpawn( ent, qfalse );
@@ -2325,6 +2371,12 @@ void ClientDisconnect( int clientNum ) {
 	if ( !ent->client ) {
 		return;
 	}
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_ClientDisConnected(clientNum);
+	// end acqu-sdk (issue 3)
+#endif
 
 #ifdef USEXPSTORAGE
 	G_AddXPBackup( ent );

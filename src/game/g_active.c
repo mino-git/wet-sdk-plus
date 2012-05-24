@@ -1,6 +1,12 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 /*
 ===============
 G_DamageFeedback
@@ -190,7 +196,18 @@ PushBot
 void PushBot( gentity_t *ent, gentity_t *other ) {
 	vec3_t dir, ang, f, r;
 	float oldspeed;
-	//
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	// dont push when mounted in certain stationary weapons or scripted not to be pushed
+    if(other->client)
+    {
+            if (Bot_Util_AllowPush(other->client->ps.weapon) == qfalse || !other->client->sess.botPush)     
+                    return;
+    }
+	// end acqu-sdk (issue 3)
+#endif
+
 	oldspeed = VectorLength( other->client->ps.velocity );
 	if (oldspeed < 200)
 		oldspeed = 200;
@@ -1265,6 +1282,12 @@ void ClientThink_real( gentity_t *ent ) {
 		ent->client->ps.identifyClient = -1;
 		ent->client->ps.identifyClientHealth = 0;
 	}
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Util_CheckForSuicide(ent);
+	// end acqu-sdk (issue 3)
+#endif
 
 	// check for respawning
 	if( client->ps.stats[STAT_HEALTH] <= 0 ) {

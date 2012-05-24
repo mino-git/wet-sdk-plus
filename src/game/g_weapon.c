@@ -8,6 +8,12 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 vec3_t	forward, right, up;
 vec3_t	muzzleEffect;
 vec3_t	muzzleTrace;
@@ -254,6 +260,13 @@ void Weapon_Medic( gentity_t *ent ) {
 
 	ent2->parent = ent; // JPW NERVE so we can score properly later
 	//ent2->count = 20;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_FireWeapon(ent-g_entities, Bot_WeaponGameToBot(ent->s.weapon), ent2);
+	// end acqu-sdk (issue 3)
+#endif
+
 }
 
 /*
@@ -420,6 +433,13 @@ void Weapon_MagicAmmo( gentity_t *ent )  {
 		ent2->count = 1;
 		ent2->s.density = 1;
 	}
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_FireWeapon(ent-g_entities, Bot_WeaponGameToBot(ent->s.weapon), ent2);
+	// end acqu-sdk (issue 3)
+#endif
+
 }
 // jpw
 
@@ -461,6 +481,12 @@ qboolean ReviveEntity(gentity_t *ent, gentity_t *traceEnt)
 	memcpy(weapons,traceEnt->client->ps.weapons,sizeof(int)*(MAX_WEAPONS/(sizeof(int)*8)));
 
 	ClientSpawn(traceEnt, qtrue);
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_Revived(traceEnt-g_entities, ent);
+	// end acqu-sdk (issue 3)
+#endif
 
 	traceEnt->client->ps.stats[STAT_PLAYER_CLASS] = traceEnt->client->sess.playerType;
 	memcpy(traceEnt->client->ps.ammo,ammo,sizeof(int)*MAX_WEAPONS);
@@ -1956,12 +1982,25 @@ evilbanigoto:
 						if (!(hit->spawnflags & 128) && (((hit->spawnflags & AXIS_OBJECTIVE) && (ent->client->sess.sessionTeam == TEAM_ALLIES)) ||
 							 ((hit->spawnflags & ALLIED_OBJECTIVE) && (ent->client->sess.sessionTeam == TEAM_AXIS))) ) {
 
+#ifdef OMNIBOT_SUPPORT
+							// sta acqu-sdk (issue 3): omnibot support
+							const char *Goalname = _GetEntityName( hit );
+							// end acqu-sdk (issue 3)
+#endif
+
 							gentity_t* pm = G_PopupMessage( PM_DYNAMITE );
 							pm->s.effect2Time = 0;
 							pm->s.effect3Time = hit->s.teamNum;
 							pm->s.teamNum = ent->client->sess.sessionTeam;
 
 							G_Script_ScriptEvent( hit, "dynamited", "" );
+
+#ifdef OMNIBOT_SUPPORT
+							// sta acqu-sdk (issue 3): omnibot support
+							hit->numPlanted += 1;							
+							Bot_AddDynamiteGoal(traceEnt, traceEnt->s.teamNum, va("%s_%i", Goalname, hit->numPlanted));
+							// end acqu-sdk (issue 3)
+#endif
 
 							if ( !(hit->spawnflags & OBJECTIVE_DESTROYED) ) {
 								AddScore(traceEnt->parent, WOLF_DYNAMITE_PLANT); // give drop score to guy who dropped it
@@ -2023,12 +2062,25 @@ evilbanigoto:
 						}
 
 						if( hit->parent ) {
+
+#ifdef OMNIBOT_SUPPORT
+							// sta acqu-sdk (issue 3): omnibot support
+							const char *Goalname = _GetEntityName( hit->parent );
+							// end acqu-sdk (issue 3)
+#endif
 							gentity_t* pm = G_PopupMessage( PM_DYNAMITE );
 							pm->s.effect2Time = 0; // 0 = planted
 							pm->s.effect3Time = hit->parent->s.teamNum;
 							pm->s.teamNum = ent->client->sess.sessionTeam;
 
 							G_Script_ScriptEvent( hit, "dynamited", "" );
+
+#ifdef OMNIBOT_SUPPORT
+							// sta acqu-sdk (issue 3): omnibot support
+							hit->numPlanted += 1;							
+							Bot_AddDynamiteGoal(traceEnt, traceEnt->s.teamNum, va("%s_%i", Goalname, hit->numPlanted));
+							// end acqu-sdk (issue 3)
+#endif
 	
 							if( (!(hit->parent->spawnflags & OBJECTIVE_DESTROYED)) && 
 								hit->s.teamNum && (hit->s.teamNum == ent->client->sess.sessionTeam) ) {	// ==, as it's inverse
@@ -2851,6 +2903,12 @@ void Weapon_Artillery(gentity_t *ent) {
 #endif
 		ent->client->sess.aWeaponStats[WS_ARTILLERY].atts++;
 
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		Bot_Event_FireWeapon(ent-g_entities, Bot_WeaponGameToBot(WP_ARTY), 0);
+		// end acqu-sdk (issue 3)
+#endif
+
 }
 
 
@@ -3663,6 +3721,16 @@ ROCKET
 ======================================================================
 */
 
+
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+gentity_t *Weapon_Panzerfaust_Fire( gentity_t *ent ) {
+	gentity_t	*m = fire_rocket (ent, muzzleEffect, forward);
+//	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics
+	return m;
+}
+// end acqu-sdk (issue 3)
+#else
 void Weapon_Panzerfaust_Fire( gentity_t *ent ) {
 	gentity_t	*m;
 
@@ -3670,6 +3738,7 @@ void Weapon_Panzerfaust_Fire( gentity_t *ent ) {
 
 //	VectorAdd( m->s.pos.trDelta, ent->client->ps.velocity, m->s.pos.trDelta );	// "real" physics
 }
+#endif
 
 
 /*
@@ -3723,6 +3792,48 @@ void G_BurnMeGood( gentity_t *self, gentity_t *body )
 static vec3_t	flameChunkMins = {-4, -4, -4};
 static vec3_t	flameChunkMaxs = { 4,  4,  4};
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+gentity_t *Weapon_FlamethrowerFire( gentity_t *ent ) {
+	gentity_t	*traceEnt;
+	vec3_t		start;
+	vec3_t		trace_start;
+	vec3_t		trace_end;
+	trace_t 	trace;
+
+	VectorCopy( ent->r.currentOrigin, start );
+	start[2] += ent->client->ps.viewheight;
+	VectorCopy( start, trace_start );
+
+	VectorMA( start, -8, forward, start );
+	VectorMA( start, 10, right, start );
+	VectorMA( start, -6, up, start );
+	
+	// prevent flame thrower cheat, run & fire while aiming at the ground, don't get hurt
+	// 72 total box height, 18 xy -> 77 trace radius (from view point towards the ground) is enough to cover the area around the feet
+	VectorMA( trace_start, 77.0, forward, trace_end);
+	trap_Trace( &trace, trace_start, flameChunkMins, flameChunkMaxs, trace_end, ent->s.number, MASK_SHOT | MASK_WATER );	
+	if (trace.fraction != 1.0)
+	{
+		// additional checks to filter out false positives
+		if (trace.endpos[2] > (ent->r.currentOrigin[2]+ent->r.mins[2]-8) && trace.endpos[2] < ent->r.currentOrigin[2]) 
+		{
+			// trigger in a 21 radius around origin
+			trace_start[0] -= trace.endpos[0];
+			trace_start[1] -= trace.endpos[1];
+			if (trace_start[0]*trace_start[0]+trace_start[1]*trace_start[1] < 441)
+			{
+				// set self in flames
+				G_BurnMeGood( ent, ent );
+			}
+		}
+	}
+
+	traceEnt = fire_flamechunk ( ent, start, forward );
+	return traceEnt;
+}
+// end acqu-sdk (issue 3)
+#else
 void Weapon_FlamethrowerFire( gentity_t *ent ) {
 	gentity_t	*traceEnt;
 	vec3_t		start;
@@ -3760,6 +3871,7 @@ void Weapon_FlamethrowerFire( gentity_t *ent ) {
 
 	traceEnt = fire_flamechunk ( ent, start, forward );
 }
+#endif
 
 //======================================================================
 
@@ -3983,6 +4095,13 @@ FireWeapon
 void FireWeapon( gentity_t *ent ) {
 	float	aimSpreadScale;
 	int		shots = 1;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	gentity_t *pFiredShot = 0; // tell bots about projectiles
+	qboolean callEvent = qtrue;
+	// end acqu-sdk (issue 3)
+#endif
 	
 	// ydnar: dead guys don't fire guns
 	if( ent->client->ps.pm_type == PM_DEAD )
@@ -4052,6 +4171,13 @@ void FireWeapon( gentity_t *ent ) {
 		break;
 	// NERVE - SMF
 	case WP_MEDKIT:
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		callEvent = qfalse;
+		// end acqu-sdk (issue 3)
+#endif
+
 		Weapon_Medic( ent );
 		break;
 	case WP_PLIERS:
@@ -4067,8 +4193,16 @@ void FireWeapon( gentity_t *ent ) {
 			ent->client->ps.classWeaponTime += .66f * level.lieutenantChargeTime[ent->client->sess.sessionTeam-1];
 		} else {
 			ent->client->ps.classWeaponTime = level.time;
-		}
+		}		
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = weapon_grenadelauncher_fire(ent, WP_SMOKE_MARKER);
+		// end acqu-sdk (issue 3)
+#else
 		weapon_grenadelauncher_fire(ent, WP_SMOKE_MARKER);
+#endif
+
 		break;
 	// -NERVE - SMF
 	case WP_MEDIC_SYRINGE:
@@ -4079,6 +4213,13 @@ void FireWeapon( gentity_t *ent ) {
 		Weapon_AdrenalineSyringe(ent);
 		break;
 	case WP_AMMO:
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		callEvent = qfalse;
+		// end acqu-sdk (issue 3)
+#endif
+
 		Weapon_MagicAmmo( ent );
 		break;
 	case WP_LUGER:
@@ -4176,7 +4317,14 @@ void FireWeapon( gentity_t *ent ) {
 			ent->client->ps.classWeaponTime = level.time;
 		}
 
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = Weapon_Panzerfaust_Fire(ent);
+		// end acqu-sdk (issue 3)
+#else
 		Weapon_Panzerfaust_Fire(ent);
+#endif
+
 		if( ent->client ) {
 			vec3_t forward;
 			AngleVectors (ent->client->ps.viewangles, forward, NULL, NULL);
@@ -4190,7 +4338,15 @@ void FireWeapon( gentity_t *ent ) {
 		}
 
 		ent->client->ps.classWeaponTime += .5f * level.engineerChargeTime[ent->client->sess.sessionTeam-1];
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = weapon_gpg40_fire( ent, ent->s.weapon );
+		// end acqu-sdk (issue 3)
+#else
 		weapon_gpg40_fire( ent, ent->s.weapon );
+#endif
+
 		break;
 	case WP_MORTAR_SET:
 		if( level.time - ent->client->ps.classWeaponTime > level.soldierChargeTime[ent->client->sess.sessionTeam-1] ) {
@@ -4205,7 +4361,15 @@ void FireWeapon( gentity_t *ent ) {
 		} else {
 			ent->client->ps.classWeaponTime += .5f * level.soldierChargeTime[ent->client->sess.sessionTeam-1];
 		}
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = weapon_mortar_fire( ent, ent->s.weapon );
+		// end acqu-sdk (issue 3)
+#else
 		weapon_mortar_fire( ent, ent->s.weapon );
+#endif
+
 		break;
 	case WP_GRENADE_LAUNCHER:
 	case WP_GRENADE_PINEAPPLE:
@@ -4250,18 +4414,40 @@ void FireWeapon( gentity_t *ent ) {
 				ent->client->ps.classWeaponTime = level.time;
 			}
 		}
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = weapon_grenadelauncher_fire( ent, ent->s.weapon );
+		// end acqu-sdk (issue 3)
+#else
 		weapon_grenadelauncher_fire( ent, ent->s.weapon );
+#endif
+
 		break;
 	case WP_FLAMETHROWER:
-		// RF, this is done client-side only now
-		// Gordon: um, no it isnt?
+
+#ifdef OMNIBOT_SUPPORT
+		// sta acqu-sdk (issue 3): omnibot support
+		pFiredShot = Weapon_FlamethrowerFire( ent );
+		// end acqu-sdk (issue 3)
+#else
 		Weapon_FlamethrowerFire( ent );
+#endif
+		
 		break;
 	case WP_MAPMORTAR:
 		break;
 	default:
 		break;
 	}
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if(callEvent) {
+		Bot_Event_FireWeapon(ent-g_entities, Bot_WeaponGameToBot(ent->s.weapon), pFiredShot);
+	}
+	// end acqu-sdk (issue 3)
+#endif
 
 	// OSP
 #ifndef DEBUG_STATS

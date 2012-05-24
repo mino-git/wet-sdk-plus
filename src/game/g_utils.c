@@ -7,6 +7,13 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+void Bot_Queue_EntityCreated(gentity_t *pEnt);
+void Bot_Event_EntityDeleted(gentity_t *pEnt);
+// end acqu-sdk (issue 3)
+#endif
+
 typedef struct {
   char oldShader[MAX_QPATH];
   char newShader[MAX_QPATH];
@@ -517,6 +524,13 @@ void G_InitGentity( gentity_t *e ) {
 	e->spawnCount++;
 	// mark the time
 	e->spawnTime = level.time;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Queue_EntityCreated(e);
+	// end acqu-sdk (issue 3)
+#endif
+
 }
 
 /*
@@ -610,6 +624,12 @@ Marks the entity as free
 */
 void G_FreeEntity( gentity_t *ed ) {
 	int spawnCount;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	Bot_Event_EntityDeleted(ed);
+	// end acqu-sdk (issue 3)
+#endif
 
 	if(ed->free) {
 		ed->free( ed );

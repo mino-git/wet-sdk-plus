@@ -5,6 +5,12 @@
 
 #include "g_local.h"
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+#include "g_etbot_interface.h"
+// end acqu-sdk (issue 3)
+#endif
+
 
 /*
 ==============================================================================
@@ -1329,6 +1335,15 @@ qboolean	ConsoleCommand( void ) {
 		return qtrue;
 	}
 // END - Mad Doc - TDF
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	if (Q_stricmp (cmd, "bot") == 0) {
+		Bot_Interface_ConsoleCommand();
+		return qtrue;
+	}
+	// end acqu-sdk (issue 3)
+#endif
 
 	// fretn - moved from engine
 	if (!Q_stricmp(cmd, "kick")) {

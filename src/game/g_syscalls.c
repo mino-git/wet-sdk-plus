@@ -560,9 +560,9 @@ void trap_BotUserCommand(int clientNum, usercmd_t *ucmd) {
 //	syscall( BOTLIB_EA_GESTURE, client );
 //}
 //
-//void trap_EA_Command(int client, char *command) {
-//	syscall( BOTLIB_EA_COMMAND, client, command );
-//}
+void trap_EA_Command(int client, char *command) {
+	syscall( BOTLIB_EA_COMMAND, client, command );
+}
 //
 //void trap_EA_SelectWeapon(int client, int weapon) {
 //	syscall( BOTLIB_EA_SELECT_WEAPON, client, weapon );

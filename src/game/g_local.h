@@ -2,6 +2,9 @@
 
 // g_local.h -- local definitions for game module
 
+#ifndef __G_LOCAL_H__
+#define __G_LOCAL_H__
+
 #include "q_shared.h"
 #include "bg_public.h"
 #include "g_public.h"
@@ -486,6 +489,13 @@ struct gentity_s {
 
 	//bani
 	int	etpro_misc_1;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	int numPlanted;
+	// end acqu-sdk (issue 3)
+#endif
+
 };
 
 // Ridah
@@ -590,6 +600,13 @@ typedef struct {
 	int			suicides;
 	int			team_damage;
 	int			team_kills;
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	qboolean        botSuicide;                     // /kill before next spawn
+	qboolean        botPush;                        // allow for disabling of bot pushing via script
+	// end acqu-sdk (issue 3)
+#endif
 
 	weapon_stat_t aWeaponStats[WS_MAX+1];	// Weapon stats.  +1 to avoid invalid weapon check
 	// OSP
@@ -1094,6 +1111,14 @@ typedef struct {
 	int					commanderLastSoundTime[2];
 
 	qboolean	tempTraceIgnoreEnts[ MAX_GENTITIES ];
+
+#ifdef OMNIBOT_SUPPORT
+	// sta acqu-sdk (issue 3): omnibot support
+	qboolean        twoMinute;
+	qboolean        thirtySecond;
+	// end acqu-sdk (issue 3)
+#endif
+
 } level_locals_t;
 
 typedef struct {
@@ -1623,6 +1648,15 @@ extern int				saveGamePending;
 
 #define	FOFS(x) ((int)&(((gentity_t *)0)->x))
 
+#ifdef OMNIBOT_SUPPORT
+// sta acqu-sdk (issue 3): omnibot support
+extern  vmCvar_t        g_OmniBotPath;
+extern  vmCvar_t        g_OmniBotEnable;
+extern  vmCvar_t        g_OmniBotFlags;
+extern  vmCvar_t        g_OmniBotPlaying;
+// end acqu-sdk (issue 3)
+#endif
+
 extern	vmCvar_t	g_gametype;
 
 extern	vmCvar_t	g_log;
@@ -1963,7 +1997,7 @@ void	trap_BotUserCommand(int client, usercmd_t *ucmd);
 //void	trap_EA_UseInv(int client, char *inv);
 //void	trap_EA_DropInv(int client, char *inv);
 //void	trap_EA_Gesture(int client);
-//void	trap_EA_Command(int client, char *command);
+void	trap_EA_Command(int client, char *command);
 //
 //void	trap_EA_SelectWeapon(int client, int weapon);
 //void	trap_EA_Talk(int client);
@@ -2556,3 +2590,5 @@ void G_TempTraceIgnorePlayersAndBodies( void );
 qboolean G_CanPickupWeapon( weapon_t weapon, gentity_t* ent );
 
 qboolean G_LandmineSnapshotCallback( int entityNum, int clientNum );
+
+#endif /* __G_LOCAL_H__ */
