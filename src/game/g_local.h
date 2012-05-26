@@ -2546,11 +2546,8 @@ gentity_t* G_ConstructionForTeam( gentity_t* toi, team_t team );
 gentity_t* G_IsConstructible( team_t team, gentity_t* toi );
 
 // sta acqu-sdk (issue 11): additional declarations
-int BotGetTargetDynamite( int *list, int listSize, gentity_t* target );
-void BotBuildStaticEntityCache(void);
-gentity_t* BotFindNextStaticEntity( gentity_t *start, int entityEnum );
+int G_GetTargetDynamite( int *list, int listSize, gentity_t* target );
 qboolean G_ConstructionIsDestroyable( gentity_t* ent );
-gentity_t* G_FindDynamiteTargetForTeam( gentity_t* trav, team_t team );
 char *stristr(char *str, char *charset);
 char *ClientName(int client, char *name, int size);
 // end acqu-sdk (issue 11)

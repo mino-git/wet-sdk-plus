@@ -1973,10 +1973,6 @@ G_ScriptAction_Accum
 =================
 */
 
-
-
-int BotGetTargetDynamite( int *list, int listSize, gentity_t* target );
-
 qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
 {
 	char *pString, *token, lastToken[MAX_QPATH], name[MAX_QPATH];
@@ -2139,11 +2135,9 @@ qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
 			G_Error( "Scripting: accum %s could not find target\n", lastToken );
 		}		
 
-		// sta acqu-sdk (issue 11): vogel-strauß algorithm		
-		ent->scriptAccumBuffer[bufferIndex] = 1;
-		G_Printf("Vogel-Strauß can't hide anymore. Need to do something. Report this message to tha baus.\n");
-		//ent->scriptAccumBuffer[bufferIndex] = BotGetTargetDynamite( NULL, 0, target );
-		// end acqu-sdk (issue 11): vogel-strauß algorithm
+		// sta acqu-sdk (issue 11): moved this in place again
+		ent->scriptAccumBuffer[bufferIndex] = G_GetTargetDynamite( NULL, 0, target );
+		// end acqu-sdk (issue 11)
 		
 	} else {
 		G_Error( "Scripting: accum %s: unknown command\n", params );

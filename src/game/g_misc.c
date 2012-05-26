@@ -2808,6 +2808,83 @@ float AngleDifference(float ang1, float ang2) {
 	return diff;
 }
 
+// ============================================================================================
+// Put this in place again, it is responsible solely for the tank-bridge stuff introduced in
+// the map fueldump. The mapscript needs this functionality for accum checks (see set_to_dynamitecount)
+// note: these are slightly modified versions of the old bot code.
+gentity_t* G_FindMissile( gentity_t* start, weapon_t weap ) {
+	int i = start ? (start-g_entities) + 1 : 0;
+	gentity_t* ent = &g_entities[i];
+
+	for( ; i < level.num_entities; i++, ent++) {
+		if( ent->s.eType != ET_MISSILE ) {
+			continue;
+		}
+
+		if( ent->s.weapon != weap ) {
+			continue;
+		}
+
+		return ent;
+	}
+
+	return NULL;
+}
+
+gentity_t* G_FindDynamite( gentity_t* start ) {
+	return G_FindMissile( start, WP_DYNAMITE );
+}
+
+int G_GetTargetDynamite( int *list, int listSize, gentity_t* target ) {
+	gentity_t *dyn, *trav;
+	vec3_t vec;
+	int count = 0;
+	team_t team;
+
+	for( dyn = G_FindDynamite( NULL ); dyn; dyn = G_FindDynamite( dyn ) ) {
+		// RF, if the dynamite is unarmed, ignore
+		if ( dyn->s.teamNum >= 4 ) {
+			continue;
+		}
+		for( team = TEAM_AXIS; team <= TEAM_ALLIES; team++ ) {			
+			vec3_t mins, maxs;
+			VectorAdd( dyn->r.currentOrigin, dyn->r.mins, mins );
+			VectorAdd( dyn->r.currentOrigin, dyn->r.maxs, maxs );
+
+			if( target ) {
+				if(target->s.eType == ET_EXPLOSIVE) {
+					if(!target->parent) {
+						continue;
+					}
+
+					if(BG_BBoxCollision( dyn->r.absmin, dyn->r.absmax, target->parent->r.absmin, target->parent->r.absmax )) {						
+						if(list) {
+							list[count] = dyn->s.number;
+						}
+						count++;
+						break;
+					}
+				} else {
+					G_AdjustedDamageVec( target, dyn->r.currentOrigin, vec );
+					if((VectorLengthSquared( vec ) <= SQR(dyn->splashRadius)) && CanDamage( target, dyn->r.currentOrigin )) {
+						if(list) {
+							list[count] = dyn->s.number;
+						}
+						count++;
+						break;
+					}
+				}
+			}
+
+			if(list && count >= listSize) {
+				break;
+			}
+		}
+	}
+
+	return count;
+}
+
 // end acqu-sdk (issue 11)
 
 // ======================================================================
@@ -2837,7 +2914,7 @@ float AngleDifference(float ang1, float ang2) {
 //	"bot_landminespot_spot",
 //};
 //
-///*
+//
 //===============
 //BotBuildStaticEntityCache
 //===============
@@ -2866,7 +2943,7 @@ float AngleDifference(float ang1, float ang2) {
 //	level.initStaticEnts = qtrue;
 //}
 //
-///*
+//
 //================
 //BotFindNextStaticEntity
 //================
@@ -2950,106 +3027,5 @@ float AngleDifference(float ang1, float ang2) {
 //	return NULL;
 //}
 //
-///*
-//==================
-//BotGetTargetDynamite
-//==================
-//*/
-//gentity_t* G_FindDynamite( gentity_t* start ) {
-//	return G_FindMissile( start, WP_DYNAMITE );
-//}
 //
-//int BotGetTargetDynamite( int *list, int listSize, gentity_t* target ) {
-//	gentity_t *dyn, *trav;
-//	vec3_t vec;
-//	int count = 0;
-//	team_t team;
-//
-//	for( dyn = G_FindDynamite( NULL ); dyn; dyn = G_FindDynamite( dyn ) ) {
-//		// RF, if the dynamite is unarmed, ignore
-//		if ( dyn->s.teamNum >= 4 ) {
-//			continue;
-//		}
-//		for( team = TEAM_AXIS; team <= TEAM_ALLIES; team++ ) {
-//			vec3_t mins, maxs;
-//			VectorAdd( dyn->r.currentOrigin, dyn->r.mins, mins );
-//			VectorAdd( dyn->r.currentOrigin, dyn->r.maxs, maxs );
-//
-//			if( target ) {
-//				if(target->s.eType == ET_EXPLOSIVE) {
-//					if(!target->parent) {
-//						continue;
-//					}
-//
-//					if(BG_BBoxCollision( dyn->r.absmin, dyn->r.absmax, target->parent->r.absmin, target->parent->r.absmax )) {
-//						if(list) {
-//							list[count] = dyn->s.number;
-//						}
-//						count++;
-//						break;
-//					}
-//				} else {
-//					G_AdjustedDamageVec( target, dyn->r.currentOrigin, vec );
-//					if((VectorLengthSquared( vec ) <= SQR(dyn->splashRadius)) && CanDamage( target, dyn->r.currentOrigin )) {
-//						if(list) {
-//							list[count] = dyn->s.number;
-//						}
-//						count++;
-//						break;
-//					}
-//				}
-//			} else {
-//				for( trav = G_FindDynamiteTargetForTeam( NULL, team ); trav; trav = G_FindDynamiteTargetForTeam( trav->parent, team )) {
-//					if(trav->s.eType == ET_EXPLOSIVE) {
-//						if(!trav->parent) {
-//							continue;
-//						}
-//
-//						if(BG_BBoxCollision( dyn->r.absmin, dyn->r.absmax, trav->parent->r.absmin, trav->parent->r.absmax )) {
-//							if(list) {
-//								list[count] = dyn->s.number;
-//							}
-//							count++;
-//							break;
-//						}
-//					} else {
-//						G_AdjustedDamageVec( trav, dyn->r.currentOrigin, vec );
-//						if((VectorLengthSquared( vec ) <= SQR(dyn->splashRadius)) && CanDamage( trav, dyn->r.currentOrigin )) {
-//							if(list) {
-//								list[count] = dyn->s.number;
-//							}
-//							count++;
-//							break;
-//						}
-//					}
-//				}
-//			}
-//
-//			if(list && count >= listSize) {
-//				break;
-//			}
-//		}
-//	}
-//
-//	return count;
-//}
-//
-//gentity_t* G_FindMissile( gentity_t* start, weapon_t weap ) {
-//	int i = start ? (start-g_entities) + 1 : 0;
-//	gentity_t* ent = &g_entities[i];
-//
-//	for( ; i < level.num_entities; i++, ent++) {
-//		if( ent->s.eType != ET_MISSILE ) {
-//			continue;
-//		}
-//
-//		if( ent->s.weapon != weap ) {
-//			continue;
-//		}
-//
-//		return ent;
-//	}
-//
-//	return NULL;
-//}
 // end acqu-sdk (issue 11)
