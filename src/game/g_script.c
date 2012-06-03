@@ -130,6 +130,10 @@ qboolean G_ScriptAction_ConstructibleDuration( gentity_t *ent, char *params ) ;
 //bani
 qboolean etpro_ScriptAction_SetValues( gentity_t *ent, char *params );
 
+// sta acqu-sdk (issue 8): etpro mapscripting support
+qboolean etpro_ScriptAction_Create( gentity_t *ent, char *params );
+// end acqu-sdk (issue 8)
+
 // these are the actions that each event can call
 g_script_stack_action_t gScriptActions[] =
 {
@@ -240,6 +244,11 @@ g_script_stack_action_t gScriptActions[] =
 	{ "constructible_health",			G_ScriptAction_ConstructibleHealth },
 	{ "constructible_weaponclass",		G_ScriptAction_ConstructibleWeaponclass },
 	{ "constructible_duration"	,		G_ScriptAction_ConstructibleDuration },
+
+	// sta acqu-sdk (issue 8): etpro mapscripting support
+	{ "create",							etpro_ScriptAction_Create },
+	// end acqu-sdk (issue 8)
+
 	{NULL,								NULL}
 };
 
@@ -603,9 +612,13 @@ void G_Script_ScriptParse( gentity_t *ent )
 				curEvent->stack.items[curEvent->stack.numItems].action = action;
 
 				memset( params, 0, sizeof(params) );
-
+				
 				// Ikkyo - Parse for {}'s if this is a set command
-				if( !Q_stricmp( action->actionString, "set" ) ) {
+				if( !Q_stricmp( action->actionString, "set" ) ||
+					// sta acqu-sdk (issue 8): etpro mapscripting support
+					!Q_stricmp( action->actionString, "create" ) ) {
+					// end acqu-sdk (issue 8)
+
 					token = COM_Parse( &pScript );
 					if( token[0] != '{' ) {
 						COM_ParseError( "'{' expected, found: %s.\n", token );

@@ -1155,6 +1155,10 @@ qboolean G_CallSpawn( gentity_t *ent );
 char *G_AddSpawnVarToken( const char *string );
 void G_ParseField( const char *key, const char *value, gentity_t *ent );
 
+// sta acqu-sdk (issue 8): etpro mapscripting support
+gentity_t *G_SpawnGEntityFromSpawnVars( void );
+// end acqu-sdk (issue 8)
+
 //
 // g_cmds.c
 //

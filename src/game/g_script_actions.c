@@ -4410,3 +4410,66 @@ qboolean etpro_ScriptAction_SetValues( gentity_t *ent, char *params ) {
 
 	return qtrue;
 }
+
+// sta acqu-sdk (issue 8): etpro mapscripting support
+/*
+===================     
+etpro_ScriptAction_Create
+
+code based on etpub's implementation
+http://www.assembla.com/code/etpub/subversion/nodes
+
+spawns an entity into the field and sets values according to params
+===================
+*/
+qboolean etpro_ScriptAction_Create( gentity_t *ent, char *params )
+{
+	gentity_t *create;
+	char	*token;
+	char	*p;
+	char	key[MAX_TOKEN_CHARS], value[MAX_TOKEN_CHARS];
+
+	p = params;
+	
+	level.numSpawnVars = 0;
+	level.numSpawnVarChars = 0;
+
+	while( 1 )
+	{
+		token = COM_ParseExt( &p, qfalse );
+
+		if( !token[0] )
+			break;
+ 
+		strcpy( key, token );
+
+		token = COM_ParseExt( &p, qfalse );
+
+		if( !token[0] ) {
+			G_Error( "G_ScriptAction_Create: key \"%s\" has no value", key );
+			break;
+		}
+
+		strcpy(value, token);
+
+		if(g_scriptDebug.integer)
+			G_Printf( "%d : (%s) %s: set [%s] [%s] [%s]\n",
+			level.time, ent->scriptName, GAMEVERSION,
+			ent->scriptName, key, value );
+
+		if(level.numSpawnVars == MAX_SPAWN_VARS) {
+			G_Error( "G_ScriptAction_Create: MAX_SPAWN_VARS" );
+		}
+
+		level.spawnVars[level.numSpawnVars][0] = G_AddSpawnVarToken(key);
+		level.spawnVars[level.numSpawnVars][1] = G_AddSpawnVarToken(value);
+		level.numSpawnVars++;
+	}
+
+	create = G_SpawnGEntityFromSpawnVars();
+
+	trap_LinkEntity(create);
+
+	return qtrue;
+}
+// end acqu-sdk (issue 8)
