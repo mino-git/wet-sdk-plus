@@ -5,7 +5,11 @@ void InitTrigger( gentity_t *self) {
 	if (!VectorCompare (self->s.angles, vec3_origin))
 		G_SetMovedir (self->s.angles, self->movedir);
 
-	trap_SetBrushModel( self, self->model );
+	// sta acqu-sdk (issue 8): etpro mapscripting support
+	if(self->model) // fix for SV_SetBrushmodel NULL error					
+		trap_SetBrushModel( self, self->model );
+	//trap_SetBrushModel( self, self->model );
+	// end acqu-sdk (issue 8)	
 
 	self->r.contents = CONTENTS_TRIGGER;		// replaces the -1 from trap_SetBrushModel
 	self->r.svFlags = SVF_NOCLIENT;

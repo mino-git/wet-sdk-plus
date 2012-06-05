@@ -169,10 +169,18 @@ field_t fields[] = {
 
 	{"damageparent",	FOFS(damageparent),			F_LSTRING},
 
-	// sta acqu-sdk (issue 8): etpro mapscripting support	
+	// sta acqu-sdk (issue 8): etpro mapscripting support
 	{"mins",			FOFS(r.mins),				F_VECTOR},
 	{"maxs",			FOFS(r.maxs),				F_VECTOR},
 	{"contents",		FOFS(r.contents),			F_INT},
+	{"svflags",			FOFS(r.svFlags),			F_INT},
+	{"clipmask",		FOFS(clipmask),				F_INT},
+	{"count2",			FOFS(count2),				F_INT},
+	{"eflags",			FOFS(s.eFlags),				F_INT},
+	{"pos_trType",		FOFS(s.pos.trType),			F_INT},
+	{"pos_trDelta",		FOFS(s.pos.trDelta),		F_VECTOR},
+	{"apos_trType",		FOFS(s.apos.trType),		F_INT},
+	{"apos_trDelta",	FOFS(s.apos.trDelta),		F_VECTOR},
 	// end acqu-sdk (issue 8)
 
 	{NULL}
