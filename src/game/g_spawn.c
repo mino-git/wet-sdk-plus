@@ -225,6 +225,10 @@ void SP_misc_constructiblemarker( gentity_t *ent );
 void SP_target_explosion( gentity_t *ent );
 void SP_misc_landmine( gentity_t *ent );
 
+// sta acqu-sdk (issue 8): etpro mapscripting support
+void SP_func_fakebrush( gentity_t *ent );
+// end acqu-sdk (issue 8)
+
 void SP_trigger_always (gentity_t *ent);
 void SP_trigger_multiple (gentity_t *ent);
 void SP_trigger_push (gentity_t *ent);
@@ -674,6 +678,10 @@ spawn_t	spawns[] = {
 	{"target_explosion",	SP_target_explosion },
 	{"misc_landmine",		SP_misc_landmine },
 
+	// sta acqu-sdk (issue 8): etpro mapscripting support
+	{"func_fakebrush",		SP_func_fakebrush},
+	// end acqu-sdk (issue 8)
+
 	{0, 0}
 };
 
@@ -1113,4 +1121,11 @@ void G_SpawnEntitiesFromString( void ) {
 	G_Printf( "Disable spawning!\n" );
 	level.spawning = qfalse;			// any future calls to G_Spawn*() will be errors
 }
+
+// sta acqu-sdk (issue 8): etpro mapscripting support
+void SP_func_fakebrush( gentity_t *ent ) {
+	// do nothing
+	return;
+}
+// end acqu-sdk (issue 8)
 
