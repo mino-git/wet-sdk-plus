@@ -140,7 +140,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;"
+				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot; /D &quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="&quot;..\..\omnibot\Common&quot;;&quot;..\..\omnibot\ET&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;GAMEDLL"
