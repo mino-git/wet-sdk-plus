@@ -142,6 +142,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;..\..\omnibot\Common&quot;;&quot;..\..\omnibot\ET&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;GAMEDLL"
 				StringPooling="true"
 				RuntimeLibrary="0"
