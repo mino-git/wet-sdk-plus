@@ -7,6 +7,12 @@
 // end acqu-sdk (issue 3)
 #endif
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+#include "g_lua.h"
+// end acqu-sdk (issue 9)
+#endif
+
 // g_client.c -- client functions that don't happen every frame
 
 // Ridah, new bounding box
@@ -1479,6 +1485,12 @@ void ClientUserinfoChanged( int clientNum ) {
 		return;
 	}
 
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_ClientUserinfoChanged( clientNum );
+	// end acqu-sdk (issue 9)
+#endif
+
 	G_LogPrintf( "ClientUserinfoChanged: %i %s\n", clientNum, s );
 	G_DPrintf( "ClientUserinfoChanged: %i :: %s\n", clientNum, s );
 }
@@ -1522,6 +1534,11 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	char		userinfo2[MAX_INFO_STRING];
 	// end acqu-sdk (issue 6)
 
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	char		reason[MAX_STRING_CHARS] = "";
+	// end acqu-sdk (issue 9)
+#endif
 
 #ifdef USEXPSTORAGE
 	ipXPStorage_t* xpBackup;
@@ -1700,6 +1717,15 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 		// unlink the entity - just in case they were already connected
 		trap_UnlinkEntity( ent );
 	}
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	if( G_LuaHook_ClientConnect( clientNum, firstTime, isBot, reason ) ) {
+		if ( !isBot && !(ent->r.svFlags & SVF_BOT) )
+			return va( "%s\n", reason );
+	}
+	// end acqu-sdk (issue 9)
+#endif
 
 	// get and distribute relevent paramters
 	G_LogPrintf( "ClientConnect: %i\n", clientNum );
@@ -1921,6 +1947,13 @@ void ClientBegin( int clientNum )
 	// OSP
 	G_smvUpdateClientCSList(ent);
 	// OSP
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_ClientBegin( clientNum );
+	// end acqu-sdk (issue 9)
+#endif
+
 }
 
 gentity_t *SelectSpawnPointFromList( char *list, vec3_t spawn_origin, vec3_t spawn_angles )
@@ -2296,6 +2329,12 @@ void ClientSpawn( gentity_t *ent, qboolean revived )
 			G_UseTargets( spawnPoint, ent );
 	}
 
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_ClientSpawn( ent - g_entities, revived );
+	// end acqu-sdk (issue 9)
+#endif
+
 	// run a client frame to drop exactly to the floor,
 	// initialize animations and other things
 	client->ps.commandTime = level.time - 100;
@@ -2371,6 +2410,12 @@ void ClientDisconnect( int clientNum ) {
 	if ( !ent->client ) {
 		return;
 	}
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_ClientDisconnect( clientNum );
+	// end acqu-sdk (issue 9)
+#endif
 
 #ifdef OMNIBOT_SUPPORT
 	// sta acqu-sdk (issue 3): omnibot support

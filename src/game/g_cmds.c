@@ -6,6 +6,12 @@
 // end acqu-sdk (issue 3)
 #endif
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+#include "g_lua.h"
+// end acqu-sdk (issue 9)
+#endif
+
 // sta acqu-sdk (issue 11): remove deprecated bot code
 //void BotDebug(int clientNum);
 //void GetBotAutonomies(int clientNum, int *weapAutonomy, int *moveAutonomy);
@@ -3481,6 +3487,14 @@ void ClientCommand( int clientNum ) {
 	}
 
 	trap_Argv( 0, cmd, sizeof( cmd ) );
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	if( G_LuaHook_ClientCommand( clientNum, cmd ) ) {
+		return;
+	}
+	// end acqu-sdk (issue 9)
+#endif
 
 	if (Q_stricmp (cmd, "say") == 0) {
 		if( !ent->client->sess.muted) {

@@ -14,6 +14,12 @@
 // end acqu-sdk (issue 3)
 #endif
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+#include "g_lua.h"
+// end acqu-sdk (issue 9)
+#endif
+
 // sta acqu-sdk (issue 11): remove deprecated bot code
 //#include "../game/botlib.h"		//bot lib interface
 //#include "../game/be_aas.h"
@@ -491,6 +497,12 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
 		G_LogPrintf("Kill: %i %i %i: %s killed %s by %s\n", killer, self->s.number, meansOfDeath, killerName, self->client->pers.netname, obit );
 	}
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_Obituary( self->s.number, killer, meansOfDeath );
+	// end acqu-sdk (issue 9)
+#endif
 
 	// sta acqu-sdk (issue 11): remove deprecated bot code
 	// RF, record bot kills

@@ -11,6 +11,11 @@
 // end acqu-sdk (issue 3)
 #endif
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+#include "g_lua.h"
+// end acqu-sdk (issue 9)
+#endif
 
 /*
 ==============================================================================
@@ -1167,7 +1172,6 @@ static void Svcmd_KickNum_f( void ) {
 
 
 
-char	*ConcatArgs( int start );
 
 /*
 =================
@@ -1179,6 +1183,14 @@ qboolean	ConsoleCommand( void ) {
 	char	cmd[MAX_TOKEN_CHARS];
 
 	trap_Argv( 0, cmd, sizeof( cmd ) );
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	if( G_LuaHook_ConsoleCommand( cmd ) ) {
+		return qtrue;
+	}
+	// end acqu-sdk (issue 9)
+#endif
 
 // sta acqu-sdk (issue 18): remove unused code
 //#ifdef SAVEGAME_SUPPORT

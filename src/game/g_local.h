@@ -1429,6 +1429,10 @@ void AddIPBan( const char *str );
 
 void Svcmd_ShuffleTeams_f(void);
 
+// sta acqu-sdk (issue 9): lua support
+char *ConcatArgs( int start );
+// end acqu-sdk (issue 9)
+
 
 //
 // g_weapon.c
@@ -1855,6 +1859,11 @@ extern vmCvar_t	bot_debug_movementAutonomy;	// movement autonomy of the bot bein
 extern vmCvar_t	bot_debug_cover_spot;		// What cover spot are we going to?
 extern vmCvar_t	bot_debug_anim;				// what animation is the bot playing?
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+extern vmCvar_t lua_modules;
+// end acqu-sdk (issue 9)
+#endif
 
 
 

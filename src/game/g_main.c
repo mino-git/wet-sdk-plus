@@ -11,6 +11,12 @@
 // end acqu-sdk (issue 3)
 #endif
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+#include "g_lua.h"
+// end acqu-sdk (issue 9)
+#endif
+
 level_locals_t	level;
 
 typedef struct {
@@ -226,6 +232,11 @@ vmCvar_t		g_disableComplaints;
 vmCvar_t		g_maxConnsPerIP;
 // end acqu-sdk (issue 6)
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+vmCvar_t lua_modules;
+// end acqu-sdk (issue 9)
+#endif
 
 cvarTable_t		gameCvarTable[] = {
 	// don't override the cheat state set by the system
@@ -457,6 +468,13 @@ cvarTable_t		gameCvarTable[] = {
 	{ &g_OmniBotFlags, "omnibot_flags", "0", CVAR_ARCHIVE | CVAR_NORESTART, 0, qfalse },
 	// end acqu-sdk (issue 3)
 #endif
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	{ &lua_modules, "lua_modules", "", 0},
+	// end acqu-sdk (issue 9)
+#endif
+
 };
 
 // bk001129 - made static to avoid aliasing
@@ -584,6 +602,12 @@ void QDECL G_Printf( const char *fmt, ... ) {
 	va_start (argptr, fmt);
 	Q_vsnprintf (text, sizeof(text), fmt, argptr);
 	va_end (argptr);
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_Print( text );
+	// end acqu-sdk (issue 9)
+#endif
 
 	trap_Printf( text );
 }
@@ -1468,6 +1492,13 @@ void G_UpdateCvars( void )
 					}
 				}
 
+#ifdef LUA_SUPPORT
+				else if(cv->vmCvar == &lua_modules) {
+					// sta acqu-sdk (issue 9): lua support
+					G_LuaShutdown();
+					// end acqu-sdk (issue 9)
+				}				
+#endif
 
 				// OSP - Update vote info for clients, if necessary
 				else if(!G_IsSinglePlayerGame()) {
@@ -1965,9 +1996,15 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// Reinstate any MV views for clients -- need to do this after all init is complete
 	// --- maybe not the best place to do this... seems to be some race conditions on map_restart
 	G_spawnPrintf(DP_MVSPAWN, level.time + 2000, NULL);
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaInit();
+	G_LuaHook_InitGame( levelTime, randomSeed, restart );
+	// end acqu-sdk (issue 9)
+#endif
+
 }
-
-
 
 /*
 =================
@@ -1975,6 +2012,13 @@ G_ShutdownGame
 =================
 */
 void G_ShutdownGame( int restart ) {
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_ShutdownGame( restart );
+	G_LuaShutdown();
+	// end acqu-sdk (issue 9)
+#endif
 
 	// Arnout: gametype latching
 	if	( 
@@ -3969,6 +4013,13 @@ uebrgpiebrpgibqeripgubeqrpigubqifejbgipegbrtibgurepqgbn%i", level.time )
 //	G_CheckReloadStatus();
 //#endif // SAVEGAME_SUPPORT
 // end acqu-sdk (issue 18)
+
+#ifdef LUA_SUPPORT
+	// sta acqu-sdk (issue 9): lua support
+	G_LuaHook_RunFrame( levelTime );
+	// end acqu-sdk (issue 9)
+#endif
+
 }
 
 // Is this a single player type game - sp or coop?
