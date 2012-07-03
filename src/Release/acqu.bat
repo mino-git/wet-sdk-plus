@@ -8,7 +8,7 @@ REM All you need to do after you ran this script is start up your mod with '+set
 REM
 REM Using this file assumes the following conditions are met on your system:
 REM a) 7zip is installed and accessible via system path (http://7-zip.org/)
-REM b) one destination directory exists, to which the files can be copied over (see WETDIR1 variable if you want to do modification)
+REM b) one destination directory exists, to which the files can be copied over (see WETDIR1, MODNAME variable if you want to do modification)
 REM c) the file is located in a folder where all the required files and directories for this mod are present. These (at this moment) include the following:
 REM    - cgame_mp_x86.dll
 REM    - qagame_mp_x86.dll
