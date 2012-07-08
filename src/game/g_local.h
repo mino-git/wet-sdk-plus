@@ -1135,6 +1135,27 @@ typedef struct {
 //
 // g_spawn.c
 //
+typedef enum {
+	F_INT, 
+	F_FLOAT,
+	F_LSTRING,			// string on disk, pointer in memory, TAG_LEVEL
+	F_GSTRING,			// string on disk, pointer in memory, TAG_GAME
+	F_VECTOR,
+	F_ANGLEHACK,
+	F_ENTITY,			// index on disk, pointer in memory
+	F_ITEM,				// index on disk, pointer in memory
+	F_CLIENT,			// index on disk, pointer in memory
+	F_IGNORE
+} fieldtype_t;
+
+typedef struct
+{
+	char	*name;
+	int		ofs;
+	fieldtype_t	type;
+	int		flags;
+} field_t;
+
 #define		G_SpawnString(		key, def, out ) G_SpawnStringExt	( key, def, out, __FILE__, __LINE__ )
 #define		G_SpawnFloat(		key, def, out ) G_SpawnFloatExt		( key, def, out, __FILE__, __LINE__ )
 #define		G_SpawnInt(			key, def, out ) G_SpawnIntExt		( key, def, out, __FILE__, __LINE__ )
@@ -1633,6 +1654,13 @@ void script_mover_use(gentity_t *ent, gentity_t *other, gentity_t *activator);
 void script_mover_blocked( gentity_t *ent, gentity_t *other );
 
 float AngleDifference(float ang1, float ang2);
+
+// sta acqu-sdk (issue 8): etpro mapscripting support
+// g_script_actions.c
+gentity_t *G_FindInt(gentity_t *from, int fieldofs, int match);
+gentity_t *G_FindFloat(gentity_t *from, int fieldofs, float match);
+gentity_t *G_FindVector(gentity_t *from, int fieldofs, const vec3_t match);
+// end acqu-sdk (issue 8)
 
 // g_props.c
 void Props_Chair_Skyboxtouch (gentity_t *ent);

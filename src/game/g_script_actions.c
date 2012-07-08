@@ -4472,4 +4472,155 @@ qboolean etpro_ScriptAction_Create( gentity_t *ent, char *params )
 
 	return qtrue;
 }
+
+extern field_t fields[];
+
+/*
+===================     
+etpro_ScriptAction_Delete
+
+code based on etpub's implementation
+http://www.assembla.com/code/etpub/subversion/nodes
+which in turn is based on noquarter's implementation
+http://shitstorm.org/
+
+deletes all entities that match the criteria provided in "params"
+===================
+*/
+qboolean etpro_ScriptAction_Delete( gentity_t *ent, char *params )
+{
+	gentity_t	*found = NULL;
+	char		*token;
+	char		*p;
+	char		key[MAX_TOKEN_CHARS], value[MAX_TOKEN_CHARS];
+	int			i;
+	int			pass[MAX_GENTITIES];	// number of matching criteria for each entity
+	int			count = 0;				// number of key/value pairs in params
+	int			deleted = 0;			// number of deleted entities
+	qboolean	terminate = qfalse;
+	int			valueInt;
+	float		valueFloat;
+	vec3_t		valueVector;
+
+	p = params;
+
+	// core: params can contain more than 1 key/value pair,
+	//       We must check if the entity equals all of these pairs
+	//       before we delete it..
+	for ( i=MAX_CLIENTS; i<MAX_GENTITIES; i++)
+		pass[i] = 0;
+
+	while( !terminate ) {
+		// strip key/value from the params..
+		token = COM_ParseExt( &p, qfalse );
+
+		// are there tokes in the params?..
+		if( !token || token[0]==0 )
+			break;
+
+		strcpy( key, token );
+
+		token = COM_ParseExt( &p, qfalse );
+		if( !token || token[0]==0 ) {
+			G_Error("etpro_ScriptAction_Delete: key \"%s\" has no value", key);
+			break;
+		}
+
+		strcpy(value, token);
+
+		// does the field exist?..
+		for ( i=0; fields[i].name; i++ )
+			if ( !Q_stricmp( fields[i].name, key ) )
+				break;
+		if ( !fields[i].name ) {
+			G_Error("etpro_ScriptAction_Delete: non-existing key \"%s\"", key);
+			break;
+		}
+
+		// we have a key/value pair to search for..
+		count++;
+
+		// start searching from the first entity..
+		found = NULL;
+
+		// check key's datatype..
+		switch( fields[i].type ) {
+			case F_INT:
+				valueInt = atoi(value);
+				// find all entities with the given key/value..
+				while ((found = G_FindInt(found, fields[i].ofs, valueInt))!=NULL) {
+					pass[found->s.number]++;
+				}
+				break;
+
+			case F_FLOAT:
+				valueFloat = atof(value);
+				while ((found = G_FindFloat( found, fields[i].ofs, valueFloat )) != NULL) {
+					pass[found->s.number]++;
+				}
+				break;
+
+			case F_LSTRING:
+			case F_GSTRING:
+				while ((found = G_Find( found, fields[i].ofs, value )) != NULL) {
+					pass[found->s.number]++;
+				}
+				break;
+
+			case F_VECTOR:
+				sscanf( value, "%f %f %f", &valueVector[0], &valueVector[1], &valueVector[2] );
+				while ((found = G_FindVector( found, fields[i].ofs, valueVector )) != NULL) {
+					pass[found->s.number]++;
+				}
+				break;
+
+			case F_ANGLEHACK:
+				valueVector[0] = 0;
+				valueVector[1] = atof(value);
+				valueVector[2] = 0;
+				while ((found = G_FindVector( found, fields[i].ofs, valueVector )) != NULL) {
+					pass[found->s.number]++;
+				}
+				break;
+
+			case F_ENTITY:
+			case F_ITEM:
+			case F_CLIENT:
+			case F_IGNORE:
+			default:
+				// It's certain the test will fail now, so just abort..
+				if( g_scriptDebug.integer ) {
+					G_Printf( "etpro_ScriptAction_Delete: invalid key \"%s\"",
+						key );
+				}
+				terminate = qtrue;
+				break;
+		}
+	}
+
+	// did we find any key/value pairs in the params at all?..
+	if ( count == 0 ) return qfalse;
+
+	// now delete the entities that passed all tests..
+	for ( i=MAX_GENTITIES-1; i>=MAX_CLIENTS; i--)
+		if ( pass[i] == count ) {
+			deleted++;
+			if( g_scriptDebug.integer ) {
+				G_Printf( "etpro_ScriptAction_Delete: \"%s\" entity %i removed"
+					" (%s)\n", g_entities[i].classname, i, params );
+			}
+			G_FreeEntity( &g_entities[i] );
+		}
+
+	// did we actually delete any entity?..
+	if ( deleted > 0 )
+		return qtrue;
+	else
+		if( g_scriptDebug.integer ) {
+			G_Printf( "etpro_ScriptAction_Delete: no entities found (%s)\n",
+				params );
+		}
+
+	return qfalse;
+}
 // end acqu-sdk (issue 8)

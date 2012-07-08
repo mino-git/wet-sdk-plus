@@ -132,6 +132,7 @@ qboolean etpro_ScriptAction_SetValues( gentity_t *ent, char *params );
 
 // sta acqu-sdk (issue 8): etpro mapscripting support
 qboolean etpro_ScriptAction_Create( gentity_t *ent, char *params );
+qboolean etpro_ScriptAction_Delete( gentity_t *ent, char *params );
 // end acqu-sdk (issue 8)
 
 // these are the actions that each event can call
@@ -247,6 +248,7 @@ g_script_stack_action_t gScriptActions[] =
 
 	// sta acqu-sdk (issue 8): etpro mapscripting support
 	{ "create",							etpro_ScriptAction_Create },
+	{ "delete",							etpro_ScriptAction_Delete },	
 	// end acqu-sdk (issue 8)
 
 	{NULL,								NULL}
@@ -616,7 +618,8 @@ void G_Script_ScriptParse( gentity_t *ent )
 				// Ikkyo - Parse for {}'s if this is a set command
 				if( !Q_stricmp( action->actionString, "set" ) ||
 					// sta acqu-sdk (issue 8): etpro mapscripting support
-					!Q_stricmp( action->actionString, "create" ) ) {
+					!Q_stricmp( action->actionString, "create" ) ||
+					!Q_stricmp( action->actionString, "delete" ) ) {
 					// end acqu-sdk (issue 8)
 
 					token = COM_Parse( &pScript );
