@@ -123,6 +123,9 @@ typedef struct {
 	luafieldflags_t flags;
 } luafield_t;
 
+// fields from g_spawn.c
+extern field_t fields[];
+
 /*
 ==============================================================
 FIELDS
@@ -363,8 +366,8 @@ static const luaL_Reg etlib[] = {
 	{ "G_Spawn",							_et_G_Spawn					},
 	{ "G_TempEntity",						_et_G_TempEntity			},
 	{ "G_FreeEntity",						_et_G_FreeEntity			},
-	{ "G_GetSpawnVar",						_et_G_GetSpawnVar			},		// TODO
-	{ "G_SetSpawnVar",						_et_G_SetSpawnVar			},		// TODO
+	{ "G_GetSpawnVar",						_et_G_GetSpawnVar			},
+	{ "G_SetSpawnVar",						_et_G_SetSpawnVar			},
 	{ "G_SpawnGEntityFromSpawnVars",		_et_G_SpawnGEntityFromSpawnVars	},	// TODO
 	{ "trap_LinkEntity",					_et_trap_LinkEntity			},
 	{ "trap_UnlinkEntity",					_et_trap_UnlinkEntity		},
@@ -905,16 +908,125 @@ static int _et_G_FreeEntity( lua_State *L )
 // spawnval = et.G_GetSpawnVar( entnum, key )
 static int _et_G_GetSpawnVar( lua_State *L )
 {
-	// TODO
-	G_Printf("_et_G_GetSpawnVar\n");
+	gentity_t *ent;
+	int entnum = luaL_checkint(L, 1);
+	const char *key = luaL_checkstring(L, 2);
+	int			index = GetFieldIndex( (char *)key );
+	fieldtype_t	type = GetFieldType( (char *)key );
+	int			ofs;
+
+	// break on invalid gentity field
+	if ( index == -1 ) {
+		luaL_error(L, "field \"%s\" index is -1", key);
+		return 0;
+	}
+
+	if ( entnum < 0 || entnum >= MAX_GENTITIES ) {
+		luaL_error(L, "entnum \"%d\" is out of range", entnum);
+		return 0;
+	}
+
+	ent = &g_entities[entnum];
+
+	// If the entity is not in use, return nil
+	if ( !ent->inuse ) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ofs = fields[index].ofs;
+
+	switch( type ) {
+		case F_INT:
+			lua_pushinteger(L, *(int *) ((byte *)ent + ofs));
+			return 1;
+		case F_FLOAT:
+			lua_pushnumber(L, *(float *) ((byte *)ent + ofs));
+			return 1;
+		// TODO - etpub here checks for FIELD_FLAG_NOPTR, which (there) is only defined for the gentity_field_t structure.
+		// Have to check this in near future. For now, just resort to pointer handling.
+		case F_LSTRING:
+		case F_GSTRING:
+			lua_pushstring(L, *(char **) ((byte *)ent + ofs));
+			return 1;
+		case F_VECTOR:
+		case F_ANGLEHACK:
+			G_LuaPushVec3(L, *(vec3_t *)((byte *)ent + ofs));
+			return 1;
+		case F_ENTITY:
+		case F_ITEM:
+		case F_CLIENT:
+		case F_IGNORE:
+		default:
+			lua_pushnil(L);
+			return 1;
+	}
 	return 0;
 }
 
 // et.G_SetSpawnVar( entnum, key, value )
 static int _et_G_SetSpawnVar( lua_State *L )
 {
-	// TODO
-	G_Printf("_et_G_SetSpawnVar\n");
+	gentity_t *ent;
+	int entnum = luaL_checkint(L, 1);
+	const char *key = luaL_checkstring(L, 2);
+	int			index = GetFieldIndex( (char *)key );
+	fieldtype_t	type = GetFieldType( (char *)key );
+	int			ofs;
+	const char *buffer;
+
+	// break on invalid gentity field
+	if ( index == -1 ) {
+		luaL_error(L, "field \"%s\" index is -1", key);
+		return 0;
+	}
+
+	if ( entnum < 0 || entnum >= MAX_GENTITIES ) {
+		luaL_error(L, "entnum \"%d\" is out of range", entnum);
+		return 0;
+	}
+
+	ent = &g_entities[entnum];
+
+	// If the entity is not in use, return nil
+	if ( !ent->inuse ) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	ofs = fields[index].ofs;
+
+	switch( type ) {
+		case F_INT:
+			*(int *) ((byte *)ent + ofs) = luaL_checkint(L, 3);
+			return 1;
+		case F_FLOAT:
+			*(float *) ((byte *)ent + ofs) = (float)luaL_checknumber(L, 3);
+			return 1;
+		// TODO - etpub here checks for FIELD_FLAG_NOPTR, which (there) is only defined for the gentity_field_t structure.
+		// Have to check this in near future. For now, just resort to pointer handling.
+		case F_LSTRING:
+		case F_GSTRING:
+			buffer = luaL_checkstring(L, 3);
+			free(*(char **)((byte *)ent + ofs));
+			*(char **)((byte *)ent + ofs) = malloc(strlen(buffer));
+			Q_strncpyz(*(char **)((byte *)ent + ofs), buffer, strlen(buffer));
+			return 1;
+		case F_VECTOR:
+		case F_ANGLEHACK:
+			G_LuaSetVec3(L, (vec3_t *)((byte *)ent + ofs));
+			return 1;
+		case F_ENTITY:
+			*(gentity_t **)((byte *)ent + ofs) = g_entities + luaL_checkint(L, 3);
+			return 1;
+		case F_ITEM:
+		case F_CLIENT:
+		case F_IGNORE:
+		default:
+			lua_pushnil(L);
+			return 1;
+	}
+
 	return 0;
 }
 
@@ -1707,11 +1819,14 @@ qboolean G_LuaInit( void )
 	if (!lua_modules.string[0])
 		return qtrue;
 
+	for (i = 0; i < LUA_NUM_VM; i++)
+		lVM[i] = NULL;
+
 	Q_strncpyz(buf, lua_modules.string, sizeof(buf));
 	len = strlen(buf);
 	vmname = buf;
 
-	for (i=0; i<=len; i++) {
+	for (i = 0; i <= len; i++) {
 		if (buf[i] == ' ' || buf[i] == '\0') {
 			buf[i] = '\0';
 
@@ -1739,7 +1854,9 @@ void G_LuaShutdown( void )
 
 void G_LuaStartVM( const char *vmname )
 {
-	int i, err;
+	int i, err, len = 0;
+	char *sha1, *code;	
+	fileHandle_t f;
 	lua_vm_t *vm;
 
 	// find next free slot
@@ -1750,7 +1867,32 @@ void G_LuaStartVM( const char *vmname )
 		return;
 	}
 
-	// heap management
+	// check for boundaries and add sha1 signature
+	len = trap_FS_FOpenFile(vmname, &f, FS_READ);
+	if (len < 0) {
+		G_Printf("Lua: cannot open file %s\n", vmname);
+		return;
+	} else if (len > LUA_MAX_FSIZE) {		
+		G_Printf("Lua: ignoring file %s (too big)\n", vmname);
+		trap_FS_FCloseFile(f);
+		return;
+	} else {
+		code = malloc(len + 1);
+		trap_FS_Read(code, len, f);
+		*(code + len) = '\0';
+		trap_FS_FCloseFile(f);
+		sha1 = G_SHA1(code);
+		free(code);
+	}
+
+	// don't load disallowed lua modules
+	if ( Q_stricmp(lua_allowedModules.string, "") &&
+		 !strstr(lua_allowedModules.string, sha1) ) {		
+		G_Printf("Lua: disallowed lua module [%s] [%s]\n", vmname, sha1);
+		return;
+	}
+
+	// allocate some space
 	vm = (lua_vm_t *) malloc(sizeof(lua_vm_t));
 	if(vm) {
 		lVM[i] = vm;
@@ -1764,6 +1906,7 @@ void G_LuaStartVM( const char *vmname )
 	vm->id = i;
 	Q_strncpyz(vm->modname, vmname, sizeof(vm->modname));
 	Q_strncpyz(vm->filename, vmname, sizeof(vm->filename));
+	Q_strncpyz(vm->sha1, sha1, sizeof(vm->sha1));
 
 	// open standard libs
 	luaL_openlibs(vm->L);
@@ -1829,8 +1972,42 @@ void G_LuaRegConstants( lua_vm_t *vm )
 
 void G_LuaError( lua_vm_t *vm, int err )
 {
-	// TODO
-	G_Printf("G_LuaError\n");
+	if (err == LUA_ERRRUN) {		
+		G_Printf("Lua: error running lua script: %s\n", lua_tostring(vm->L, -1));
+		lua_pop(vm->L, 1);
+	} else if (err == LUA_ERRMEM) {
+		G_Printf("Lua: memory allocation error #2 ( %s )\n", vm->filename);
+	} else if (err == LUA_ERRERR) {
+		G_Printf("Lua: traceback error ( %s )\n", vm->filename);
+	}
+}
+
+void G_LuaStatus(gentity_t *ent)
+{
+	int i, cnt = 0;
+	for (i=0; i<LUA_NUM_VM; i++)
+		if (lVM[i])
+			cnt++;
+	
+	if (cnt == 0) {
+		G_refPrintf(ent, "Lua: no scripts loaded.");
+		return;
+	} else if (cnt == 1) {
+		G_refPrintf(ent, "Lua: showing lua information ( 1 module loaded )");
+	} else {
+		G_refPrintf(ent, "Lua: showing lua information ( %d modules loaded )", cnt);
+	}
+	G_refPrintf(ent, "--------------------------------------------------------");
+	for (i=0; i<LUA_NUM_VM; i++) {
+		if (lVM[i]) {			
+			G_refPrintf(ent, "VM slot\t\t%d\nModname\t\t%s\nFilename\t%s\nSignature\t%s",
+				lVM[i]->id,
+				lVM[i]->modname,
+				lVM[i]->filename,
+				lVM[i]->sha1);
+			G_refPrintf(ent, "--------------------------------------------------------");
+		}
+	}	
 }
 
 #endif

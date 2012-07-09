@@ -56,5 +56,6 @@ void G_LuaHook_Obituary( int victim, int killer, int meansOfDeath );
 // lua management
 qboolean G_LuaInit( void );
 void G_LuaShutdown( void );
+void G_LuaStatus(gentity_t *ent);
 
 #endif

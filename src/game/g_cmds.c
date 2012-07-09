@@ -3490,6 +3490,11 @@ void ClientCommand( int clientNum ) {
 
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
+	if( Q_stricmp( cmd, "lua_status" ) == 0 ) {
+		G_LuaStatus( ent );
+		return;
+	}
+
 	if( G_LuaHook_ClientCommand( clientNum, cmd ) ) {
 		return;
 	}

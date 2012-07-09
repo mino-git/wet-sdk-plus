@@ -235,6 +235,7 @@ vmCvar_t		g_maxConnsPerIP;
 #ifdef LUA_SUPPORT
 // sta acqu-sdk (issue 9): lua support
 vmCvar_t lua_modules;
+vmCvar_t lua_allowedModules;
 // end acqu-sdk (issue 9)
 #endif
 
@@ -472,6 +473,7 @@ cvarTable_t		gameCvarTable[] = {
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
 	{ &lua_modules, "lua_modules", "", 0},
+	{ &lua_allowedModules, "lua_allowedModules", "", 0 },
 	// end acqu-sdk (issue 9)
 #endif
 
@@ -1493,7 +1495,7 @@ void G_UpdateCvars( void )
 				}
 
 #ifdef LUA_SUPPORT
-				else if(cv->vmCvar == &lua_modules) {
+				else if(cv->vmCvar == &lua_modules || cv->vmCvar == &lua_allowedModules) {
 					// sta acqu-sdk (issue 9): lua support
 					G_LuaShutdown();
 					// end acqu-sdk (issue 9)

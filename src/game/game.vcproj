@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\g_sha1.c"
+				>
+			</File>
+			<File
 				RelativePath=".\g_spawn.c"
 				>
 			</File>
@@ -452,6 +456,10 @@
 				RelativePath=".\q_shared.c"
 				>
 			</File>
+			<File
+				RelativePath=".\sha1.c"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -487,6 +495,10 @@
 			</File>
 			<File
 				RelativePath=".\q_shared.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sha1.h"
 				>
 			</File>
 			<File

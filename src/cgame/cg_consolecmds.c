@@ -1178,4 +1178,9 @@ void CG_InitConsoleCommands( void ) {
 	trap_AddCommand ("vsay_team");
 	trap_AddCommand ("where");
 	// end acqu-sdk (issue 2): CHRUKER: b011
+
+	// sta acqu-sdk (issue 9): lua support
+	trap_AddCommand("lua_status");
+	// end acqu-sdk (issue 9):
+
 }

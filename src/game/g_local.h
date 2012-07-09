@@ -1176,6 +1176,13 @@ qboolean G_CallSpawn( gentity_t *ent );
 char *G_AddSpawnVarToken( const char *string );
 void G_ParseField( const char *key, const char *value, gentity_t *ent );
 
+#ifdef LUA_SUPPORT
+// sta acqu-sdk (issue 9): lua support
+int GetFieldIndex( char *fieldname );
+fieldtype_t GetFieldType( char *fieldname );
+// end acqu-sdk (issue 9)
+#endif
+
 // sta acqu-sdk (issue 8): etpro mapscripting support
 gentity_t *G_SpawnGEntityFromSpawnVars( void );
 // end acqu-sdk (issue 8)
@@ -1564,6 +1571,11 @@ void G_WriteSessionData( qboolean restart );
 
 void G_CalcRank( gclient_t* client );
 
+//
+// g_sha1.c
+//
+char *G_SHA1( char *string );
+
 // sta acqu-sdk (issue 11): remove deprecated bot code
 //
 // g_bot.c
@@ -1890,6 +1902,7 @@ extern vmCvar_t	bot_debug_anim;				// what animation is the bot playing?
 #ifdef LUA_SUPPORT
 // sta acqu-sdk (issue 9): lua support
 extern vmCvar_t lua_modules;
+extern vmCvar_t lua_allowedModules;
 // end acqu-sdk (issue 9)
 #endif
 
