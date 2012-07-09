@@ -228,6 +228,10 @@ vmCvar_t		g_nextcampaign;
 
 vmCvar_t		g_disableComplaints;
 
+// sta acqu-sdk (issue 20): hitsounds
+vmCvar_t		g_hitsounds;
+// end acqu-sdk (issue 20)
+
 // sta acqu-sdk (issue 6): potential fake clients fix
 vmCvar_t		g_maxConnsPerIP;
 // end acqu-sdk (issue 6)
@@ -456,6 +460,10 @@ cvarTable_t		gameCvarTable[] = {
 	{ &g_nextcampaign, "nextcampaign", "", CVAR_TEMP },
 
 	{ &g_disableComplaints, "g_disableComplaints", "0", CVAR_ARCHIVE },
+
+	// sta acqu-sdk (issue 20): hitsounds
+	{ &g_hitsounds, "g_hitsounds", "1", 0 },
+	// end acqu-sdk (issue 20)
 
 	// sta acqu-sdk (issue 6): potential fake clients fix
 	{ &g_maxConnsPerIP, "g_maxConnsPerIP", "2", CVAR_SERVERINFO | CVAR_ARCHIVE},

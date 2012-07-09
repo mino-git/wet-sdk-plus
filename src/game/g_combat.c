@@ -1044,6 +1044,48 @@ qboolean IsArmShot( gentity_t *targ, gentity_t* ent, vec3_t point, int mod ) {
 	return qtrue;
 }
 
+// sta acqu-sdk (issue 20): hitsounds
+void G_Hitsound(gentity_t *targ, gentity_t *attacker, int mod, qboolean headShot) 
+{
+	int snd;
+	gentity_t *hs_ent;
+
+	if(!g_hitsounds.integer)
+		return;
+
+	if(!attacker->client)
+		return;
+	
+	if(!attacker->client->pers.hitsounds)
+		return;	
+
+	if(!targ->client) 
+		return;
+
+	if( !g_friendlyFire.integer && targ->client->ps.powerups[PW_OPS_DISGUISED] && !OnSameTeam(targ, attacker)) {
+		return;
+	}
+
+	if( targ->health <= 0 && attacker->s.weapon == WP_KNIFE)
+		return;
+
+	hs_ent = G_TempEntity(attacker->client->ps.origin, EV_GLOBAL_CLIENT_SOUND);
+	hs_ent->s.teamNum = (attacker->client - level.clients);
+
+	// default hitsound
+	snd = G_SoundIndex("sound/hitsounds/hit.wav");
+
+	if(headShot)
+		snd = G_SoundIndex("sound/hitsounds/headshot.wav");
+
+	if(OnSameTeam(targ, attacker) || targ->client->ps.powerups[PW_OPS_DISGUISED])	
+		snd = G_SoundIndex("sound/hitsounds/hitteammate.wav");
+	
+
+	hs_ent->s.eventParm = snd;
+}
+// end acqu-sdk (issue 20)
+
 /*
 ============
 G_Damage
@@ -1558,6 +1600,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 	{
 		G_Printf( "client:%i health:%i damage:%i mod:%s\n", targ->s.number, targ->health, take, modNames[mod] );
 	}
+
+	// sta acqu-sdk (issue 20): hitsounds
+	G_Hitsound(targ, attacker, mod, headShot);
+	// end acqu-sdk (issue 20)
 
 	// add to the damage inflicted on a player this frame
 	// the total will be turned into screen blends and view angle kicks

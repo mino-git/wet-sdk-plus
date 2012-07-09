@@ -83,6 +83,11 @@ static const cmd_reference_t aCommandInfo[] = {
 //	{ "viewnext",		qfalse,	qtrue,	NULL, ":^7 Moves through active screen in a multi-screen display" },
 //	{ "viewnone",		qfalse,	qtrue,	NULL, ":^7 Disables multiview mode and goes back to spectator mode" },
 //	{ "viewremove",		qfalse,	qtrue,	NULL, " [player_ID]:^7 Removes current selected or specific player from multi-screen view" },
+
+	// sta acqu-sdk (issue 20): hitsounds
+	{ "hitsounds",			qtrue,	qtrue,	G_hitsounds_cmd, ":^7 toggles hitsounds"},
+	// end acqu-sdk (issue 20)
+
 	{ 0,				qfalse,	qtrue,  NULL, 0 }
 };
 
@@ -764,3 +769,35 @@ void G_weaponRankings_cmd(gentity_t *ent, unsigned int dwCommand, qboolean state
 
 	CP(va("astats%s %d %d %d%s", ((state)?"":"b"), c, iWeap, wBestAcc, z));
 }
+
+// sta acqu-sdk (issue 20): hitsounds
+void G_hitsounds_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fValue)
+{
+	char param[4];
+
+	if(!g_hitsounds.integer) {
+
+		CP("print \"hitsounds DISABLED by server\n\"");
+		return;
+	}		
+
+	if(trap_Argc() != 2) {
+		CP(va("print \"hitsounds are turned %s\n\"", (ent->client->pers.hitsounds == 1) ? "ON" : "OFF"));
+		return;
+	}
+
+	trap_Argv(1, param, sizeof(param));
+
+	if(!Q_stricmp(param, "on")) {
+		CP("print \"hitsounds turned ON\n\"");
+		ent->client->pers.hitsounds = 1;
+	}
+	else if(!Q_stricmp(param, "off")) {
+		CP("print \"hitsounds turned OFF\n\"");
+		ent->client->pers.hitsounds = 0;
+	}
+	else {
+		CP("print \"usage: hitsounds [on|off]\n\"");
+	}
+}
+// end acqu-sdk (issue 20)

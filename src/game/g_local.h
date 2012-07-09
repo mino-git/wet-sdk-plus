@@ -719,6 +719,11 @@ typedef struct {
     int				characterIndex;
 
 	ipFilter_t		complaintips[MAX_COMPLAINTIPS];
+
+	// sta acqu-sdk (issue 20): hitsounds
+	int hitsounds;
+	// end acqu-sdk (issue 20)
+
 } clientPersistant_t;
 
 typedef struct {
@@ -1886,6 +1891,10 @@ extern vmCvar_t		g_nextcampaign;
 
 extern vmCvar_t		g_disableComplaints;
 
+// sta acqu-sdk (issue 20): hitsounds
+extern vmCvar_t		g_hitsounds;
+// end acqu-sdk (issue 20)
+
 // sta acqu-sdk (issue 6): potential fake clients fix
 extern vmCvar_t		g_maxConnsPerIP;
 // end acqu-sdk (issue 6)
@@ -2434,6 +2443,10 @@ void G_weaponRankings_cmd(gentity_t *ent, unsigned int dwCommand, qboolean state
 void G_weaponStats_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fDump);
 void G_weaponStatsLeaders_cmd(gentity_t* ent, qboolean doTop, qboolean doWindow);
 void G_VoiceTo( gentity_t *ent, gentity_t *other, int mode, const char *id, qboolean voiceonly );
+
+// sta acqu-sdk (issue 20): hitsounds
+void G_hitsounds_cmd(gentity_t *ent, unsigned int dwCommand, qboolean fValue);
+// end acqu-sdk (issue 20)
 
 
 

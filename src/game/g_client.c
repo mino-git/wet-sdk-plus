@@ -1395,6 +1395,15 @@ void ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
+	// sta acqu-sdk (issue 20): hitsounds
+	s = Info_ValueForKey(userinfo, "cg_hitsounds");
+
+	if (*s)
+		client->pers.hitsounds = atoi(s);
+	else
+		client->pers.hitsounds = 1;
+	// end acqu-sdk (issue 20)
+
 	// set name
 	Q_strncpyz( oldname, client->pers.netname, sizeof( oldname ) );
 	s = Info_ValueForKey (userinfo, "name");

@@ -2233,6 +2233,10 @@ extern	vmCvar_t		cl_wavefilename;
 extern	vmCvar_t		cl_waveoffset;
 extern	vmCvar_t		cg_recording_statusline;
 
+// sta acqu-sdk (issue 20): hitsounds
+extern vmCvar_t			cg_hitSounds;
+// end acqu-sdk (issue 20)
+
 //
 // cg_main.c
 //

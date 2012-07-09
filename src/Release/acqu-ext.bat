@@ -27,7 +27,7 @@ set WETDIR1=C:\Users\Derp\WET1
 set WETDIR2=C:\Users\Derp\WET2
 set MODNAME=z
 
-7z.exe u -tzip z.zip cgame_mp_x86.dll ui_mp_x86.dll gfx scripts -r
+7z.exe u -tzip z.zip cgame_mp_x86.dll ui_mp_x86.dll gfx scripts sound -r
 
 rename z.zip z.pk3
 

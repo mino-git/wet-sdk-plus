@@ -298,6 +298,10 @@ vmCvar_t	cl_wavefilename;
 vmCvar_t	cl_waveoffset;
 vmCvar_t	cg_recording_statusline;
 
+// sta acqu-sdk (issue 20): hitsounds
+vmCvar_t	cg_hitSounds;
+// end acqu-sdk (issue 20)
+
 typedef struct {
 	vmCvar_t	*vmCvar;
 	char		*cvarName;
@@ -528,6 +532,10 @@ cvarTable_t		cvarTable[] = {
 	{ &cl_wavefilename, "cl_wavefilename", "", CVAR_ROM },
 	{ &cl_waveoffset, "cl_waveoffset", "0", CVAR_ROM },
 	{ &cg_recording_statusline, "cg_recording_statusline", "9", CVAR_ARCHIVE },
+
+	// sta acqu-sdk (issue 20): hitsounds
+	{ &cg_hitSounds, "cg_hitSounds", "1", CVAR_ARCHIVE | CVAR_USERINFO },
+	// end acqu-sdk (issue 20)
 };
 
 int		cvarTableSize = sizeof( cvarTable ) / sizeof( cvarTable[0] );
@@ -604,6 +612,12 @@ void CG_UpdateCvars( void ) {
 				else if(cv->vmCvar == &cg_crosshairColorAlt || cv->vmCvar == &cg_crosshairAlphaAlt) {
 					BG_setCrosshair(cg_crosshairColorAlt.string, cg.xhairColorAlt, cg_crosshairAlphaAlt.value, "cg_crosshairColorAlt");
 				}
+
+				// sta acqu-sdk (issue 20): hitsounds
+				else if(cv->vmCvar == &cg_hitSounds) {
+					trap_SendConsoleCommand( va( "hitsounds %s", cg_hitSounds.integer ? "on" : "off") );
+				}
+				// end acqu-sdk (issue 20)
 
 				else if(cv->vmCvar == &cg_rconPassword && *cg_rconPassword.string) {
 					trap_SendConsoleCommand( va( "rconAuth %s", cg_rconPassword.string ) );
