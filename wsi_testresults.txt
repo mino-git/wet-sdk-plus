@@ -1,0 +1,940 @@
+Test series for the wsi.lua module (Sig.: D877A25466DCDECC15330CC05D30227964A202CE)
+
+================================================
+Some helpful definitions:
+================================================
+
+WS_KNIFE = 0
+WS_LUGER = 1
+WS_COLT = 2
+WS_MP40 = 3
+WS_THOMPSON = 4
+WS_STEN = 5
+WS_FG42 = 6
+WS_PANZERFAUST = 7
+WS_FLAMETHROWER = 8
+WS_GRENADE = 9
+WS_MORTAR = 10
+WS_DYNAMITE = 11
+WS_AIRSTRIKE = 12
+WS_ARTILLERY = 13
+WS_SYRINGE = 14
+WS_SMOKE = 15
+WS_SATCHEL = 16
+WS_GRENADELAUNCHER = 17
+WS_LANDMINE = 18
+WS_MG42 = 19
+WS_GARAND = 20
+WS_K43 = 21
+
+SK_BATTLE_SENSE = 0
+SK_EXPLOSIVES_AND_CONSTRUCTION = 1
+SK_FIRST_AID = 2
+SK_SIGNALS = 3
+SK_LIGHT_WEAPONS = 4
+SK_HEAVY_WEAPONS = 5
+SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS = 6
+
+================================================
+Start of test result series:
+================================================
+
+[Test 1]
+
+-- result of stat table
+clientnum 0
+sess.rounds 1
+damage_given 0
+damage_received 0
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 2 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 0 0
+WeaponInfo[4]: 0 5 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 0
+SkillInfo[1]: 10
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 0
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 0 1 17 0 2 0 0 0 0 5 0 0 0 0 0 0 2 10
+
+[Test 2]
+
+-- result of stat table
+clientnum 1
+sess.rounds 1
+damage_given 1560
+damage_received 1045
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 1 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 3 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 3 3 3 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 2 4 1 0 0
+WeaponInfo[18]: 0 0 0 1 0
+WeaponInfo[19]: 0 0 0 2 0
+WeaponInfo[20]: 15 59 4 0 4
+WeaponInfo[21]: 0 0 0 2 0
+
+-- result of skillinfo table
+SkillInfo[0]: 11
+SkillInfo[1]: 80
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 14
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 1 1 4065290 0 0 0 1 0 0 0 0 3 0 3 3 3 0 0 2 4 1 0 0 0 0 0 1 0 0 0 0 2 0 15 59 4 0 4 0 0 0 2 0 1560 1045 0 19 11 80 14
+
+[Test 3]
+
+-- result of stat table
+clientnum 2
+sess.rounds 1
+damage_given 1136
+damage_received 2116
+team_damage 18
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 5 0 0 0
+WeaponInfo[2]: 0 0 0 1 0
+WeaponInfo[3]: 59 132 11 0 8
+WeaponInfo[4]: 0 0 0 3 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 1 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 2 0
+WeaponInfo[11]: 0 0 0 2 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 6 6 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 1 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 26
+SkillInfo[1]: 0
+SkillInfo[2]: 25
+SkillInfo[3]: 0
+SkillInfo[4]: 35
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 2 1 1068126 0 5 0 0 0 0 0 0 1 0 59 132 11 0 8 0 0 0 3 0 0 0 0 1 0 0 0 0 2 0 0 0 0 2 0 6 6 0 0 0 0 0 0 1 0 1136 2116 18 21 26 25 35
+
+[Test 4]
+
+-- result of stat table
+clientnum 6
+sess.rounds 1
+damage_given 1657
+damage_received 1693
+team_damage 179
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 0 0
+WeaponInfo[4]: 0 0 0 4 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 3 0
+WeaponInfo[11]: 0 0 0 1 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 4 8 3 0 0
+WeaponInfo[18]: 12 14 4 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 2 0
+WeaponInfo[21]: 3 18 2 0 1
+
+-- result of skillinfo table
+SkillInfo[0]: 20
+SkillInfo[1]: 58
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 8
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 6 1 3542032 0 0 0 4 0 0 0 0 3 0 0 0 0 1 0 4 8 3 0 0 12 14 4 0 0 0 0 0 2 0 3 18 2 0 1 1657 1693 179 19 20 58 8
+
+[Test 5]
+
+-- result of stat table
+clientnum 4
+sess.rounds 1
+damage_given 1812
+damage_received 1175
+team_damage 40
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 24 63 2 0 5
+WeaponInfo[2]: 0 0 0 1 0
+WeaponInfo[3]: 5 10 1 0 0
+WeaponInfo[4]: 0 0 0 4 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 2 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 1 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 65 146 9 0 0
+WeaponInfo[20]: 0 0 0 1 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 44
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 11
+SkillInfo[5]: 27
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 4 1 1704030 24 63 2 0 5 0 0 0 1 0 5 10 1 0 0 0 0 0 4 0 0 0 0 2 0 0 0 0 1 0 65 146 9 0 0 0 0 0 1 0 1812 1175 40 49 44 11 27
+
+[Test 6]
+
+-- result of stat table
+clientnum 8
+sess.rounds 1
+damage_given 2524
+damage_received 1903
+team_damage 18
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 49 145 6 0 4
+WeaponInfo[4]: 0 0 0 6 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 1 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 3 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 3 1 1 0 0
+WeaponInfo[13]: 8 10 4 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 16 23 3 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 23
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 19
+SkillInfo[4]: 24
+SkillInfo[5]: 9
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 8 1 537688 49 145 6 0 4 0 0 0 6 0 0 0 0 1 0 0 0 0 3 0 3 1 1 0 0 8 10 4 0 0 16 23 3 0 0 2524 1903 18 57 23 19 24 9
+
+[Test 7]
+
+-- result of stat table
+clientnum 5
+sess.rounds 1
+damage_given 1214
+damage_received 2104
+team_damage 148
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 1 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 3 0
+WeaponInfo[4]: 58 194 8 0 9
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 4 5 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 2 0
+WeaponInfo[18]: 0 0 0 1 0
+WeaponInfo[19]: 0 0 0 2 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 1 0
+
+-- result of skillinfo table
+SkillInfo[0]: 24
+SkillInfo[1]: 0
+SkillInfo[2]: 16
+SkillInfo[3]: 0
+SkillInfo[4]: 24
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 5 1 3031066 0 0 0 1 0 0 0 0 3 0 58 194 8 0 9 4 5 0 0 0 0 0 0 2 0 0 0 0 1 0 0 0 0 2 0 0 0 0 1 0 1214 2104 148 21 24 16 24
+
+[Test 8]
+
+-- result of stat table
+clientnum 9
+sess.rounds 1
+damage_given 1015
+damage_received 1425
+team_damage 60
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 4 7 0 0 0
+WeaponInfo[3]: 0 0 0 4 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 48 216 5 0 7
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 2 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 2 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 2 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 1 0
+
+-- result of skillinfo table
+SkillInfo[0]: 20
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 21
+SkillInfo[5]: 0
+SkillInfo[6]: 15
+
+-- string received
+WeaponStats: 9 1 2433100 4 7 0 0 0 0 0 0 4 0 48 216 5 0 7 0 0 0 2 0 0 2 0 0 0 0 0 0 2 0 0 0 0 1 0 1015 1425 60 81 20 21 15
+
+[Test 10]
+
+-- result of stat table
+clientnum 3
+sess.rounds 1
+damage_given 857
+damage_received 1850
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 3 0
+WeaponInfo[4]: 44 109 8 0 4
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 1 0 0 0
+WeaponInfo[13]: 0 0 0 2 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 1 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 5 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 1 0
+
+-- result of skillinfo table
+SkillInfo[0]: 18
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 2
+SkillInfo[4]: 26
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 3 1 2764824 0 0 0 3 0 44 109 8 0 4 0 1 0 0 0 0 0 0 2 0 0 0 0 1 0 0 0 0 5 0 0 0 0 1 0 857 1850 0 25 18 2 26
+
+[Test 11]
+
+-- result of stat table
+clientnum 7
+sess.rounds 1
+damage_given 2355
+damage_received 863
+team_damage 1141
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 22 68 3 0 2
+WeaponInfo[3]: 0 0 0 4 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 9 49 8 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 1 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 2 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 10
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 11
+SkillInfo[5]: 24
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 7 1 529420 22 68 3 0 2 0 0 0 4 0 9 49 8 0 0 0 0 0 1 0 0 0 0 2 0 2355 863 1141 49 10 11 24
+
+[Test 12]
+
+-- result of stat table
+clientnum 10
+sess.rounds 1
+damage_given 410
+damage_received 477
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 1 0
+WeaponInfo[3]: 0 0 0 0 0
+WeaponInfo[4]: 0 0 0 2 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 1 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 1 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 11 33 3 0 1
+
+-- result of skillinfo table
+SkillInfo[0]: 10
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 8
+SkillInfo[5]: 0
+SkillInfo[6]: 10
+
+-- string received
+WeaponStats: 10 1 2162772 0 0 0 1 0 0 0 0 2 0 0 0 0 1 0 0 1 0 0 0 11 33 3 0 1 410 477 0 81 10 8 10
+
+[Test 13]
+
+-- result of stat table
+clientnum 0
+sess.rounds 0
+damage_given 363
+damage_received 252
+team_damage 126
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 1 0
+WeaponInfo[4]: 19 48 3 0 1
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 1 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 1 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 4
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 9
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 0 0 526360 0 0 0 1 0 19 48 3 0 1 0 1 0 0 0 0 0 0 1 0 363 252 126 17 4 9
+
+[Test 14]
+
+-- result of stat table
+clientnum 1
+sess.rounds 1
+damage_given 636
+damage_received 908
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 4 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 1 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 1 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 4 7 2 0 0
+WeaponInfo[18]: 0 0 0 2 0
+WeaponInfo[19]: 0 24 0 0 0
+WeaponInfo[20]: 5 12 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 30
+SkillInfo[1]: 96
+SkillInfo[2]: 20
+SkillInfo[3]: 0
+SkillInfo[4]: 31
+SkillInfo[5]: 3
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 1 1 1970696 0 0 0 4 0 0 0 0 1 0 0 0 0 1 0 4 7 2 0 0 0 0 0 2 0 0 24 0 0 0 5 12 0 0 0 636 908 0 55 30 96 20 31 3
+
+[Test 15]
+
+-- result of stat table
+clientnum 2
+sess.rounds 1
+damage_given 640
+damage_received 727
+team_damage 222
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 5 18 1 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 0 0
+WeaponInfo[4]: 0 0 0 5 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 1 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 110 70 5 0 0
+WeaponInfo[9]: 0 2 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 35
+SkillInfo[1]: 0
+SkillInfo[2]: 25
+SkillInfo[3]: 0
+SkillInfo[4]: 51
+SkillInfo[5]: 24
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 2 1 850 5 18 1 0 0 0 0 0 5 0 0 0 0 1 0 110 70 5 0 0 0 2 0 0 0 640 727 222 53 35 25 51 24
+
+[Test 16]
+
+-- result of stat table
+clientnum 3
+sess.rounds 1
+damage_given 539
+damage_received 1057
+team_damage 148
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 9 0 0 0
+WeaponInfo[1]: 0 0 0 1 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 2 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 28 77 4 0 4
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 1 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 1 0 0 0
+WeaponInfo[17]: 0 0 0 2 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 2 0
+
+-- result of skillinfo table
+SkillInfo[0]: 30
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 2
+SkillInfo[4]: 42
+SkillInfo[5]: 6
+SkillInfo[6]: 7
+
+-- string received
+WeaponStats: 3 1 2297931 0 9 0 0 0 0 0 0 1 0 0 0 0 2 0 28 77 4 0 4 0 0 0 1 0 0 1 0 0 0 0 0 0 2 0 0 0 0 2 0 539 1057 148 121 30 2 42 6 7
+
+[Test 17]
+
+-- result of stat table
+clientnum 5
+sess.rounds 1
+damage_given 706
+damage_received 1108
+team_damage 18
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 2 0
+WeaponInfo[4]: 35 88 6 0 3
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 1 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 5 5 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 1 0
+WeaponInfo[18]: 0 0 0 1 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 39
+SkillInfo[1]: 35
+SkillInfo[2]: 36
+SkillInfo[3]: 0
+SkillInfo[4]: 48
+SkillInfo[5]: 0
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 5 1 409880 0 0 0 2 0 35 88 6 0 3 0 0 0 1 0 5 5 0 0 0 0 0 0 1 0 0 0 0 1 0 706 1108 18 23 39 35 36 48
+
+[Test 18]
+
+-- result of stat table
+clientnum 6
+sess.rounds 1
+damage_given 1429
+damage_received 717
+team_damage 181
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 1 0
+WeaponInfo[3]: 0 0 0 0 0
+WeaponInfo[4]: 0 0 0 3 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 1 1 1 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 4 8 4 1 0
+WeaponInfo[18]: 7 5 4 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 4 17 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 53
+SkillInfo[1]: 103
+SkillInfo[2]: 16
+SkillInfo[3]: 0
+SkillInfo[4]: 20
+SkillInfo[5]: 3
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 6 1 2490900 0 0 0 1 0 0 0 0 3 0 1 1 1 0 0 4 8 4 1 0 7 5 4 0 0 4 17 0 0 0 1429 717 181 55 53 103 16 20 3
+
+[Test 19]
+
+-- result of stat table
+clientnum 7
+sess.rounds 1
+damage_given 642
+damage_received 1100
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 0 0 0 2 0
+WeaponInfo[4]: 32 80 6 0 3
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 3 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 2 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 1 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 1 0
+
+-- result of skillinfo table
+SkillInfo[0]: 16
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 43
+SkillInfo[5]: 27
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 7 1 2232600 0 0 0 2 0 32 80 6 0 3 0 0 0 3 0 0 0 0 2 0 0 0 0 1 0 0 0 0 1 0 642 1100 0 49 16 43 27
+
+[Test 20]
+
+-- result of stat table
+clientnum 8
+sess.rounds 1
+damage_given 706
+damage_received 762
+team_damage 166
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 0 0 0 0 0
+WeaponInfo[3]: 35 105 6 0 3
+WeaponInfo[4]: 0 0 0 1 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 2 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 0 0 0 0 0
+WeaponInfo[9]: 0 2 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 0 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 13 14 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 0 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 0 0
+
+-- result of skillinfo table
+SkillInfo[0]: 60
+SkillInfo[1]: 22
+SkillInfo[2]: 41
+SkillInfo[3]: 19
+SkillInfo[4]: 57
+SkillInfo[5]: 9
+SkillInfo[6]: 0
+
+-- string received
+WeaponStats: 8 1 16984 35 105 6 0 3 0 0 0 1 0 0 0 0 2 0 0 2 0 0 0 13 14 0 0 0 706 762 166 63 60 22 41 19 57 9
+
+[Test 21]
+
+-- result of stat table
+clientnum 9
+sess.rounds 1
+damage_given 811
+damage_received 994
+team_damage 0
+
+-- result of weaponinfo table
+WeaponInfo[0]: 0 0 0 0 0
+WeaponInfo[1]: 0 0 0 0 0
+WeaponInfo[2]: 8 22 1 0 1
+WeaponInfo[3]: 0 0 0 3 0
+WeaponInfo[4]: 0 0 0 0 0
+WeaponInfo[5]: 0 0 0 0 0
+WeaponInfo[6]: 0 0 0 0 0
+WeaponInfo[7]: 0 0 0 0 0
+WeaponInfo[8]: 129 93 6 1 0
+WeaponInfo[9]: 0 0 0 0 0
+WeaponInfo[10]: 0 0 0 0 0
+WeaponInfo[11]: 0 0 0 0 0
+WeaponInfo[12]: 0 0 0 1 0
+WeaponInfo[13]: 0 0 0 0 0
+WeaponInfo[14]: 0 0 0 0 0
+WeaponInfo[15]: 0 0 0 0 0
+WeaponInfo[16]: 0 0 0 0 0
+WeaponInfo[17]: 0 0 0 0 0
+WeaponInfo[18]: 0 0 0 1 0
+WeaponInfo[19]: 0 0 0 0 0
+WeaponInfo[20]: 0 0 0 0 0
+WeaponInfo[21]: 0 0 0 2 0
+
+-- result of skillinfo table
+SkillInfo[0]: 28
+SkillInfo[1]: 0
+SkillInfo[2]: 0
+SkillInfo[3]: 0
+SkillInfo[4]: 35
+SkillInfo[5]: 18
+SkillInfo[6]: 35
+
+-- string received
+WeaponStats: 9 1 2363660 8 22 1 0 1 0 0 0 3 0 129 93 6 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 2 0 811 994 0 113 28 35 18 35
