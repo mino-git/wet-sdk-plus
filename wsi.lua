@@ -38,7 +38,7 @@ SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS = 6
 -- callback - from here we catch the string and hand it out to our interpreter
 function et_Print( text )
    local a, b  = string.find( text, "WeaponStats:" )
-   if a ~= nil then
+   if a ~= nil and a == 1 then
       local stat, weaponinfo, skillinfo = weaponstats_interpret( text )
 
       -- print what we received
@@ -72,7 +72,7 @@ function print_interpreted_result ( text, stat, weaponinfo, skillinfo )
 
    et.G_Print("\n-- result of weaponinfo table\n")
    for i = WS_KNIFE, WS_K43 do
-      et.G_Print("WeaponInfo["..i.."]: "..weaponinfo[i].atts.." "..weaponinfo[i].deaths.." "..weaponinfo[i].headshots.." "..weaponinfo[i].hits.." "..weaponinfo[i].kills.."\n")
+      et.G_Print("WeaponInfo["..i.."]: "..weaponinfo[i].hits.." "..weaponinfo[i].atts.." "..weaponinfo[i].kills.." "..weaponinfo[i].deaths.." "..weaponinfo[i].headshots.."\n")
    end
 
    et.G_Print("\n-- result of skillinfo table\n")
@@ -109,18 +109,18 @@ function weaponstats_interpret( text )
          weaponinfo[i] = { }
 
          if ( check_flag( weaponmask, 2^i ) ) then
-            weaponinfo[i].atts = tonumber(elements[ptr])
-            weaponinfo[i].deaths = tonumber(elements[ptr+1])
-            weaponinfo[i].headshots = tonumber(elements[ptr+2])
-            weaponinfo[i].hits = tonumber(elements[ptr+3])
-            weaponinfo[i].kills = tonumber(elements[ptr+4])
+            weaponinfo[i].hits = tonumber(elements[ptr])
+            weaponinfo[i].atts = tonumber(elements[ptr+1])
+            weaponinfo[i].kills = tonumber(elements[ptr+2])
+            weaponinfo[i].deaths = tonumber(elements[ptr+3])
+            weaponinfo[i].headshots = tonumber(elements[ptr+4])
             ptr = ptr + 5
          else
+            weaponinfo[i].hits = 0
             weaponinfo[i].atts = 0
+            weaponinfo[i].kills = 0
             weaponinfo[i].deaths = 0
             weaponinfo[i].headshots = 0
-            weaponinfo[i].hits = 0
-            weaponinfo[i].kills = 0
          end
       end
 
@@ -134,11 +134,11 @@ function weaponstats_interpret( text )
 
          weaponinfo[i] = { }
 
+         weaponinfo[i].hits = 0
          weaponinfo[i].atts = 0
+         weaponinfo[i].kills = 0
          weaponinfo[i].deaths = 0
          weaponinfo[i].headshots = 0
-         weaponinfo[i].hits = 0
-         weaponinfo[i].kills = 0
       end
 
       stat.damage_given = 0
