@@ -1078,8 +1078,11 @@ void G_Hitsound(gentity_t *targ, gentity_t *attacker, int mod, qboolean headShot
 	if(headShot)
 		snd = G_SoundIndex("sound/hitsounds/headshot.wav");
 
-	if(OnSameTeam(targ, attacker) || targ->client->ps.powerups[PW_OPS_DISGUISED])	
+	if(OnSameTeam(targ, attacker) || targ->client->ps.powerups[PW_OPS_DISGUISED]) {
+		if ( targ == attacker )
+			return;
 		snd = G_SoundIndex("sound/hitsounds/hitteammate.wav");
+	}
 	
 
 	hs_ent->s.eventParm = snd;
