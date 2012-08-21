@@ -2048,8 +2048,7 @@ static void CG_DrawCrosshairNames( void ) {
 		}
 	} else if( cgs.clientinfo[cg.crosshairClientNum].team != cgs.clientinfo[cg.snap->ps.clientNum].team ) {
 		if( (cg_entities[cg.crosshairClientNum].currentState.powerups & (1 << PW_OPS_DISGUISED)) && cgs.clientinfo[cg.snap->ps.clientNum].team != TEAM_SPECTATOR) {
-			if( cgs.clientinfo[cg.snap->ps.clientNum].team != TEAM_SPECTATOR &&
-				cgs.clientinfo[cg.snap->ps.clientNum].skill[SK_SIGNALS] >= 4 && cgs.clientinfo[cg.snap->ps.clientNum].cls == PC_FIELDOPS ) {
+			if( cgs.clientinfo[cg.snap->ps.clientNum].skill[SK_SIGNALS] >= 4 && cgs.clientinfo[cg.snap->ps.clientNum].cls == PC_FIELDOPS ) {
 				s = CG_TranslateString( "Disguised Enemy!" );
 				w = CG_DrawStrlen( s ) * SMALLCHAR_WIDTH;
 				CG_DrawSmallStringColor( 320 - w / 2, 170, s, color );
