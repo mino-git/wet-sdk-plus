@@ -1858,6 +1858,8 @@ void G_LuaStartVM( const char *vmname )
 	char *sha1, *code;	
 	fileHandle_t f;
 	lua_vm_t *vm;
+	const char *vmpath;
+	char gamepath[MAX_QPATH];
 
 	// find next free slot
 	for(i = 0; lVM[i] && i < LUA_NUM_VM; i++);
@@ -1910,11 +1912,15 @@ void G_LuaStartVM( const char *vmname )
 
 	// open standard libs
 	luaL_openlibs(vm->L);
+
+	// build path to lua module
+	trap_Cvar_VariableStringBuffer( "fs_game", gamepath, sizeof( gamepath ) );
+	vmpath = va( "%s%c%s", gamepath, PATH_SEP, vmname );
 	
 	// load lua chunk
-	err = luaL_loadfile(vm->L, vmname);
+	err = luaL_loadfile(vm->L, vmpath);
 	if (err) {
-		G_Printf("Lua: cannot load file %s.\n", lua_tostring(vm->L, -1));
+		G_Printf("Lua: %s.\n", lua_tostring(vm->L, -1));
 		G_LuaStopVM(vm);
 		return;
 	}
