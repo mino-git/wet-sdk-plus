@@ -2104,15 +2104,28 @@ static void CG_ServerCommand( void ) {
 
 	if ( !Q_stricmp( cmd, "chat" ) ) {
 		const char *s;
+		// sta acqu-sdk (issue 21): chat support for extended ASCII chars
+		int clientNum;
+		int nameLength;
+		// end acqu-sdk (issue 21)
 
 		if ( cg_teamChatsOnly.integer )
 			return;
+
+		// sta acqu-sdk (issue 21)
+		clientNum = atoi( CG_Argv( 2 ));
+		nameLength = strlen( cgs.clientinfo[ clientNum ].name );
+		// end acqu-sdk (issue 21)
 
 		if ( atoi( CG_Argv( 3 ) ) ) {
 			s = CG_LocalizeServerCommand( CG_Argv( 1 ) );
 		} else {
 			s = CG_Argv( 1 );
 		}
+
+		// sta acqu-sdk (issue 21)
+		unescape_string((char *)(s + nameLength));
+		// end acqu-sdk (issue 21)
 
 		Q_strncpyz( text, s, MAX_SAY_TEXT );
 		CG_RemoveChatEscapeChar( text );
@@ -2124,12 +2137,20 @@ static void CG_ServerCommand( void ) {
 
 	if ( !Q_stricmp( cmd, "tchat" ) ) {
 		const char *s;
+		// sta acqu-sdk (issue 21): chat support for extended ASCII chars
+		int clientNum = atoi( CG_Argv( 2 ));
+		int nameLength = strlen( cgs.clientinfo[ clientNum ].name );
+		// end acqu-sdk (issue 21)
 
 		if ( atoi( CG_Argv( 3 ) ) ) {
 			s = CG_LocalizeServerCommand( CG_Argv( 1 ) );
 		} else {
 			s = CG_Argv( 1 );
 		}
+
+		// sta acqu-sdk (issue 21)
+		unescape_string((char *)(s + nameLength));
+		// end acqu-sdk (issue 21)
 
 		Q_strncpyz( text, s, MAX_SAY_TEXT );
 		CG_RemoveChatEscapeChar( text );

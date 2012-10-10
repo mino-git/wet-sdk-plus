@@ -550,15 +550,38 @@ static void CG_MessageSend_f( void )
 	
 	// team say
 	if( messageType == 2 ) {
-		trap_SendConsoleCommand( va( "say_team \"%s\"\n", messageText ) );
+		// sta acqu-sdk (issue 21): chat support for extended ASCII chars
+		if ( need_escape(messageText) ) {
+			trap_SendClientCommand( va( "say_team \"%s\"\n", escape_string( messageText )));
+		} else {
+			trap_SendConsoleCommand( va( "say_team \"%s\"\n", messageText ) );
+		}
+
+		//trap_SendConsoleCommand( va( "say_team \"%s\"\n", messageText ) );
+		// end acqu-sdk (issue 21)
 		
 	// fireteam say
 	} else if( messageType == 3 ) {
-		trap_SendConsoleCommand( va( "say_buddy \"%s\"\n", messageText ) );
+		// sta acqu-sdk (issue 21)
+		if ( need_escape(messageText) ) {
+			trap_SendClientCommand( va( "say_buddy \"%s\"\n", escape_string( messageText )));
+		} else {
+			trap_SendConsoleCommand( va( "say_buddy \"%s\"\n", messageText ) );
+		}
+
+		//trap_SendConsoleCommand( va( "say_buddy \"%s\"\n", messageText ) );
+		// end acqu-sdk (issue 21)		
 	
 	// normal say
 	} else {
-		trap_SendConsoleCommand( va( "say \"%s\"\n", messageText ) );
+		// sta acqu-sdk (issue 21)
+		if ( need_escape(messageText) ) {
+			trap_SendClientCommand( va( "say \"%s\"\n", escape_string( messageText )));
+		} else {
+			trap_SendConsoleCommand( va( "say \"%s\"\n", messageText ) );
+		}
+		//trap_SendConsoleCommand( va( "say \"%s\"\n", messageText ) );
+		// end acqu-sdk (issue 21)
 	}
 }
 

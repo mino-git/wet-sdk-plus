@@ -1596,6 +1596,13 @@ typedef enum {
 	CA_CINEMATIC		// playing a cinematic or a static pic, not connected to a server
 } connstate_t;
 
+// sta acqu-sdk (issue 21): chat support for extended ASCII chars
+// code based on etpub ( http://www.assembla.com/code/etpub/subversion/nodes )
+qboolean need_escape( char *data );
+char *escape_string( const char *string );
+void unescape_string( char *string );
+// end acqu-sdk (issue 21)
+
 // font support 
 
 #define GLYPH_START 0
