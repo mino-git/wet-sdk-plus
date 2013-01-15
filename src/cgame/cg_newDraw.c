@@ -722,6 +722,13 @@ void CG_MouseEvent(int x, int y) {
 				cgs.cursorY = 480;
 			}
 
+#ifdef CAMTRACE_SUPPORT
+			// sta acqu-sdk (issue 12): camtrace support
+			cg.freeCamAngles[0]+=(y / 4);
+			cg.freeCamAngles[1]-=(x / 4);
+			// end acqu-sdk (issue 12)
+#endif
+
 			if( x != 0 || y != 0 ) {
 				cgs.cursorUpdate = cg.time + 5000;
 			}

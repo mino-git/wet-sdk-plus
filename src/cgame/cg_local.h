@@ -1002,6 +1002,14 @@ typedef struct {
 	qboolean	cameraMode;		// if rendering from a camera
 	// Duffy end
 
+#ifdef CAMTRACE_SUPPORT
+	// sta acqu-sdk (issue 12): camtrace support
+	qboolean	freeCam;
+	vec3_t		freeCamPos;
+	vec3_t		freeCamAngles;
+	// end acqu-sdk (issue 12)
+#endif
+
 	// NERVE - SMF - Objective info display
 	qboolean	limboMenu;
 
@@ -2766,6 +2774,17 @@ void CG_keyOn_f(void);
 void CG_keyOff_f(void);
 void CG_dumpStats_f(void);
 void CG_toggleSwing_f(void);
+
+#ifdef CAMTRACE_SUPPORT
+// sta acqu-sdk (issue 12): camtrace support
+void CG_ToggleFreeCam ( void );
+void CG_FreeCamSetPos ( void );
+void CG_FreeCamMoveForward ( void );
+void CG_FreeCamMoveBackward ( void );
+void CG_FreeCamMoveLeft ( void );
+void CG_FreeCamMoveRight ( void );
+// end acqu-sdk (issue 12)
+#endif
 
 //
 // cg_servercmds.c

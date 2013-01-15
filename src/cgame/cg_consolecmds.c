@@ -942,6 +942,68 @@ static void CG_CPM_f( void ) {
 	CG_AddPMItem( PM_MESSAGE, CG_Argv(1), cgs.media.voiceChatShader );
 }
 
+#ifdef CAMTRACE_SUPPORT
+// sta acqu-sdk (issue 12): camtrace support
+void CG_ToggleFreeCam( void ) {
+	cg.freeCam = cg.freeCam ? 0 : 1;
+
+	if(cg.freeCam) {
+		trap_Cvar_Set("cg_thirdperson", "1");
+	}
+	else {
+		trap_Cvar_Set("cg_thirdperson", "0");
+	}
+
+	VectorCopy(cg.refdef.vieworg, cg.freeCamPos);
+	VectorCopy(cg.refdefViewAngles, cg.freeCamAngles);
+}
+
+void CG_FreeCamMoveForward( void ) {
+	VectorMA(cg.freeCamPos, 20, cg.refdef.viewaxis[0], cg.freeCamPos);
+}
+
+void CG_FreeCamMoveBackward( void ) {
+	VectorMA(cg.freeCamPos, -20, cg.refdef.viewaxis[0], cg.freeCamPos);
+}
+
+void CG_FreeCamMoveLeft( void ) {
+	VectorMA(cg.freeCamPos, 20, cg.refdef.viewaxis[1], cg.freeCamPos);
+}
+
+void CG_FreeCamMoveRight( void ) {
+	VectorMA(cg.freeCamPos, -20, cg.refdef.viewaxis[1], cg.freeCamPos);
+}
+
+void CG_FreeCamSetPos( void ) {	
+	int i;
+	char buffer[MAX_TOKEN_CHARS];
+	vec3_t origin, angles;	
+
+	if ( trap_Argc() < 3 ) {
+		CG_Printf("usage: setviewpos x y z pitch yaw roll\n");
+		return;
+	}
+
+	VectorClear( angles );
+
+	for ( i = 0 ; i < 3 ; i++ ) {
+		trap_Argv( i + 1, buffer, sizeof( buffer ) );
+		origin[i] = atof( buffer );
+	}
+
+	trap_Argv( 4, buffer, sizeof( buffer ) );
+	angles[PITCH] = atof( buffer );
+	trap_Argv( 5, buffer, sizeof( buffer ) );
+	angles[YAW] = atof( buffer );
+	trap_Argv( 6, buffer, sizeof( buffer ) );
+	angles[ROLL] = atof( buffer );
+
+	VectorCopy( origin, cg.freeCamPos );
+	VectorCopy( angles, cg.freeCamAngles );
+}
+// end acqu-sdk (issue 12)
+#endif
+
 typedef struct {
 	char	*cmd;
 	void	(*function)(void);
@@ -1043,6 +1105,14 @@ static consoleCommand_t	commands[] =
 	{ "undoSpeaker", CG_UndoSpeaker_f },
 	{ "cpm", CG_CPM_f },
 	{ "forcetapout", CG_ForceTapOut_f },
+
+#ifdef CAMTRACE_SUPPORT
+	// sta acqu-sdk (issue 12): camtrace support
+	{ "freecam", CG_ToggleFreeCam },
+	{ "freecamsetpos", CG_FreeCamSetPos },
+	// end acqu-sdk (issue 12)
+#endif
+
 };
 
 
@@ -1205,5 +1275,12 @@ void CG_InitConsoleCommands( void ) {
 	// sta acqu-sdk (issue 9): lua support
 	trap_AddCommand("lua_status");
 	// end acqu-sdk (issue 9):
+
+#ifdef CAMTRACE_SUPPORT
+	// sta acqu-sdk (issue 12): camtrace support
+	trap_AddCommand ("freecam");
+	trap_AddCommand ("freecamsetpos");
+	// end acqu-sdk (issue 12)
+#endif
 
 }

@@ -1167,6 +1167,26 @@ int CG_CalcViewValues( void ) {
 
 	ps = &cg.predictedPlayerState;
 
+#ifdef CAMTRACE_SUPPORT
+	// sta acqu-sdk (issue 12): camtrace support
+	if (cg.freeCam) {
+		float x;
+		float fov = cg_fov.value;
+
+		VectorCopy( cg.freeCamPos, cg.refdef.vieworg );
+		VectorCopy( cg.freeCamAngles, cg.refdefViewAngles);
+		AnglesToAxis( cg.refdefViewAngles, cg.refdef.viewaxis );
+
+		x = cg.refdef.width / tan( fov / 360 * M_PI );
+		cg.refdef_current->fov_y = atan2( cg.refdef_current->height, x );
+		cg.refdef_current->fov_y = cg.refdef_current->fov_y * 360 / M_PI;
+		cg.refdef_current->fov_x = fov;
+
+		return CG_CalcFov();
+	}
+	// end acqu-sdk (issue 12)
+#endif
+
 	if (cg.cameraMode) {
 		vec3_t origin, angles;
 		float fov = 90;
