@@ -1169,18 +1169,25 @@ int CG_CalcViewValues( void ) {
 
 #ifdef CAMTRACE_SUPPORT
 	// sta acqu-sdk (issue 12): camtrace support
-	if (cg.freeCam) {
+	if (cg.democam.active) {
 		float x;
 		float fov = cg_fov.value;
-
-		VectorCopy( cg.freeCamPos, cg.refdef.vieworg );
-		VectorCopy( cg.freeCamAngles, cg.refdefViewAngles);
-		AnglesToAxis( cg.refdefViewAngles, cg.refdef.viewaxis );
 
 		x = cg.refdef.width / tan( fov / 360 * M_PI );
 		cg.refdef_current->fov_y = atan2( cg.refdef_current->height, x );
 		cg.refdef_current->fov_y = cg.refdef_current->fov_y * 360 / M_PI;
-		cg.refdef_current->fov_x = fov;
+		cg.refdef_current->fov_x = fov;		
+
+		AnglesToAxis( cg.refdefViewAngles, cg.refdef.viewaxis );
+
+		//forward, backward, leftward, rightward
+		VectorMA(cg.democam.pos, cg.democam.keystate.forward*6, cg.refdef.viewaxis[0], cg.democam.pos);
+		VectorMA(cg.democam.pos, cg.democam.keystate.backward*(-6), cg.refdef.viewaxis[0], cg.democam.pos);
+		VectorMA(cg.democam.pos, cg.democam.keystate.leftward*6, cg.refdef.viewaxis[1], cg.democam.pos);
+		VectorMA(cg.democam.pos, cg.democam.keystate.rightward*(-6), cg.refdef.viewaxis[1], cg.democam.pos);
+		
+		VectorCopy( cg.democam.pos, cg.refdef.vieworg );
+		VectorCopy( cg.democam.angles, cg.refdefViewAngles);
 
 		return CG_CalcFov();
 	}

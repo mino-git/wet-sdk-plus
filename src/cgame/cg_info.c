@@ -292,24 +292,32 @@ void CG_DemoClick(int key, qboolean down)
 #ifdef CAMTRACE_SUPPORT
 		// sta acqu-sdk (issue 12): camtrace support
 		case K_KP_ENTER:
-			if(!down)
-				CG_ToggleFreeCam();
+			if(down)
+				CG_ToggleDemocam();
 			return;
 		case 'w':
 			if(down)
-				CG_FreeCamMoveForward();
+				cg.democam.keystate.forward = 1;
+			else
+				cg.democam.keystate.forward = 0;
 			return;
 		case 's':
 			if(down)
-				CG_FreeCamMoveBackward();
+				cg.democam.keystate.backward = 1;
+			else
+				cg.democam.keystate.backward = 0;
 			return;
 		case 'a':
 			if(down)
-				CG_FreeCamMoveLeft();
+				cg.democam.keystate.leftward = 1;
+			else
+				cg.democam.keystate.leftward = 0;
 			return;
 		case 'd':
 			if(down)
-				CG_FreeCamMoveRight();
+				cg.democam.keystate.rightward = 1;
+			else
+				cg.democam.keystate.rightward = 0;
 			return;
 		// end acqu-sdk (issue 12)
 #endif

@@ -741,6 +741,28 @@ typedef enum {
 void CG_ParseMapEntityInfo( int axis_number, int allied_number );
 
 #define MAX_BACKUP_STATES (CMD_BACKUP + 2)
+
+#ifdef CAMTRACE_SUPPORT
+// sta acqu-sdk (issue 12): camtrace support
+void CG_DemoHelpDraw();
+
+typedef struct {
+	byte	forward;	
+	byte	backward;
+	byte	leftward;
+	byte	rightward;
+	byte	upward;
+	byte	downward;
+} keystate_t;
+
+typedef struct {
+	qboolean	active;
+	vec3_t		pos;
+	vec3_t		angles;
+	keystate_t	keystate;
+} democam_t;
+// end acqu-sdk (issue 12)
+#endif
 	
 typedef struct {
 	int			clientFrame;		// incremented each frame
@@ -1004,9 +1026,7 @@ typedef struct {
 
 #ifdef CAMTRACE_SUPPORT
 	// sta acqu-sdk (issue 12): camtrace support
-	qboolean	freeCam;
-	vec3_t		freeCamPos;
-	vec3_t		freeCamAngles;
+	democam_t	democam;
 	// end acqu-sdk (issue 12)
 #endif
 
@@ -2777,12 +2797,8 @@ void CG_toggleSwing_f(void);
 
 #ifdef CAMTRACE_SUPPORT
 // sta acqu-sdk (issue 12): camtrace support
-void CG_ToggleFreeCam ( void );
-void CG_FreeCamSetPos ( void );
-void CG_FreeCamMoveForward ( void );
-void CG_FreeCamMoveBackward ( void );
-void CG_FreeCamMoveLeft ( void );
-void CG_FreeCamMoveRight ( void );
+void CG_ToggleDemocam ( void );
+void CG_DemocamSetPos ( void );
 // end acqu-sdk (issue 12)
 #endif
 

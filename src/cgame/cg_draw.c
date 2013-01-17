@@ -468,6 +468,67 @@ static float CG_DrawFPS( float y ) {
 	return y + 12 + 4;
 }
 
+#ifdef CAMTRACE_SUPPORT
+// sta acqu-sdk (issue 12): camtrace support
+
+/*
+=================
+CG_DrawDemocamTimer
+=================
+*/
+
+// moving this into a seperate function
+// this basically performs the same as CG_DrawTimer
+static void CG_DrawDemocamTimer( void ) {
+	char		*s;
+	int			w;
+	int			mins, seconds, tens;
+	int			msec;
+	char		*rt;
+	float y		= 20 + 100 + 32;
+	vec4_t		color =				{ 0.625f,	0.625f,	0.6f,	1.0f	};
+	vec4_t		timerBackground =	{ 0.16f,	0.2f,	0.17f,	0.8f	};
+	vec4_t		timerBorder     =	{ 0.5f,		0.5f,	0.5f,	0.5f	};
+
+	rt = !cg.democam.active ? va("^F%d%s", CG_CalculateReinfTime( qfalse ), ((cgs.timelimit <= 0.0f) ? "" : " ")) : "";
+
+	msec = ( cgs.timelimit * 60.f * 1000.f ) - ( cg.time - cgs.levelStartTime );
+
+	seconds = msec / 1000;
+	mins = seconds / 60;
+	seconds -= mins * 60;
+	tens = seconds / 10;
+	seconds -= tens * 10;
+
+	if(cgs.gamestate != GS_PLAYING) {
+		//%	s = va( "%s^*WARMUP", rt );
+		s = "^*WARMUP";	// ydnar: don't draw reinforcement time in warmup mode
+		color[3] = fabs(sin(cg.time * 0.002));
+	} else if ( msec < 0 && cgs.timelimit > 0.0f) {
+		s = va( "^N0:00" );
+		color[3] = fabs(sin(cg.time * 0.002));
+	} else {
+		if(cgs.timelimit <= 0.0f) {
+			s = va( "%s", rt);
+		} else {
+			s = va( "%s^*%i:%i%i", rt, mins, tens, seconds);
+		}
+
+		color[3] = 1.f;
+	}
+
+	w = CG_Text_Width_Ext( s, 0.19f, 0, &cgs.media.limboFont1 );
+
+	CG_FillRect( UPPERRIGHT_X - w - 2, y, w + 5, 12 + 2, timerBackground );
+	CG_DrawRect_FixedBorder( UPPERRIGHT_X - w - 2, y, w + 5, 12 + 2, 1, timerBorder );
+
+	CG_Text_Paint_Ext( UPPERRIGHT_X - w, y + 11, 0.19f, 0.19f, color, s, 0, 0, 0, &cgs.media.limboFont1 );
+
+	return;
+}
+// end acqu-sdk (issue 12)
+#endif
+
 /*
 =================
 CG_DrawTimer
@@ -2188,6 +2249,19 @@ static void CG_DrawCrosshairNames( void ) {
 
 
 //==============================================================================
+
+#ifdef CAMTRACE_SUPPORT
+// sta acqu-sdk (issue 12): camtrace support
+/*
+=================
+CG_DrawDemocam
+=================
+*/
+static void CG_DrawDemocam(void) {
+	CG_DrawBigString( 320 - 9 * 8, 440, CG_TranslateString( "FREECAM" ), 1.f );
+}
+// end acqu-sdk (issue 12)
+#endif
 
 /*
 =================
@@ -4286,6 +4360,20 @@ static void CG_Draw2D( void ) {
 		CG_DrawFlashFade();
 		return;
 	}
+
+#ifdef CAMTRACE_SUPPORT
+	// sta acqu-sdk (issue 12): camtrace support
+	if(cg.democam.active) {
+		CG_DrawDemocam();
+		CG_DrawTeamInfo();
+		CG_DrawWarmup();
+		CG_DemoHelpDraw();		
+		CG_DrawDemocamTimer();
+		return;
+	}
+	// end acqu-sdk (issue 12)
+#endif
+
 
 	if( !cg.cameraMode ) {
 		CG_DrawFlashBlendBehindHUD();

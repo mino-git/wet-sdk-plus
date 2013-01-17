@@ -944,37 +944,21 @@ static void CG_CPM_f( void ) {
 
 #ifdef CAMTRACE_SUPPORT
 // sta acqu-sdk (issue 12): camtrace support
-void CG_ToggleFreeCam( void ) {
-	cg.freeCam = cg.freeCam ? 0 : 1;
+void CG_ToggleDemocam( void ) {
+	cg.democam.active = cg.democam.active ? 0 : 1;
 
-	if(cg.freeCam) {
+	if(cg.democam.active) {
 		trap_Cvar_Set("cg_thirdperson", "1");
 	}
 	else {
 		trap_Cvar_Set("cg_thirdperson", "0");
 	}
 
-	VectorCopy(cg.refdef.vieworg, cg.freeCamPos);
-	VectorCopy(cg.refdefViewAngles, cg.freeCamAngles);
+	VectorCopy(cg.refdef.vieworg, cg.democam.pos);
+	VectorCopy(cg.refdefViewAngles, cg.democam.angles);
 }
 
-void CG_FreeCamMoveForward( void ) {
-	VectorMA(cg.freeCamPos, 20, cg.refdef.viewaxis[0], cg.freeCamPos);
-}
-
-void CG_FreeCamMoveBackward( void ) {
-	VectorMA(cg.freeCamPos, -20, cg.refdef.viewaxis[0], cg.freeCamPos);
-}
-
-void CG_FreeCamMoveLeft( void ) {
-	VectorMA(cg.freeCamPos, 20, cg.refdef.viewaxis[1], cg.freeCamPos);
-}
-
-void CG_FreeCamMoveRight( void ) {
-	VectorMA(cg.freeCamPos, -20, cg.refdef.viewaxis[1], cg.freeCamPos);
-}
-
-void CG_FreeCamSetPos( void ) {	
+void CG_DemocamSetPos( void ) {	
 	int i;
 	char buffer[MAX_TOKEN_CHARS];
 	vec3_t origin, angles;	
@@ -998,8 +982,8 @@ void CG_FreeCamSetPos( void ) {
 	trap_Argv( 6, buffer, sizeof( buffer ) );
 	angles[ROLL] = atof( buffer );
 
-	VectorCopy( origin, cg.freeCamPos );
-	VectorCopy( angles, cg.freeCamAngles );
+	VectorCopy( origin, cg.democam.pos );
+	VectorCopy( angles, cg.democam.angles );
 }
 // end acqu-sdk (issue 12)
 #endif
@@ -1108,8 +1092,8 @@ static consoleCommand_t	commands[] =
 
 #ifdef CAMTRACE_SUPPORT
 	// sta acqu-sdk (issue 12): camtrace support
-	{ "freecam", CG_ToggleFreeCam },
-	{ "freecamsetpos", CG_FreeCamSetPos },
+	{ "freecam", CG_ToggleDemocam },
+	{ "freecamsetpos", CG_DemocamSetPos },
 	// end acqu-sdk (issue 12)
 #endif
 

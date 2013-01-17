@@ -724,8 +724,8 @@ void CG_MouseEvent(int x, int y) {
 
 #ifdef CAMTRACE_SUPPORT
 			// sta acqu-sdk (issue 12): camtrace support
-			cg.freeCamAngles[0]+=(y / 4);
-			cg.freeCamAngles[1]-=(x / 4);
+			cg.democam.angles[0]+=(y / 4);
+			cg.democam.angles[1]-=(x / 4);
 			// end acqu-sdk (issue 12)
 #endif
 
