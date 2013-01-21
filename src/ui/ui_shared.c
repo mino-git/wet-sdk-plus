@@ -4966,13 +4966,20 @@ void Item_OwnerDraw_Paint(itemDef_t *item) {
 
 void Item_Paint(itemDef_t *item) {
   vec4_t red;
-  menuDef_t *parent = (menuDef_t*)item->parent;
+  menuDef_t *parent;
   red[0] = red[3] = 1;
   red[1] = red[2] = 0;
 
   if (item == NULL) {
     return;
   }
+
+  // sta acqu-sdk: possible NULL pointer reference
+  parent = (menuDef_t*)item->parent;
+  if (parent == NULL) {
+	  return;
+  }
+  // end acqu-sdk
 
 	if ( DC->textFont ) {
 		DC->textFont( item->font );
