@@ -369,6 +369,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	//float			timeLived;
 	weapon_t	weap = BG_WeaponForMOD( meansOfDeath );
 
+	// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+	qboolean	teamkilled = ( OnSameTeam(self, attacker) || ( G_GetTeamFromEntity(self) == G_GetTeamFromEntity(inflictor) ) );
+	// end acqu-sdk (issue 22)
+
 //	G_Printf( "player_die\n" );
 
 	if(attacker == self) {
@@ -377,7 +381,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			trap_PbStat ( self - g_entities , "suicide" , 
 				va ( "%d %d %d" , self->client->sess.sessionTeam , self->client->sess.playerType , weap ) ) ;
 		}
-	} else if(OnSameTeam( self, attacker )) {
+	// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+	} else if(teamkilled) {
+	//} else if(OnSameTeam( self, attacker )) {
+	// end acqu-sdk (issue 22)
 		G_LogTeamKill(	attacker,	weap );
 	} else {
 		G_LogDeath( self,		weap );
@@ -391,7 +398,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	// RF, record this death in AAS system so that bots avoid areas which have high death rates
-	if( !OnSameTeam( self, attacker ) ) {
+	// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+	if( !teamkilled ) {
+	//if( !OnSameTeam( self, attacker ) ) {
+	// end acqu-sdk (issue 22)
 		// sta acqu-sdk (issue 11): remove deprecated bot code
 		//BotRecordTeamDeath( self->s.number );
 		// end acqu-sdk (issue 11)
@@ -541,7 +551,10 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	}
 
 	if (attacker && attacker->client) {
-		if ( attacker == self || OnSameTeam (self, attacker ) ) {
+		// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+		if ( attacker == self || teamkilled ) {
+		//if ( attacker == self || OnSameTeam (self, attacker ) ) {
+		// end acqu-sdk (issue 22)
 
 			// DHM - Nerve :: Complaint lodging
 			if( attacker != self && level.warmupTime <= 0 && g_gamestate.integer == GS_PLAYING) {
@@ -1439,7 +1452,10 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 
 		// if TF_NO_FRIENDLY_FIRE is set, don't do damage to the target
 		// if the attacker was on the same team
-		if ( targ != attacker && OnSameTeam (targ, attacker)  ) {
+		// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+		if ( targ != attacker && ( OnSameTeam (targ, attacker) || ( G_GetTeamFromEntity(targ) == G_GetTeamFromEntity(inflictor) ) ) ) {
+		//if ( targ != attacker && OnSameTeam (targ, attacker)  ) {
+		// end acqu-sdk (issue 22)
 			if ( (g_gamestate.integer != GS_PLAYING && match_warmupDamage.integer == 1)) {
 				return;
 			}
