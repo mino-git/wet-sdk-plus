@@ -1458,14 +1458,16 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 		}
 	}
 
+	// sta acqu-sdk (issue 18): remove unused code
 	// add to the attacker's hit counter
-	if ( attacker->client && targ != attacker && targ->health > 0 ) {
-		if ( OnSameTeam( targ, attacker ) ) {
-			attacker->client->ps.persistant[PERS_HITS] -= damage;
-		} else {
-			attacker->client->ps.persistant[PERS_HITS] += damage;
-		}
-	}
+	//if ( attacker->client && targ != attacker && targ->health > 0 ) {
+	//	if ( OnSameTeam( targ, attacker ) ) {
+	//		attacker->client->ps.persistant[PERS_HITS] -= damage;
+	//	} else {
+	//		attacker->client->ps.persistant[PERS_HITS] += damage;
+	//	}
+	//}
+	// end acqu-sdk (issue 18)
 
 	if ( damage < 1 ) {
 		damage = 1;
