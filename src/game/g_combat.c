@@ -370,7 +370,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	weapon_t	weap = BG_WeaponForMOD( meansOfDeath );
 
 	// sta acqu-sdk (issue 22): improved teamkill/-damage detection
-	qboolean	teamkilled = ( OnSameTeam(self, attacker) || ( G_GetTeamFromEntity(self) == G_GetTeamFromEntity(inflictor) ) );
+	qboolean	teamkilled = ( OnSameTeam(self, attacker) || ( (self->client && attacker->client) && G_GetTeamFromEntity(self) == G_GetTeamFromEntity(inflictor) ) );
 	// end acqu-sdk (issue 22)
 
 //	G_Printf( "player_die\n" );
@@ -1453,7 +1453,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,  vec3
 		// if TF_NO_FRIENDLY_FIRE is set, don't do damage to the target
 		// if the attacker was on the same team
 		// sta acqu-sdk (issue 22): improved teamkill/-damage detection
-		if ( targ != attacker && ( OnSameTeam (targ, attacker) || ( G_GetTeamFromEntity(targ) == G_GetTeamFromEntity(inflictor) ) ) ) {
+		if ( targ != attacker && ( OnSameTeam (targ, attacker) || ( (targ->client && attacker->client) && G_GetTeamFromEntity(targ) == G_GetTeamFromEntity(inflictor) ) ) ) {
 		//if ( targ != attacker && OnSameTeam (targ, attacker)  ) {
 		// end acqu-sdk (issue 22)
 			if ( (g_gamestate.integer != GS_PLAYING && match_warmupDamage.integer == 1)) {
