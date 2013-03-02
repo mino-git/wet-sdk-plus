@@ -1,0 +1,16 @@
+These are unsupported buildscripts from vanilla SDK.
+
+Content:
+
+1) cross-scons.sh
+2) makebundle.sh
+3) SConscript.cgame
+4) SConscript.game
+5) SConscript.ui
+6) SConstruct
+7) scons_utils.py
+
+Former locations:
+
+    Files: 1, 2, 3, 4, 5, 6, 7
+    acqu-sdk/trunk/src/
