@@ -1555,6 +1555,11 @@ qboolean ReadyToConstruct(gentity_t *ent, gentity_t *constructible, qboolean upd
 // g_team.c
 //
 qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 );
+
+// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+qboolean InflictorEntOnSameTeam( gentity_t *ent, gentity_t *inflictor );
+// end acqu-sdk (issue 22)
+
 int Team_ClassForString( char *string );
 
 

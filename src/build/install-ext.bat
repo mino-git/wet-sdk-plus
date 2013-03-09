@@ -1,7 +1,7 @@
 REM install-ext.bat - this installs the mod into two destination directories
 
-set WETDIR1=C:\Users\akku\WETc
-set WETDIR2=C:\Users\akku\WETs
+set WETDIR1=C:\Users\herb28\WETc
+set WETDIR2=C:\Users\herb28\WETs
 set MODNAME=z
 
 7z.exe u -tzip z.zip cgame_mp_x86.dll ui_mp_x86.dll gfx scripts sound -r

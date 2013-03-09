@@ -91,6 +91,23 @@ qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 ) {
 	return qfalse;
 }
 
+// sta acqu-sdk (issue 22): improved teamkill/-damage detection
+qboolean InflictorEntOnSameTeam( gentity_t *ent, gentity_t *inflictor ) {
+	team_t inflictorTeam;
+
+	if( !ent->client || inflictor->client ) {
+		return qfalse;
+	}
+
+	inflictorTeam = G_GetTeamFromEntity(inflictor);
+	if(ent->client->sess.sessionTeam == inflictorTeam) {
+		return qtrue;
+	}
+
+	return qfalse;
+}
+// end acqu-sdk (issue 22)
+
 // JPW NERVE moved these up
 #define WCP_ANIM_NOFLAG				0
 #define WCP_ANIM_RAISE_AXIS			1
