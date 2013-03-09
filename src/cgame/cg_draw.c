@@ -769,7 +769,7 @@ static void CG_DrawTeamInfo( void ) {
 				CG_DrawPic( 160, 478 - (cgs.teamChatPos - i - 1) * lineHeight - 9, 12, 8, flag );
 
 			CG_Text_Paint_Ext( 
-				CHATLOC_TEXT_X + (flag ? 12 : 0),
+				CHATLOC_TEXT_X + 12,
 				CHATLOC_Y - (cgs.teamChatPos - i - 1) * lineHeight - 1,
 				0.2f, 0.2f, hcolor, cgs.teamChatMsgs[i % chatHeight],
 				0,
