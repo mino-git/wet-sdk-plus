@@ -45,7 +45,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;  /D &quot;LUA_SUPPORT&quot; /D &quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\omnibot\Common;..\omnibot\ET;..\lua\lua5.1\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;BUILDING_REF_GL;DEBUG;GAMEDLL"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
@@ -72,10 +74,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="winmm.lib"
+				AdditionalDependencies="winmm.lib lua5.1.lib"
 				OutputFile="..\Debug/qagame_mp_x86.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="..\lua\lua5.1\lib\static"
 				ModuleDefinitionFile=".\game.def"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/qagame_mp_x86.pdb"
@@ -142,7 +145,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;  /D &quot;LUA_SUPPORT&quot; /D &quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;..\..\omnibot\Common&quot;;&quot;..\..\omnibot\ET&quot;;&quot;..\..\lua\lua5.1\include&quot;"
+				AdditionalIncludeDirectories="..\omnibot\Common;..\omnibot\ET;..\lua\lua5.1\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;GAMEDLL"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -175,7 +178,7 @@
 				OutputFile="..\build\qagame_mp_x86.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;..\..\lua\lua5.1\lib\static&quot;"
+				AdditionalLibraryDirectories="..\lua\lua5.1\lib\static"
 				ModuleDefinitionFile=".\game.def"
 				ProgramDatabaseFile=".\Release/qagame_mp_x86.pdb"
 				GenerateMapFile="true"
@@ -281,7 +284,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\omnibot\Common\BotLoadLibrary.cpp"
+				RelativePath="..\omnibot\Common\BotLoadLibrary.cpp"
 				>
 			</File>
 			<File
