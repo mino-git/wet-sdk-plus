@@ -199,7 +199,7 @@ FILE(GLOB UI_SRC
 
 FILE(GLOB OMNIBOT_SRC
 	"game/g_etbot_interface.cpp"
-	"../omnibot/Common/BotLoadLibrary.cpp"
+	"omnibot/Common/BotLoadLibrary.cpp"
 )
 
 FILE(GLOB SHA1_SRC
@@ -214,16 +214,16 @@ set_target_properties(cgame.mp.${ARCH} PROPERTIES COMPILE_DEFINITIONS "CGAMEDLL"
 # game library building
 IF(OMNIBOT_SUPPORT)
 	add_definitions(-DOMNIBOT_SUPPORT)
-	include_directories(../omnibot/Common)
-	include_directories(../omnibot/ET)
+	include_directories(omnibot/Common)
+	include_directories(omnibot/ET)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${OMNIBOT_SRC})
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 ENDIF(OMNIBOT_SUPPORT)
 
 IF(LUA_SUPPORT)
 	add_definitions(-DLUA_SUPPORT)
-	include_directories(../lua/lua5.1/include)
-	link_directories(../lua/lua5.1/lib/static)
+	include_directories(lua/lua5.1/include)
+	link_directories(lua/lua5.1/lib/static)
 	SET(QAGAME_SRC ${QAGAME_SRC} game/g_lua.c)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${SHA1_SRC})
 ENDIF(LUA_SUPPORT)
