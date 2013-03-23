@@ -1,73 +1,94 @@
-Wolfenstein™: Enemy Territory™ Source Code
+acqu-ETSDK-Codebase - a Wolfensteinâ„¢: Enemy Territoryâ„¢ Source Code Modification
 
-This is the source code for Wolfenstein: Enemy Territory.  This source code is not officially supported in any capacity by id Software, Activision or Splash Damage.  Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods.  For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com 
+This is the source code for the acqu-SDK. This source code is based on ETSDK version 2.6 for the game Wolfenstein: Enemy Territory. The primary goal of this source code modification is to enhance the already existing source code basis and to make it accessible as an alternative codebase for further use. This source code is under a "LIMITED USE SOFTWARE LICENSE AGREEMENT", which was shipped with the original version of ETSDK. 
+
+This source code is not officially supported in any capacity by id Software, Activision or Splash Damage. Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods. For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com or https://github.com/acqu/acqu-etsdk-codebase.
 
 Windows:
 ========
 
-The first thing you have to do is run the installer.  Do this by double-clicking on the WET_Source.exe.  By default, this will install the source code to the C:\WET_Source folder.
-
-To use the source, you must have Visual C++ version 6 or greater installed.  The source has been found to work with .NET edition of Visual C++, but Visual C++ 6 is recommended for better compatibility.
+The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have Visual Studio Express 2008 installed (other versions of VS are unsupported).
 
 1. Open the src folder.
-2. Double-click on the wolf.dsw file to open the project workspace.
-3. In the build menu select the “Set Active Configurations” option.
-a. Note: for .NET this will appear as “Configuration Manager”.
-4. Select Win32 Release for all versions of the code.
-5. At this point, you should be able to compile the code.
+2. Double-click on the wolf.sln file to open the project workspace.
+3. In the build menu select 'Debug' or 'Release'.
+4. At this point, you should be able to compile the code.
 
 Linux:
 ======
 
-The first thing you have to do is run the installer.
-Do this by executing et-linux-2.60-sdk.x86.run.  By default, this will install the source code to the /usr/local/games/enemy-territory-sdk folder.
+The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have cmake [1] version 2.8.1 or higher installed. You must also have gcc and g++ version 3.4 or greater installed.
 
-To use the source, you must have gcc 2.95 or greater installed. You must also have scons[1] installed.
+Cmake is used to prepare the build environment. Two options are recommended:
+
+A) Makefile-based build environment:
 
 1. Type the following commands at a command prompt:
-   cd /usr/local/games/enemy-territory-sdk
-   scons -c
-   scons
+   cd /path/to/working-copy/src
+   mkdir cmake; cd cmake
+   cmake .. -G "Unix Makefiles"
+   make
 2. After a few minutes of compiling, you should have cgame, qagame and ui .so files in your directory.
 
-By default, a 'debug' build is created, which includes full debugging symbols suitable for use with gdb.
-To make a non-debug 'release' build, pass the parameter BUILD=release to scons, eg:
-   scons BUILD=release
+B) IDE-based build environment (in this example CodeBlocks is used):
 
-You can use the included cross-scons.sh script to build win32 dlls on linux via mingw[2]. You will
-need to edit the script to point to the location of your mingw install and mingw binary directories.
-Place the cross-scons.sh script someplace in your PATH, such as /usr/local/bin. To build win32 dlls
-you would then type 'cross-scons.sh' in place of 'scons'.
+1. Type the following commands at a command prompt:
+   cd /path/to/working-copy/src
+   mkdir cmake; cd cmake
+   cmake .. -G "CodeBlocks - Unix Makefiles"
+2. This should place a ready-to-use IDE build environment in your cmake directory. Compile from there.
+3. After a few minutes of compiling, you should have cgame, qagame and ui .so files in your directory.
 
-[1] http://www.scons.org/
-[2] http://www.mingw.org/
+Notes:
+
+- Release builds go into the build directory.
+- Also type cmake --help to get a full list of what IDE build environments are supported by cmake.
 
 Mac:
 ====
 
-Unpack et-mac-2.60-sdk.zip with stuffit or other archiver that supports pkzip archives.
+(Currently unsupported)
 
-To use the source, you must have gcc 2.95 or greater installed. You must also have scons[1] installed.
-In order for the build scripts to create compressed bundles, you will need pkzip[2] or p7zip[3] installed.
-You can get premade osx packages for these utilities from the fink[4] project.
+The build directory:
+====================
 
-1. Type the following commands at a command prompt:
-   cd /place/you/unpacked/the/sdk/to
-   scons -c
-   scons
-2. After a few minutes of compiling, you should have cgame, qagame and ui .so files in your directory.
+By default, this directory will contain release builds. In addition, helpful install scripts and additional directories and files which are needed for the mod are located there. Take a look at the .bat or .sh scripts respectively if you want to use the install scripts.
 
-By default, a 'debug' build is created, which includes full debugging symbols suitable for use with gdb.
-To make a non-debug 'release' build, pass the parameter BUILD=debug to scons, eg:
-   scons BUILD=release
+Usually everything which is located in this directory (except the install scripts) need to be packed into the mod.
 
-Mac osx requires shared libraries to be packaged into "bundles". This can be done automatically as part of
-the build process. To build bundles, pass the parameter BUILDBUNDLE=1 to scons, eg:
-   scons BUILDBUNDLE=1
-cgame_mac and ui_mac are compressed bundles that go into your mod's pk3, and qagame_mac.bundle goes
-into the Wolfenstein ET.app/Contents/Resources/ directory on the server.
+Configuring the source:
+=======================
 
-[1] http://www.scons.org/
-[2] http://www.pkzip.com/
-[3] http://p7zip.sourceforge.net/
-[4] http://fink.sourceforge.net/
+This source code modification offers features possibly undesirable. In case you do not want to compile your binaries with these features enabled you can either remove them by hand or simply exclude them by conditional compilation.
+
+In the former case you can search either the version control history associated with this feature and then remove the code line by line or you can skip that and directly search the code for references. In the latter case you can search the code for a reference template which spells "acqu-sdk (issue XX):", where XX is the issue number. Also the list of issues might be helpful, since each commit is usually associated with an issue. It can be found at https://github.com/acqu/acqu-etsdk-codebase/issues.
+
+In case you want to use conditional compilation you can exclude certain features from the mod. By default all build settings compile these features in. In order to remove them you have to reset the corresponding precompiler, linker flags and include directory settings. This is different from platform to platform. On Windows you have to modify the project settings. On Linux when building with cmake you have to modify CMakeLists.txt. An example of how to do this with Lua is given in the wiki (TODO): https://github.com/acqu/acqu-etsdk-codebase/wiki. A listing of which additional files and directories are used for what feature and how to remove them from your build environment is given below.
+
+A) Precompiler flags (- simply not define these in your project settings in case you decided against one of these features):
+
+1) CAMTRACE_SUPPORT
+2) OMNIBOT_SUPPORT
+3) LUA_SUPPORT
+4) XPSAVE_SUPPORT
+
+B) Additional files and directories associated with each feature:
+
+1) Camtrace:
+    <none>
+2) Omnibot:
+    include:
+        src/omnibot/Common
+        src/omnibot/ET
+    lib:
+        required at runtime. Visit http://www.omni-bot.com/ for download.
+    src:
+        src/game/g_etbot_interface.cpp
+        src/game/BotLoadLibrary.cpp
+3) Lua:
+    include: src/lua/lua5.1/include
+    lib: src/lua/lua5.1/lib/static
+    src: src/game/g_lua.c
+4) XPSave:
+    <TODO>
+
