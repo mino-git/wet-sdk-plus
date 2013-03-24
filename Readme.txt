@@ -1,6 +1,6 @@
 acqu-ETSDK-Codebase - a Wolfenstein™: Enemy Territory™ Source Code Modification
 
-This is the source code for the acqu-SDK. This source code is based on ETSDK version 2.6 for the game Wolfenstein: Enemy Territory. The primary goal of this source code modification is to enhance the already existing source code basis and to make it accessible as an alternative codebase for further use.
+This is the source code for the acqu-ETSDK-Codebase. This source code is based on ETSDK version 2.6 for the game Wolfenstein: Enemy Territory. The primary goal of this source code modification is to enhance the already existing source code basis and to make it accessible as an alternative codebase for further use.
 
 This source code is not officially supported in any capacity by id Software, Activision or Splash Damage. Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods. For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com or https://github.com/acqu/acqu-etsdk-codebase.
 
