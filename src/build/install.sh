@@ -3,7 +3,7 @@
 # install.sh
 # this installs the mod into one destination directory
 
-WETDIR1='/usr/local/games/enemy-territory/'
+WETDIR1='/home/linux/.etwolf/'
 MODNAME='z'
 
 strip -s *.so
