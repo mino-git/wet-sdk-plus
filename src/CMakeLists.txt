@@ -74,6 +74,14 @@ SET(CMAKE_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/ui)
 
 # global scope of all source files
 FILE(GLOB CGAME_SRC
+	"game/bg_public.h"
+	"cgame/cg_local.h"
+	"cgame/cg_public.h"
+	"ui/keycodes.h"
+	"game/q_shared.h"
+	"game/surfaceflags.h"
+	"cgame/tr_types.h"
+	"ui/ui_shared.h"
 	"cgame/cg_atmospheric.c"
 	"cgame/cg_character.c"
 	"cgame/cg_commandmap.c"
@@ -129,6 +137,13 @@ FILE(GLOB CGAME_SRC
 )
 
 FILE(GLOB QAGAME_SRC
+	"game/bg_local.h"
+	"game/bg_public.h"
+	"game/g_local.h"
+	"game/g_public.h"
+	"game/g_team.h"
+	"game/q_shared.h"
+	"game/surfaceflags.h"
 	"game/bg_animation.c"
 	"game/bg_animgroup.c"
 	"game/bg_campaign.c"
@@ -182,6 +197,14 @@ FILE(GLOB QAGAME_SRC
 )
 
 FILE(GLOB UI_SRC
+	"game/bg_public.h"
+	"ui/keycodes.h"
+	"game/q_shared.h"
+	"game/surfaceflags.h"
+	"cgame/tr_types.h"
+	"ui/ui_local.h"
+	"ui/ui_public.h"
+	"ui/ui_shared.h"
 	"ui/ui_atoms.c"
 	"ui/ui_gameinfo.c"
 	"ui/ui_loadpanel.c"
@@ -198,11 +221,13 @@ FILE(GLOB UI_SRC
 )
 
 FILE(GLOB OMNIBOT_SRC
+	"game/g_etbot_interface.h"
 	"game/g_etbot_interface.cpp"
 	"omnibot/Common/BotLoadLibrary.cpp"
 )
 
 FILE(GLOB SHA1_SRC
+	"game/sha1.h"
 	"game/g_sha1.c"
 	"game/sha1.c"
 )
@@ -224,6 +249,7 @@ IF(LUA_SUPPORT)
 	add_definitions(-DLUA_SUPPORT)
 	include_directories(lua/lua5.1/include)
 	link_directories(lua/lua5.1/lib/dynamic)
+	SET(QAGAME_SRC ${QAGAME_SRC} game/g_lua.h)
 	SET(QAGAME_SRC ${QAGAME_SRC} game/g_lua.c)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${SHA1_SRC})
 ENDIF(LUA_SUPPORT)
