@@ -18,8 +18,8 @@ OPTION(OMNIBOT_SUPPORT "Include Omnibot Interface" ON)
 
 # compiler settings
 # edit these out if you want to let cmake decide which compiler to use
-SET(CMAKE_C_COMPILER gcc-3.4)
-SET(CMAKE_CXX_COMPILER g++-3.4)
+#SET(CMAKE_C_COMPILER gcc-3.4)
+#SET(CMAKE_CXX_COMPILER g++-3.4)
 # -----------------------------------------------------------
 # config end ------------------------------------------------
 
