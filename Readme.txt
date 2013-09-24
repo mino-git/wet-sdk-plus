@@ -1,11 +1,16 @@
-acqu-ETSDK-Codebase - a Wolfenstein™: Enemy Territory™ Source Code Modification
+WET: SDK+ - a Wolfenstein™: Enemy Territory™ Source Code Modification
 
-This is the source code for the acqu-ETSDK-Codebase. This source code is based on ETSDK version 2.6 for the game Wolfenstein: Enemy Territory. The primary goal of this source code modification is to enhance the already existing source code basis and to make it accessible as an alternative codebase for further use.
+A project to improve ETSDK version 2.6 from the game Wolfenstein: Enemy Territory. Goals: basic features, bugfixes, no gameplay changes or shiny updates. It can be used as a source code basis for peeps wanting to start their own mod on a "as-clean-as-possible" ETSDK source code basis.
+
+Disclaimer
+==========
+
+This source code basis is open for contribution. Check the issues tab on github, it is almost done.
 
 This source code is not officially supported in any capacity by id Software, Activision or Splash Damage. Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods. For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com or https://github.com/acqu/acqu-etsdk-codebase.
 
-Windows:
-========
+Windows
+=======
 
 The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have Visual Studio Express 2008 installed (other versions of VS are unsupported).
 
@@ -14,8 +19,8 @@ The first thing you have to do is download a working copy of the repository foun
 3. In the build menu select 'Debug' or 'Release'.
 4. At this point, you should be able to compile the code.
 
-Linux:
-======
+Linux
+=====
 
 The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have cmake [1] version 2.8.1 or higher installed. You must also have gcc and g++ version 3.4 or greater installed.
 
@@ -44,8 +49,8 @@ Notes:
 - Release builds go into the build directory.
 - Also type cmake --help to get a full list of what IDE build environments are supported by cmake.
 
-Mac:
-====
+Mac
+===
 
 (Currently unsupported)
 
