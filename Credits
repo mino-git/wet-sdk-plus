@@ -18,7 +18,7 @@ Omnibot team:
 Contributions:
     - omnibot interface implementation
 
-Especially thanks to crapshot,
+Especially thanks to crapshoot,
 who greatly assisted with this.
 
 /* =============== */
@@ -45,7 +45,7 @@ ET:Legacy team
 Contributions:
 
     - fix of Quake 3 Engine remapShader Overflow bug
-    - base for improved teamkill/-damage detection bug (worked out with Irata in IRC together)
+    - base for improved teamkill/-damage detection (worked out with Irata in IRC together)
 
 /* =============== */
 Silent Mod Team
@@ -60,6 +60,13 @@ Nit Mod Team
 Contributions:
 
     - intermission chat problem
+
+/* =============== */
+Luigi Auriemma
+(http://aluigi.altervista.org/)
+
+Contributions:
+    - lots of important bugfixes
 
 /* =============== */
 Others:
