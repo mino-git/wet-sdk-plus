@@ -102,9 +102,3 @@ License
 
 This source code is under a "LIMITED USE SOFTWARE LICENSE AGREEMENT".
 
-Credits
-=======
-
-Coming soon..
-
-
