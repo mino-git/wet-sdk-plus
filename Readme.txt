@@ -7,12 +7,12 @@ Disclaimer
 
 This source code basis is open for contribution. Check the issues tab on github, it is almost done.
 
-This source code is not officially supported in any capacity by id Software, Activision or Splash Damage. Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods. For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com or https://github.com/acqu/acqu-etsdk-codebase.
+This source code is not officially supported in any capacity by id Software, Activision or Splash Damage. Below you will find very basic instructions on how to get the source code working so that you can create your own Enemy Territory mods. For online help and resources, please visit www.castlewolfenstein.com or www.splashdamage.com or https://github.com/acqu/wet-sdk-plus.
 
 Windows
 =======
 
-The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have Visual Studio Express 2008 installed (other versions of VS are unsupported).
+The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/wet-sdk-plus and have Visual Studio Express 2008 installed (other versions of VS are unsupported).
 
 1. Open the src folder.
 2. Double-click on the wolf.sln file to open the project workspace.
@@ -22,7 +22,7 @@ The first thing you have to do is download a working copy of the repository foun
 Linux
 =====
 
-The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/acqu-etsdk-codebase and have cmake [1] version 2.8.1 or higher installed. You must also have gcc and g++ version 3.4 or greater installed.
+The first thing you have to do is download a working copy of the repository found at https://github.com/acqu/wet-sdk-plus and have cmake [1] version 2.8.1 or higher installed. You must also have gcc and g++ version 3.4 or greater installed. On a 64 bit system you will additionally need gcc-multilib and g++-multilib.
 
 Cmake is used to prepare the build environment. Two options are recommended:
 
@@ -66,9 +66,9 @@ Configuring the source:
 
 This source code modification offers features possibly undesirable. In case you do not want to compile your binaries with these features enabled you can either remove them by hand or simply exclude them by conditional compilation.
 
-In the former case you can search either the version control history associated with this feature and then remove the code line by line or you can skip that and directly search the code for references. In the latter case you can search the code for a reference template which spells "acqu-sdk (issue XX):", where XX is the issue number. Also the list of issues might be helpful, since each commit is usually associated with an issue. It can be found at https://github.com/acqu/acqu-etsdk-codebase/issues.
+In the former case you can search either the version control history associated with this feature and then remove the code line by line or you can skip that and directly search the code for references. In the latter case you can search the code for a reference template which spells "acqu-sdk (issue XX):", where XX is the issue number. Also the list of issues might be helpful, since each commit is usually associated with an issue. It can be found at https://github.com/acqu/wet-sdk-plus/issues.
 
-In case you want to use conditional compilation you can exclude certain features from the mod. By default all build settings compile these features in. In order to remove them you have to reset the corresponding precompiler, linker flags and include directory settings. This is different from platform to platform. On Windows you have to modify the project settings. On Linux when building with cmake you have to modify CMakeLists.txt. An example of how to do this with Lua is given in the wiki (TODO): https://github.com/acqu/acqu-etsdk-codebase/wiki. A listing of which additional files and directories are used for what feature and how to remove them from your build environment is given below.
+In case you want to use conditional compilation you can exclude certain features from the mod. By default all build settings compile these features in. In order to remove them you have to reset the corresponding precompiler, linker flags and include directory settings. This is different from platform to platform. On Windows you have to modify the project settings. On Linux when building with cmake you have to modify CMakeLists.txt. An example of how to do this with Lua is given in the wiki (TODO): https://github.com/acqu/wet-sdk-plus/wiki. A listing of which additional files and directories are used for what feature and how to remove them from your build environment is given below.
 
 A) Precompiler flags (- simply not define these in your project settings in case you decided against one of these features):
 
