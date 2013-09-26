@@ -174,7 +174,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="winmm.lib lua5.1.lib"
+				AdditionalDependencies="winmm.lib ..\lua\lua5.1\lib\dynamic\lua5.1.lib"
 				OutputFile="..\build\qagame_mp_x86.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

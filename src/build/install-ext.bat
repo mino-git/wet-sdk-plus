@@ -18,4 +18,7 @@ copy cgame_mp_x86.dll %WETDIR2%\%MODNAME%
 copy qagame_mp_x86.dll %WETDIR2%\%MODNAME%
 copy ui_mp_x86.dll %WETDIR2%\%MODNAME%
 
+REM lua lib - install only to server dir
+copy lua5.1.dll %WETDIR2%
+
 del z.pk3

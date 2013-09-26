@@ -12,4 +12,6 @@ copy cgame_mp_x86.dll %WETDIR1%\%MODNAME%
 copy qagame_mp_x86.dll %WETDIR1%\%MODNAME%
 copy ui_mp_x86.dll %WETDIR1%\%MODNAME%
 
+copy lua5.1.dll %WETDIR1%
+
 del z.pk3
