@@ -43,7 +43,6 @@ ET:Legacy team
 (http://www.etlegacy.com/)
 
 Contributions:
-
     - fix of Quake 3 Engine remapShader Overflow bug
     - base for improved teamkill/-damage detection (worked out with Irata in IRC together)
 
@@ -51,14 +50,12 @@ Contributions:
 Silent Mod Team
 
 Contributions:
-
     - Blurry weapon icons bug (hinted to me by gaoesa, thx)
 
 /* =============== */
 Nit Mod Team
 
 Contributions:
-
     - intermission chat problem
 
 /* =============== */
