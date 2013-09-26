@@ -21,4 +21,7 @@ copy ui_mp_x86.dll %WETDIR2%\%MODNAME%
 REM lua lib - install only to server dir
 copy lua5.1.dll %WETDIR2%
 
+REM sqlite lib - install only to server dir
+copy sqlite3.dll %WETDIR2%
+
 del z.pk3

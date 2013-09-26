@@ -143,9 +143,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;  /D &quot;LUA_SUPPORT&quot; /D &quot;_CRT_SECURE_NO_DEPRECATE&quot;"
+				AdditionalOptions="/D &quot;OMNIBOT_SUPPORT&quot;  /D &quot;LUA_SUPPORT&quot;  /D &quot;XPSAVE_SUPPORT&quot; /D &quot;_CRT_SECURE_NO_DEPRECATE&quot;"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\omnibot\Common;..\omnibot\ET;..\lua\lua5.1\include"
+				AdditionalIncludeDirectories="..\omnibot\Common;..\omnibot\ET;..\lua\lua5.1\include;..\sqlite\sqlite3\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;GAMEDLL"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -174,11 +174,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="winmm.lib ..\lua\lua5.1\lib\dynamic\lua5.1.lib"
+				AdditionalDependencies="winmm.lib ..\lua\lua5.1\lib\dynamic\lua5.1.lib ..\sqlite\sqlite3\lib\dynamic\sqlite3.lib"
 				OutputFile="..\build\qagame_mp_x86.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\lua\lua5.1\lib\static"
+				AdditionalLibraryDirectories=""
 				ModuleDefinitionFile=".\game.def"
 				ProgramDatabaseFile=".\Release/qagame_mp_x86.pdb"
 				GenerateMapFile="true"
@@ -445,6 +445,10 @@
 			</File>
 			<File
 				RelativePath=".\g_weapon.c"
+				>
+			</File>
+			<File
+				RelativePath=".\g_xpsave.c"
 				>
 			</File>
 			<File
