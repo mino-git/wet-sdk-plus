@@ -1141,6 +1141,12 @@ DEFAULT_ALLIES - This spawn region belongs to the Alles at the start of the map
 */
 static int numobjectives = 0; // TTimo
 
+// sta acqu-sdk (issue 25): etpub's fix for SP_team_WOLF_objective: exceeded MAX_MULTI_SPAWNTARGETS (16)
+void reset_numobjectives(void) {
+	numobjectives = 0;
+}
+// end acqu-sdk (issue 25)
+
 // swaps the team
 void team_wolf_objective_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
 	char cs[MAX_STRING_CHARS];

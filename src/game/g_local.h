@@ -1562,6 +1562,9 @@ qboolean InflictorEntOnSameTeam( gentity_t *ent, gentity_t *inflictor );
 
 int Team_ClassForString( char *string );
 
+// sta acqu-sdk (issue 25): etpub's fix for SP_team_WOLF_objective: exceeded MAX_MULTI_SPAWNTARGETS (16)
+void reset_numobjectives(void);
+// end acqu-sdk (issue 25)
 
 //
 // g_mem.c

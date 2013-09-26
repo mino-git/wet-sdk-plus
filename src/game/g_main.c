@@ -1867,8 +1867,11 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// DHM - Nerve :: Clear out spawn target config strings
 	trap_GetConfigstring( CS_MULTI_INFO, cs, sizeof(cs) );
 	Info_SetValueForKey( cs, "numspawntargets", "0" );
+	// sta acqu-sdk (issue 25): etpub's fix for SP_team_WOLF_objective: exceeded MAX_MULTI_SPAWNTARGETS (16)
+	reset_numobjectives();
+	// end acqu-sdk (issue 25)
 	trap_SetConfigstring( CS_MULTI_INFO, cs );
-
+	
 	for ( i=CS_MULTI_SPAWNTARGETS; i<CS_MULTI_SPAWNTARGETS + MAX_MULTI_SPAWNTARGETS; i++ ) {
 		trap_SetConfigstring( i, "" );
 	}
