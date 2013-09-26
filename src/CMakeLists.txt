@@ -254,12 +254,23 @@ IF(LUA_SUPPORT)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${SHA1_SRC})
 ENDIF(LUA_SUPPORT)
 
+IF(XPSAVE_SUPPORT)
+	add_definitions(-DXPSAVE_SUPPORT)
+	include_directories(sqlite/sqlite3/include)
+	link_directories(sqlite/sqlite3/lib/dynamic)
+	SET(QAGAME_SRC ${QAGAME_SRC} game/g_xpsave.c)
+ENDIF(XPSAVE_SUPPORT)
+
 add_library (qagame.mp.${ARCH} SHARED ${QAGAME_SRC})
 set_target_properties(qagame.mp.${ARCH} PROPERTIES COMPILE_DEFINITIONS "GAMEDLL" PREFIX "")
 
 IF(LUA_SUPPORT)
 	target_link_libraries(qagame.mp.${ARCH} lua5.1)
 ENDIF(LUA_SUPPORT)
+
+IF(XPSAVE_SUPPORT)
+	target_link_libraries(qagame.mp.${ARCH} sqlite3)
+ENDIF(XPSAVE_SUPPORT)
 
 # ui library building
 add_library (ui.mp.${ARCH} SHARED ${UI_SRC})

@@ -2663,4 +2663,13 @@ qboolean G_CanPickupWeapon( weapon_t weapon, gentity_t* ent );
 
 qboolean G_LandmineSnapshotCallback( int entityNum, int clientNum );
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+// g_xpsave.c
+void G_XPSave_ReadClient( gentity_t *ent, const char *userinfo );
+void G_XPSave_WriteBackClient( gentity_t *ent );
+void G_XPSave_WriteSession( void );
+// end acqu-sdk (issue 15)
+#endif
+
 #endif /* __G_LOCAL_H__ */

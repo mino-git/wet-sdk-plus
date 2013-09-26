@@ -1727,6 +1727,12 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 		trap_UnlinkEntity( ent );
 	}
 
+#ifdef XPSAVE_SUPPORT
+	// sta acqu-sdk (issue 15): xpsave support
+	G_XPSave_ReadClient( ent, userinfo );
+	// end acqu-sdk (issue 15)
+#endif
+
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
 	if( G_LuaHook_ClientConnect( clientNum, firstTime, isBot, reason ) ) {
@@ -2419,6 +2425,12 @@ void ClientDisconnect( int clientNum ) {
 	if ( !ent->client ) {
 		return;
 	}
+
+#ifdef XPSAVE_SUPPORT
+	// sta acqu-sdk (issue 15): xpsave support
+	G_XPSave_WriteBackClient( ent );
+	// end acqu-sdk (issue 15)
+#endif
 
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
