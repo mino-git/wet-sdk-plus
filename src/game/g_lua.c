@@ -1,4 +1,3 @@
-
 #ifdef LUA_SUPPORT
 
 /*
