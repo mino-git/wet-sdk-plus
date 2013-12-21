@@ -2,7 +2,7 @@
 
 ETSDK+ is a project to improve ETSDK version 2.6 from the game Wolfenstein: Enemy Territory.
 
-The goals of this project are to fix bugs, add basic features, while leaving the core gameplay untouched. It aims at developers searching for a codebase close to ETSDK, but with enhanced features and fixes of bugs and exploits which are still present in ETSDK.
+The goals of this project are to fix bugs and add basic features, while leaving the core gameplay untouched. It aims at developers searching for a codebase close to ETSDK, but with enhanced features and fixes of bugs and exploits which are still present in ETSDK.
 
 Disclaimer
 ==========
