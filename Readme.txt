@@ -1,4 +1,4 @@
-WET: SDK+ - a Wolfenstein™: Enemy Territory™ Source Code Modification
+﻿ETSDK+ - a Wolfenstein™: Enemy Territory™ Source Code Modification
 
 ETSDK+ is a project to improve ETSDK version 2.6 from the game Wolfenstein: Enemy Territory. The goals are to add basic features, fix bugs, and leave the core gameplay unchanged. It aims at developers seaching for clean codebase as close as possible to ETSDK.
 
