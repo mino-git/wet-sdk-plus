@@ -5,6 +5,11 @@ Activision: www.activision.com/?
 id Software: http://www.idsoftware.com/
 
 /* =============== */
+Splash Damage: http://www.splashdamage.com/
+
+Thanks dear Tapirs, for creating this awesome game.
+
+/* =============== */
 Lua: http://www.lua.org/
 
 /* =============== */
@@ -22,8 +27,7 @@ Etpub team: https://www.assembla.com/spaces/etpub/wiki/Get_the_source
 Enormous contributions by simply being open source. Lots of their code is in this codebase.
 
 /* =============== */
-Chruker's Project bugfix:
-http://games.chruker.dk/enemy_territory/modding_project_bugfix.php
+Chruker's Project bugfix: http://games.chruker.dk/enemy_territory/modding_project_bugfix.php
 
 /* =============== */
 Etpro team: http://etpro.anime.net/
