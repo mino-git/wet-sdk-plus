@@ -1,0 +1,45 @@
+/* =============== */
+Activision: www.activision.com/?
+
+/* =============== */
+id Software: http://www.idsoftware.com/
+
+/* =============== */
+Lua: http://www.lua.org/
+
+/* =============== */
+Sqlite: http://www.sqlite.org/
+
+/* =============== */
+Omnibot team: www.omni-bot.com/
+
+Especially thanks to crapshoot,
+who greatly assisted with this.
+
+/* =============== */
+Etpub team: https://www.assembla.com/spaces/etpub/wiki/Get_the_source
+
+Enormous contributions by simply being open source. Lots of their code is in this codebase.
+
+/* =============== */
+Chruker's Project bugfix:
+http://games.chruker.dk/enemy_territory/modding_project_bugfix.php
+
+/* =============== */
+Etpro team: http://etpro.anime.net/
+
+/* =============== */
+ET:Legacy team: http://www.etlegacy.com/
+
+/* =============== */
+Silent Mod Team: http://mygamingtalk.com/forums/forum/9-silent-mod-enemy-territory/
+
+/* =============== */
+Nit Mod Team: http://etmods.net/
+
+/* =============== */
+Luigi Auriemma: http://aluigi.altervista.org/
+
+/* =============== */
+People who assisted me greatly during the course of this project: dutchmeat, uvhannes (for his code and explanations about adding camtrace in the web), indloon
+

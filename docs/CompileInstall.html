@@ -1,0 +1,280 @@
+<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Howto compile and install ETSDK+</title>
+  </head>
+
+  <body>
+
+    <H1>Howto compile and install ETSDK+</H1>
+    <HR>
+    <p>In this howto i am going to show you how to compile and install ETSDK+, the enhanced source codebase for Wolfenstein Enemy Territory (W:ET) based on the <a href="ftp://ftp.idsoftware.com/idstuff/et/sdk/">original ETSDK version 2.6 for W:ET</a>.</p>
+
+    <p>We are going to download necessary tools for each platform, use them to build the mod, navigate through the installation process after we compiled the binaries, and configure the source to work with different compile options. The presentation of all this will be covered for each supported platform and in order of: tools and preparation, compilation, installation, advanced build options.<BR></p>
+    <p><I>Notes:</I></p>
+    <UL>
+    <I>- Platform support: Linux, Windows. (Mac is unsupported currently.)</I><BR><BR>
+    <I>- There are always a wide variety of ways to do stuff in the computer world. This howto is no exception. Do adjustments wherever you want.</I><BR><BR>
+    <I>- If you are a beginner i recommend you to go through each step 1 by 1. Worth checking out are install scripts (will be done in this howto, but you can pack your mod manually as well) and lateron the advanced build options. Especially the install scripts can save you a ton of time.</I><BR><BR>
+    <I>- To avoid switching back and forth between descriptions, i will cover certain topics just in time. For example some tools will not be installed in the "Tools and Preparation" section, but are covered lateron.</I><BR><BR>
+    </UL>
+    <HR>
+    <H2>Windows</H2>
+    <p>In this section, compile and install instructions for Windows are given. Currently, the only supported way of compiling for Windows is with Visual Studio 2008. You can skip the one or other process, but recommended is that you do all of them, and in order. Skippable parts will be marked with <TT>(Optional)</TT>.</p>    
+    <H3>Tools and Preparation</H3>
+    <p>1. Download and install Visual Studio 2008 Express.</p>
+    <UL>
+    Get it by typing <TT>Visual Studio 2008 Express</TT> in a search machine. One of the Microsoft sites still hosts it. This project only supports the 2008 version of Visual Studio. <U>Other versions of Visual Studio are not supported.</U>
+    </UL>
+    <p>2. Download and install mysysgit - Git for Windows. <TT>(Optional)</TT></p>
+    <UL>Get it on their Google Code page: <a href="http://code.google.com/p/msysgit/downloads/list?q=full+installer+official+git">mysysgit on Google Code</a>. At this time, i downloaded version 1.8.4. We are going to use Git to checkout our code. I installed it with option <TT>Use Git Bash only</TT>. I would recommend using it solely from command-line. To do that, just go to <TT>c:\installation_path\Git Bash</TT> and double click that shortcut to open Git Bash.
+    </UL>
+    <p>3. Download the source code for ETSDK+.</p>
+    <UL>
+    (If you did not follow step 2, you can download the source code manually from the github page.)
+    <BR>
+    <BR>
+    Git Bash is used to download the source. Open Git Bash, navigate to your Desktop folder or to your preferred place where you want to have your download be placed. (If this is new to you, then here is an example of how i do this on my system: <CODE>cd /c/Users/acqu/Desktop/</CODE>. This brings me to my Desktop). Type: <CODE>https://github.com/acqu/wet-sdk-plus.git sdk-plus</CODE>. This will place the source code directory in folder <TT>sdk-plus</TT>.
+    </UL>    
+    <H3>Compilation</H3>
+    <p>1. Open the Visual Studio 2008 project file.</p>
+    <UL>
+    Go to <TT>path/to/src</TT> and open the file <TT>wolf.sln</TT>.
+    </UL>
+    <p>2. Compile your mod with <TT>Release</TT> or <TT>Debug</TT> settings.</p>
+    <UL>
+    In the Solution Explorer on the left you see 3 projects: <TT>cgame</TT>, <TT>game</TT> and <TT>ui</TT>. These can be built separately, or you can start building the whole project at once. To build the whole project right-click on <TT>Solution 'wolf' (3 projects)</TT> in the Solution Explorer, select <TT>Build Solution</TT>. This will compile your source with <TT>Debug</TT> configuration enabled. To build with release configuration just hover over <TT>Solution Configurations</TT> on the top/middle of your Visual Studio window, and there select <TT>Release</TT> instead of <TT>Debug</TT>. Then rebuild.
+    </UL>    
+    <p>3. Check your build directory for compiled binaries.</p>    
+    <UL>
+    Once you finished compiling and everything went successful, you can find your compiled binaries in directory <TT>src/build/</TT>. The binaries are named <TT>cgame_mp_x86.dll</TT>, <TT>qagame_mp_x86.dll</TT> and <TT>ui_mp_x86.dll</TT>. Note: the debug files, as well as the release files, will be copied in this directory, so previous .dll files will be overwritten whenever you make a new compile.
+    </UL>    
+    <H3>Installation</H3>
+    <p>Two ways to install this mod are described here: manual installation or using install scripts.</p>
+    <H4>Manual installation</H4>
+    <p>If you do not want to use the install scripts you can manually install the mod.</p>
+    <p>1. Prepare client and server files.</p>
+    <UL>
+    For the client: compress <TT>gfx, scripts, sound, cgame_mp_x86.dll, ui_mp_x86.dll</TT> to <TT>.zip</TT> and rename the <TT>.zip</TT> extension to <TT>.pk3</TT>. The server just needs one file: <TT>qagame_mp_x86.dll</TT>. However, you will need additional files when you compile with advanced build options (see the respective paragraph <TT>Advanced Build Options</TT>) below.
+    </UL>
+    <p>2. Copy your prepared files to ET installation path.</p>
+    <UL>
+    At height of ET.exe create a folder with name <TT>mymod</TT>. Copy all your prepared files from step 1. in this folder. Note that with this set up, your client and your server will use the same folders and directories. Recommended is that you use one installation for the client and one for the server. But for now, this may be enough.
+    </UL>
+    <H4>Using install scripts</H4>
+    <p>The following will explain what we just did manually by using windows batch scripts in the build directory. Note that these install scripts are not intended to be used when you compiled for <TT>Debug</TT> (but you can edit them to make them compatible of course).
+    <p>1. Install 7-zip and edit your system path.</p>
+    <UL>
+    The build directory is used to install the mod. We are going to need 7-zip to make use of the install scripts. Download and install 7-zip from the <a href="http://www.7-zip.org/">7-zip website</a>. Make sure you edit the system path such that Windows can find 7-zip.exe when we execute one of the install scripts. <a href="https://www.google.de/search?q=edit+windows+system+path">google "edit windows system path"</a>.
+    </UL>
+    <p>2. Configure the install scripts.</p>
+    <UL>
+    We are going to use the install scripts in the <TT>build directory</TT> (<TT>install.bat</TT> and <TT>install-ext.bat</TT>). These compress and copy your compiled mod to your ET modfolder. We keep everything simple for now and assume you compiled your mod with no advanced build option and that you want to use install.bat to install your mod. Open install.bat with a text editor. At the beginning of this script you see: <CODE>set PATH_TO_WETEXE_1=C:\Users\Random\WETc</CODE> and <CODE>set MODNAME=mymod</CODE>. These two lines you need to be edited before you can start using the script. Set variable <CODE>PATH_TO_WETEXE_1</CODE> to point to the path where your ET.exe is located (on my system this is: <CODE>C:\Users\acqu\WETc\</CODE>). Then set variable <CODE>MODNAME</CODE> to a preferred name (in this example we just keep it with <TT>mymod</TT>).
+    </UL>
+    <p>3. Create your destination mod directory in your ET installation path which resembles your script settings.</p>
+    <UL>
+    After you have edited and saved the script with the correct path create an empty folder inside your ET installation path with the same name as variable <CODE>MODNAME</CODE> in your script (on my end i just create a folder named <TT>mymod</TT> at <TT>C:\Users\acqu\WETc\</TT>).
+    </UL>
+    <p>4. Execute install script.</p>
+    <UL>
+    After you configured your install script and created the empty folder with the right name, you open your windows command-line (click <TT>Start</TT> in windows, type <TT>cmd.exe</TT> in your search bar, click the result to open the command-line). From command-line navigate with cd command to your build directory. There type <TT>install.bat</TT> to execute the install script. It should compress and copy your mod to your configured path and folder (assuming of course it can find the binaries and you have configured the script correctly; you should also watch the output of the script in case of some failures; also be aware of permissions in Windows).
+    </UL>
+    <H4>Load and test your mod</H4>
+    <p>Start ET.exe with the option <CODE>+set fs_game mymod</CODE> (to do this create a shortcut of ET.exe, right-click on it, select properties, go to target and append <TT>+set fs_game mymod</TT>. On my system it looks like this: <TT>C:\Users\acqu\WETc\ET.exe +set fs_game mymod</TT>). After that start et (by clicking the shortcut), in main menu click <TT>Host Game</TT> and start up a test server. To see if everything went ok, join a team, press <TT>T</TT> to open the chat window, type something, hit enter. The text you wrote will pop up and beside that text you should see a team flag (allies or axis). If you do not see a team flag, than your mod is still running etmain. In this case, recheck the instructions, and if nothing worked, you can may want to seek help at the SD forums.</p>
+    <H3>Advanced Build Options</H3>
+    <p>The advanced build options are nothing about compiler optimizations or similar. They are advanced features you may want to include in your mod when basing it on this codebase. These features are not enabled by default. To enable them you need to configure your build environment. In this section i will explain how to do this.</p>
+    <p>The following lists the currently supported features:</p>
+    <UL type="square">
+    <LI >Lua scripting support interfacing with the game library</LI>
+    <LI>Xpsave support via sqlite interfacing with the game library</LI>
+    <LI>Omni-Bot support interfacing with the game library</LI>
+    <LI>Camtrace support interfacing with the client library</LI>
+    </UL>
+    <p>Note that by the time of this writing, Xpsave support and Camtrace support are still under construction and do not yet contain all the intended features. They are working however.</p>
+    <H4>Lua Support</H4>
+    <p>The ET:Lua interface allows for altering game logic and data during runtime by using Lua scripts. The interface was merged from etpub and was slightly modified afterwards to achieve 100% bi-directional compatibility with etpro:lua, but this goal is not yet achieved.</p>
+    <p>The Lua support is set up with dynamic library linking from within the game module. We are going to use precompiled binaries from LuaBinaries at SourceForge. We also need to configure Visual Studio Project Settings. Note that you may skip step 1 (Download precompiled libs and prepare directory structure) and proceed from step 2 (Configure your Visual Studio Project Settings).</p>    
+    <p>1. Download precompiled libs and prepare directory structure. <TT>(Optional)</TT></p>
+    <UL type="circle">
+    <li>Go to <a href="http://sourceforge.net/projects/luabinaries/files/5.1.4/Windows%20Libraries/">LuaBinaries for Windows</a> and download the file <TT>lua5_1_4_Win32_dll9_lib.zip</TT> (sha1: <TT>d16c25c64c41c34964d8504c475b69cdce6e517b</TT>). Extract.</li>
+    <li>Create new folders in the directory hierarchy the following way:</li>
+        <UL>
+        <TT>src/add-ons/lua5.1/bin</TT>
+        <BR>
+        <TT>src/add-ons/lua5.1/include</TT>
+        <BR>
+        <TT>src/add-ons/lua5.1/lib</TT>
+        </UL>
+    <li>Copy extracted files to your new directory hierarchy the following way:</li>
+        <UL>
+        <TT>extract-dir/include/</TT> to <TT>src/add-ons/lua5.1/include/</TT>
+        <BR>
+        <TT>extract-dir/lua5.1.dll</TT> to <TT>src/add-ons/lua5.1/bin/lua5.1.dll</TT>
+        <BR>
+        <TT>extract-dir/lua5.1.lib</TT> to <TT>src/add-ons/lua5.1/lib/lua5.1.lib</TT>
+        </UL>
+    </UL>	
+    <p>2. Configure your Visual Studio Project Settings.</p>
+    
+    <p>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.</p>
+    <UL type="circle">
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\lua5.1\include</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>LUA_SUPPORT</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\lua5.1\lib</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>lua5.1.lib</TT>. Hit Enter and apply.
+    </UL>
+    <p>3. Compile the mod.</p>
+    <UL>
+    Make a <TT>Release</TT> build. <TT>Debug</TT> is not explained. You are on your own there.
+    </UL>
+    <p>4. Configure and use the install script.</p>
+    <UL>
+    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>if %COMPILED_WITH_LUA_SUPPORT%==0</TT> and change the line to <TT>if %COMPILED_WITH_LUA_SUPPORT%==1</TT>. Execute the install script.
+    <BR>
+    Alternatively you can manually copy the library from <TT>../add-ons/lua5.1/bin/lua5.1.dll</TT> to your ET.exe path.
+    </UL>
+    <p>5. Check if everything went successful.</p>
+    <UL>
+    Use the <a href="https://github.com/acqu/wet-sdk-plus/blob/luascripts/framework.lua">Lua framework supplied with sdk-plus</a> or alternatively select a script of your choice. Copy the .lua file to your modfolder. Start your mod with option <TT>+set lua_modules framework.lua</TT>. If you used the framework, you should see Lua messages pop up in the server console. Search for lines starting with <TT>Lua Event:</TT>.
+    <BR>
+    <BR>
+    Note: if you forgot to put the .dll to your et installation path, then your mod will fail to load. Also when you release your mod to the public, then the .dll should be provided by the server provider.
+    </UL>
+    <H4>Xpsave Support</H4>
+    <p>Xpsave saves xp of each client across server campaigns based on client GUID.</p>
+    <p>The Xpsave support is set up with dynamic library linking from within the game module. We are going to use precompiled binaries from the Sqlite download page. We also need to configure Visual Studio Project Settings. Note that you may skip step 1 (Download precompiled libs and prepare directory structure) and proceed from step 2 (Configure your Visual Studio Project Settings).</p>
+    <p>1. Download precompiled libs and prepare directory structure. <TT>(Optional)</TT></p>
+    <UL type="circle">
+    <li>Go to <a href="http://www.sqlite.org/download.html">Sqlite Download Page</a> and download the file <TT>sqlite-dll-win32-x86-3080200.zip</TT> (sha1: <TT>3583caa55518d68e92c96fef0980980f449489ce</TT>). Extract.</li>
+    <li>Open the <TT>Visual Studio Command Prompt</TT> (you find its shortcut in <TT>Start->Programs->Microsoft Visual Studio->Tool</TT>s). Create a .lib file by typing <CODE>lib /def:C:\path\to\sqlite3.def /OUT:C:\path\to\sqlite3.lib</CODE>.</li>
+    <li>Go to <a href="http://www.sqlite.org/download.html">Sqlite Download Page</a> and download the file <TT>sqlite-amalgamation-3080200.zip</TT> (sha1: <TT>c0559520d014802fe587977e8d773f350b7e35fe</TT>). Extract.</li>
+    <li>Create new folders in the directory hierarchy the following way:</li>
+        <UL>
+        <TT>src/add-ons/sqlite3/bin</TT>
+        <BR>
+        <TT>src/add-ons/sqlite3/include</TT>
+        <BR>
+        <TT>src/add-ons/sqlite3/lib</TT>
+        </UL>
+    <li>Copy extracted files to your new directory hierarchy the following way:</li>
+        <UL>
+        <TT>extract-dir-amalgamation/include/</TT> to <TT>src/add-ons/sqlite3/include/</TT>
+        <BR>
+        <TT>extract-dir/sqlite3.dll</TT> to <TT>src/add-ons/sqlite3/bin/sqlite3.dll</TT>
+        <BR>
+        <TT>path/to/sqlite3.lib</TT> to <TT>src/add-ons/sqlite3/lib/sqlite3.lib</TT>
+        </UL>
+    </UL>	
+    <p>2. Configure your Visual Studio Project Settings.</p>
+    
+    <p>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.</p>
+    <UL type="circle">
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\sqlite3\include</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>XPSAVE_SUPPORT</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\sqlite3\lib</TT>. Hit Enter and apply.
+        <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>sqlite3.lib</TT>. Hit Enter and apply.
+    </UL>
+    <p>3. Compile the mod.</p>
+    <UL>
+    Make a <TT>Release</TT> build. <TT>Debug</TT> is not explained. You are on your own there.
+    </UL>
+    <p>4. Configure and use the install script.</p>
+    <UL>
+    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>if %COMPILED_WITH_XPSAVE_SUPPORT%==0</TT> and change the line to <TT>if %COMPILED_WITH_XPSAVE_SUPPORT%==1</TT>. Execute the install script.
+    <BR>
+    Alternatively you can manually copy the library from <TT>../add-ons/sqlite3/bin/sqlit3.dll</TT> to your ET.exe path.
+    </UL>
+    <p>5. Check if everything went successful.</p>
+    <UL>
+    Each time you connect or disconnect, operations are done on the database. In your mod directory a database file should be created and read or written to automatically on each event. 
+    <BR>
+    <BR>
+    Note: if you forgot to put the .dll to your et installation path, then your mod will fail to load. Also when you release your mod to the public, then the .dll should be provided by the server provider.
+    </UL>
+    <H4>Omni-Bot Support</H4>
+    <p>Omni-Bot is a FPS bot framework for a wide range of FPS game engines and mods.</p>
+    <p>The Omni-Bot library is dynamically loaded at run-time via explicit linking. We are going to use precompiled binaries from their homepage. We also need to configure Visual Studio Project Settings.</p>
+    <p>1. Download source files and prepare directory structure. <TT>(Optional)</TT></p>
+    <UL type="circle">
+    Go to <a href="https://code.google.com/p/omni-bot/source/browse/#svn%2Ftags%2F0.82%2FOmnibot%2FCommon">Omni-Bot at Google Code Tag 0.8.2 Common</a> and get the following files:
+    <BR>
+    Base_Messages.h
+    <BR>
+    BotExports.h
+    <BR>
+    BotLoadLibrary.cpp
+    <BR>
+    Functions_Bot.h
+    <BR>
+    IEngineInterface.h
+    <BR>
+    MessageHelper.h
+    <BR>
+    Omni-Bot.h
+    <BR>
+    Omni-Bot_BasicTypes.h
+    <BR>
+    Omni-Bot_BitFlags.h
+    <BR>
+    Omni-Bot_Color.h
+    <BR>
+    Omni-Bot_Events.h
+    <BR>
+    Omni-Bot_Types.h
+    <BR>
+    Copy those files in the directory <TT>src/add-ons/omnibot/Common/</TT>.
+    <BR>
+    Add BotLoadLibrary.cpp to source game (to do so right-click game->Source Files->Add->Existing Item->BotLoadLibrary.cpp).
+    </UL>
+    <UL type="circle">
+    Go to <a href="https://code.google.com/p/omni-bot/source/browse/#svn%2Ftags%2F0.82%2FOmnibot%2FET">Omni-Bot at Google Code Tag 0.8.2 ET</a> and get the following files:
+    <BR>
+    ET_Config.h
+    <BR>
+    ET_Messages.h
+    <BR>
+    Copy those files in the directory <TT>src/add-ons/omnibot/ET/</TT>. 
+    </UL>
+    <UL type="circle">
+    Go to <a href="https://code.google.com/p/omni-bot/source/browse/#svn%2Ftags%2F0.82%2FGameInterfaces%2FET%2Fsrc%2Fgame">Omni-Bot at Google Code Tag 0.8.2 game</a> and get the following files:
+    <BR>
+    g_etbot_interface.cpp
+    <BR>
+    g_etbot_interface.h
+    <BR>
+    Copy those files in the directory <TT>src/game/</TT>.
+    <BR>
+    Add them to the source game (to do so right-click game->Source Files->Add->Existing Item->g_etbot_interface.cpp, and right-click game->Header Files->Add->Existing Item->g_etbot_interface.h). 
+    </UL>
+    <p>2. Obtain Omni-Bot ET 0.82.</p>
+    </UL>Go to <a href="http://omni-bot.invisionzone.com/index.php?/files/download/5-omni-bot-enemy-territory/">Omni-Bot Web Page</a> and download the Windows version of Omni-Bot ET 0.82. Extract. Copy <TT>omni-bot</TT> directory and its contents to your ET installation path at height of ET.exe.</li>        
+    </UL>	
+    <p>3. Configure your Visual Studio Project Settings.</p>
+    <p>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.</p>
+    <UL type="circle">
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\omnibot\Common</TT> and <TT>..\add-ons\omnibot\ET</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>OMNIBOT_SUPPORT</TT>. Hit Enter and apply.
+    </UL>
+    <p>4. Compile the mod.</p>
+    <UL>
+    Make a <TT>Release</TT> build. <TT>Debug</TT> is not explained. You are on your own there.
+    </UL>
+    <p>5. Install the mod.</p>
+    <UL>
+    We already installed the omni-bot library and add-on files in step 2. Use the install scripts to (or manually) install the et mod binaries from the build directory.
+    </UL>
+    <p>6. Check if everything went successful.</p>
+    <UL>
+    Start a server. Connect. Wait till warm up is over (not necessary, but we do it like this for now). After warm up wait about 5 seconds. Then type in server console the command <TT>bot addbot</TT>. You should see a bot connecting.
+    <BR>
+    </UL>
+    <BR>
+    <HR>
+    <H2>Linux</H2>
+    TODO
+    <BR><BR><BR><BR><BR>
+    
+  </body>
+</html>

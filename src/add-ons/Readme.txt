@@ -22,5 +22,9 @@ These files were downloaded from the following sources:
 	Filename: sqlite-dll-win32-x86-3080200.zip
 	sha1: 3583caa55518d68e92c96fef0980980f449489ce
 
+	From HP: http://www.sqlite.org/download.html
+	Filename: sqlite-amalgamation-3080200.zip
+	sha1: c0559520d014802fe587977e8d773f350b7e35fe
+
 
 	
