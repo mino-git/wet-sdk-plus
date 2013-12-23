@@ -11,10 +11,10 @@ SET(CMAKE_BUILD_TYPE Release)
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/build)
 
 # conditionally compile features into the mod
-#OPTION(CAMTRACE_SUPPORT "Include Camtrace" ON) #currently unsupported
-OPTION(LUA_SUPPORT "Include Lua Interface" ON)
-OPTION(OMNIBOT_SUPPORT "Include Omnibot Interface" ON)
-#OPTION(XPSAVE_SUPPORT "Include XPSAVE" ON) #currently unsupported
+OPTION(CAMTRACE_SUPPORT "Include Camtrace" OFF) #currently unsupported
+OPTION(LUA_SUPPORT "Include Lua Interface" OFF)
+OPTION(OMNIBOT_SUPPORT "Include Omnibot Interface" OFF)
+OPTION(XPSAVE_SUPPORT "Include XPSAVE" OFF) #currently unsupported
 
 # compiler settings
 # edit these out if you want to let cmake decide which compiler to use
@@ -223,7 +223,7 @@ FILE(GLOB UI_SRC
 FILE(GLOB OMNIBOT_SRC
 	"game/g_etbot_interface.h"
 	"game/g_etbot_interface.cpp"
-	"omnibot/Common/BotLoadLibrary.cpp"
+	"add-ons/omnibot/Common/BotLoadLibrary.cpp"
 )
 
 FILE(GLOB SHA1_SRC
@@ -239,16 +239,16 @@ set_target_properties(cgame.mp.${ARCH} PROPERTIES COMPILE_DEFINITIONS "CGAMEDLL"
 # game library building
 IF(OMNIBOT_SUPPORT)
 	add_definitions(-DOMNIBOT_SUPPORT)
-	include_directories(omnibot/Common)
-	include_directories(omnibot/ET)
+	include_directories(add-ons/omnibot/Common)
+	include_directories(add-ons/omnibot/ET)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${OMNIBOT_SRC})
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive")
 ENDIF(OMNIBOT_SUPPORT)
 
 IF(LUA_SUPPORT)
 	add_definitions(-DLUA_SUPPORT)
-	include_directories(lua/lua5.1/include)
-	link_directories(lua/lua5.1/lib/dynamic)
+	include_directories(add-ons/lua5.1/include)
+	link_directories(add-ons/lua5.1/bin)
 	SET(QAGAME_SRC ${QAGAME_SRC} game/g_lua.h)
 	SET(QAGAME_SRC ${QAGAME_SRC} game/g_lua.c)
 	SET(QAGAME_SRC ${QAGAME_SRC} ${SHA1_SRC})
@@ -256,8 +256,8 @@ ENDIF(LUA_SUPPORT)
 
 IF(XPSAVE_SUPPORT)
 	add_definitions(-DXPSAVE_SUPPORT)
-	include_directories(sqlite/sqlite3/include)
-	link_directories(sqlite/sqlite3/lib/dynamic)
+	include_directories(add-ons/sqlite3/include)
+	link_directories(add-ons/sqlite3/bin)
 	SET(QAGAME_SRC ${QAGAME_SRC} game/g_xpsave.c)
 ENDIF(XPSAVE_SUPPORT)
 
