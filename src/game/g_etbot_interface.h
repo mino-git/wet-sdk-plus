@@ -1,4 +1,3 @@
-
 /*
  * ET <-> Omni-Bot interface header file.
  * 
@@ -15,10 +14,10 @@
 //#define NO_BOT_SUPPORT
 
 // IMPORTANT: when changed this has to be copied manually to GAMEVERSION (g_local.h)
-#define OMNIBOT_NAME "Omni-Bot:etmain" //cs: this appears to be unused
+#define OMNIBOT_NAME "Omni-Bot:etmain"
 
-#define OMNIBOT_MODNAME GAMEVERSION
-#define OMNIBOT_MODVERSION "Omni-Bot:etmain"
+#define OMNIBOT_MODNAME "etmain"
+#define OMNIBOT_MODVERSION "2.60"
 
 //////////////////////////////////////////////////////////////////////////
 // g_OmniBotFlags bits
@@ -32,11 +31,6 @@ enum BotFlagOptions
 	OBF_TRIGGER_MINES		= (1<<5), // Bots will trigger team and spotted mines
 	OBF_SHOVING				= (1<<6), // Bots can use g_shove
 	OBF_NEXT_FLAG			= (1<<16), // mod specific flags start from here
-
-	BOT_FLAGS_SHRUBBOT_IMMUTABLE	= OBF_NEXT_FLAG,			// Bit 17 - 2^16 = 65536
-	BOT_FLAGS_NO_KICKBAN			= (OBF_NEXT_FLAG << 1),		// Bit 18 - 2^17 = 131072
-	// pheno: do not welcome bots
-	BOT_FLAGS_DISABLE_GREETING		= ( OBF_NEXT_FLAG << 2 ),	// Bit 19 - 2^18 = 262144
 };
 //////////////////////////////////////////////////////////////////////////
 

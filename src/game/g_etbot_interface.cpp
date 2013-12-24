@@ -1,4 +1,3 @@
-
 /*
 * ET <-> Omni-Bot interface source file.
 *
@@ -105,7 +104,7 @@ bool g_GoalSubmitReady = false;
 
 void AddDeferredGoal(gentity_t *ent)
 {
-	if(g_NumDeferredGoals >= MaxDeferredGoals)
+	if(g_NumDeferredGoals >= MaxDeferredGoals - 1)
 	{
 		G_Error("Deferred Goal Buffer Full!");
 		return;
@@ -385,10 +384,18 @@ static qboolean weaponCharged(playerState_t* ps, team_t team, int weapon, int* s
 		}
 		break;
 	case WP_MEDIC_ADRENALINE:
+#ifdef NOQUARTER
+		//cs: from BG_CheckCharge()
+		if ( ps->powerups[PW_ADRENALINE] )
+		{
+			return qfalse;
+		}
+#else
 		if ( WC_WEAPON_TIME_LEFT < WC_MEDIC_TIME )
 		{
 			return qfalse;
 		}
+#endif
 		break;
 	case WP_BINOCULARS:
 		switch (ps->stats[ STAT_PLAYER_CLASS ])
@@ -1530,13 +1537,13 @@ static int _GetEntityClass(gentity_t *_ent)
 				return ET_CLASSEX_BROKENCHAIR;
 
 			// cs: waypoint tool, don't merge the spawns
-			/*else if(!Q_stricmp(_ent->classname, "info_player_deathmatch") ||
+			else if(!Q_stricmp(_ent->classname, "info_player_deathmatch") ||
 				!Q_stricmp(_ent->classname, "team_CTF_redspawn") ||
 				!Q_stricmp(_ent->classname, "team_CTF_bluespawn") ||
 				!Q_stricmp(_ent->classname, "info_player_spawn"))
 			{
 				return ENT_CLASS_GENERIC_PLAYERSTART;
-			}*/
+			}
 			break;
 		}
 	case ET_INVISIBLE:
@@ -2835,14 +2842,14 @@ public:
 					}
 				}
 				// cs: waypoint tool, don't merge the spawns
-				/*else if(!Q_stricmp(pEnt->classname, "info_player_deathmatch") ||
+				else if(!Q_stricmp(pEnt->classname, "info_player_deathmatch") ||
 					!Q_stricmp(pEnt->classname, "team_CTF_redspawn") ||
 					!Q_stricmp(pEnt->classname, "team_CTF_bluespawn") ||
 					!Q_stricmp(pEnt->classname, "info_player_spawn"))
 				{
 					// don't fill up the bots sensory mem at start with these
 					_category.SetFlag(ENT_CAT_INTERNAL);
-				}*/
+				}
 				else
 					res = InvalidEntity;
 				break;
@@ -4588,9 +4595,21 @@ public:
 				OB_GETMSG(WeaponCharged);
 				if (pMsg && pEnt && pEnt->inuse && pEnt->client)
 				{
-					pMsg->m_IsCharged =
-						(weaponCharged(&pEnt->client->ps,pEnt->client->sess.sessionTeam,
-						_weaponBotToGame(pMsg->m_Weapon), pEnt->client->sess.skill) == qtrue) ? True : False;
+#ifdef NOQUARTER
+					if ( pMsg->m_Weapon == ET_WP_BINOCULARS && (pEnt->client->ps.ammo[WP_ARTY] & NO_ARTY) ) {
+						pMsg->m_IsCharged = False;
+					}
+					else if ( pMsg->m_Weapon == ET_WP_SMOKE_MARKER && (pEnt->client->ps.ammo[WP_ARTY] & NO_AIRSTRIKE) ) {
+						pMsg->m_IsCharged = False;
+					}
+					else {
+#endif
+						pMsg->m_IsCharged =
+							(weaponCharged(&pEnt->client->ps,pEnt->client->sess.sessionTeam,
+							_weaponBotToGame(pMsg->m_Weapon), pEnt->client->sess.skill) == qtrue) ? True : False;
+#ifdef NOQUARTER
+					}
+#endif
 				}
 				break;
 			}
@@ -4685,6 +4704,9 @@ public:
 				OB_GETMSG(ET_WaitingForMedic);
 				if(pMsg)
 				{
+					// cs:	the health value here is for the healing state of the revive goal.
+					//		this whole message should be obsoleted since we can provide a much
+					//		more flexible solution in script.
 					if (pEnt && pEnt->inuse && pEnt->client &&
 						(pEnt->health <= 60 || pEnt->client->ps.pm_type == PM_DEAD) &&
 						!(pEnt->client->ps.pm_flags & PMF_LIMBO))
@@ -4882,6 +4904,11 @@ public:
 							{
 								pEnt->client->sess.playerWeapon = WP_MORTAR2;
 								pEnt->client->sess.latchPlayerWeapon = WP_MORTAR2;
+							}
+							else if ( pEnt->client->sess.sessionTeam == TEAM_ALLIES && pMsg->m_Selection == ET_WP_PANZERFAUST )
+							{
+								pEnt->client->sess.playerWeapon = WP_BAZOOKA;
+								pEnt->client->sess.latchPlayerWeapon = WP_BAZOOKA;
 							}
 							else
 							{
@@ -5574,6 +5601,11 @@ int Bot_Interface_Init()
 		return 1;
 	}
 
+#ifdef _DEBUG
+	trap_Cvar_Set( "sv_cheats", "1" );
+	trap_Cvar_Update(&g_cheats);
+#endif
+
 	g_GoalSubmitReady = false;
 
 	g_InterfaceFunctions = new ETInterface;
@@ -6017,7 +6049,9 @@ void Bot_Event_RemoveWeapon(int _client, int _weaponId)
 {
 	if(IsOmnibotLoaded())
 	{
-		if ( IsBot(&g_entities[_client]) )
+		gentity_t *e = &g_entities[_client];
+		// cs: don't send the event if the bot is dead so b.HasWeapon() will work in Limbo
+		if ( e && e->client && IsBot(e) && e->client->ps.pm_type != PM_DEAD )
 		{
 			Event_RemoveWeapon d = { _weaponId };
 			g_BotFunctions.pfnSendEvent(_client, MessageHelper(MESSAGE_REMOVEWEAPON, &d, sizeof(d)));
@@ -6337,7 +6371,7 @@ void Bot_Event_EntityCreated(gentity_t *pEnt)
 
 	//////////////////////////////////////////////////////////////////////////
 	// Cache smoke bombs
-	if( pEnt->s.eType == ET_MISSILE && pEnt->s.weapon == WP_SMOKE_BOMB )
+	if( (pEnt->s.eType == ET_MISSILE && pEnt->s.weapon == WP_SMOKE_BOMB) )
 	{
 		for(int i = 0; i < MAX_SMOKEGREN_CACHE; ++i)
 		{

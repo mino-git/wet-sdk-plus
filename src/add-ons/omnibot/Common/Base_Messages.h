@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// $LastChangedBy: drevil $
-// $LastChangedDate: 2010-05-01 10:36:37 -0700 (Sat, 01 May 2010) $
-// $LastChangedRevision: 4841 $
+// $LastChangedBy$
+// $LastChangedDate$
+// $LastChangedRevision$
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -399,14 +399,6 @@ struct Event_EntityCreated
 	GameEntity		m_Entity;
 	BitFlag32		m_EntityCategory;
 	int				m_EntityClass;	
-};
-
-struct EntityInstance
-{
-	GameEntity		m_Entity;
-	BitFlag32		m_EntityCategory;
-	int				m_EntityClass;
-	int				m_TimeStamp;
 };
 
 struct Event_EntityDeleted
