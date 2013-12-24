@@ -228,7 +228,9 @@
     <BR>
     Copy those files in the directory <TT>src/add-ons/omnibot/Common/</TT>.
     <BR>
-    Add BotLoadLibrary.cpp to source game (to do so right-click game->Source Files->Add->Existing Item->BotLoadLibrary.cpp).
+    Add <TT>BotLoadLibrary.cpp</TT> to source game (to do so right-click game->Source Files->Add->Existing Item->BotLoadLibrary.cpp).
+    <BR>
+    Open <TT>src/add-ons/omnibot/Common/BotLoadLibrary.cpp</TT> and wrap preprocessor statements around the complete file: <TT>#ifdef OMNIBOT_SUPPORT</TT> ... <TT>#endif /* OMNIBOT_SUPPORT */</TT>
     </UL>
     <UL type="circle">
     Go to <a href="https://code.google.com/p/omni-bot/source/browse/#svn%2Ftags%2F0.82%2FOmnibot%2FET">Omni-Bot at Google Code Tag 0.8.2 ET</a> and get the following files:
@@ -248,7 +250,9 @@
     <BR>
     Copy those files in the directory <TT>src/game/</TT>.
     <BR>
-    Add them to the source game (to do so right-click game->Source Files->Add->Existing Item->g_etbot_interface.cpp, and right-click game->Header Files->Add->Existing Item->g_etbot_interface.h). 
+    Add them to the source game (to do so right-click game->Source Files->Add->Existing Item->g_etbot_interface.cpp, and right-click game->Header Files->Add->Existing Item->g_etbot_interface.h).
+    <BR>
+    Open <TT>src/game/g_etbot_interface.cpp</TT> and <TT>src/game/g_etbot_interface.h</TT> and wrap preprocessor statements around each complete file: <TT>#ifdef OMNIBOT_SUPPORT</TT> ... <TT>#endif /* OMNIBOT_SUPPORT */</TT>
     </UL>
 	<UL>
 	To save some time you can alternatively use git-svn to download the required files for this. You still would have to copy required files to the source tree.
@@ -496,6 +500,8 @@
     Omni-Bot_Types.h
     <BR>
     Copy those files in the directory <TT>src/add-ons/omnibot/Common/</TT>.
+    <BR>
+    Open <TT>src/add-ons/omnibot/Common/BotLoadLibrary.cpp</TT> and wrap preprocessor statements around the complete file: <TT>#ifdef OMNIBOT_SUPPORT</TT> ... <TT>#endif /* OMNIBOT_SUPPORT */</TT>
     </UL>
     <UL type="circle">
     Go to <a href="https://code.google.com/p/omni-bot/source/browse/#svn%2Ftags%2F0.82%2FOmnibot%2FET">Omni-Bot at Google Code Tag 0.8.2 ET</a> and get the following files:
@@ -514,6 +520,8 @@
     g_etbot_interface.h
     <BR>
     Copy those files in the directory <TT>src/game/</TT>.
+    <BR>
+    Open <TT>src/game/g_etbot_interface.cpp</TT> and <TT>src/game/g_etbot_interface.h</TT> and wrap preprocessor statements around each complete file: <TT>#ifdef OMNIBOT_SUPPORT</TT> ... <TT>#endif /* OMNIBOT_SUPPORT */</TT>
     </UL>
 	<UL>
 	To save some time you can alternatively use git-svn to download the required files for this. You still would have to copy required files to the source tree.
