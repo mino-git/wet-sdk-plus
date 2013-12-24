@@ -64,7 +64,7 @@
     At height of ET.exe create a folder with name <TT>mymod</TT>. Copy all your prepared files from step 1. in this folder. Note that with this set up, your client and your server will use the same folders and directories. Recommended is that you use one installation for the client and one for the server. But for now, this may be enough.
     </UL>
     <H4>Using install scripts</H4>
-    <p>The following will explain what we just did manually by using windows batch scripts in the build directory. Note that these install scripts are not intended to be used when you compiled for <TT>Debug</TT> (but you can edit them to make them compatible of course).
+    <p>The following will explain what we just did manually by using windows batch scripts in the build directory. Note that these install scripts are not intended to be used when you compiled for <TT>Debug</TT> (but you can edit them to make them compatible of course).</p>
     <p>1. Install 7-zip and edit your system path.</p>
     <UL>
     The build directory is used to install the mod. We are going to need 7-zip to make use of the install scripts. Download and install 7-zip from the <a href="http://www.7-zip.org/">7-zip website</a>. Make sure you edit the system path such that Windows can find 7-zip.exe when we execute one of the install scripts. <a href="https://www.google.de/search?q=edit+windows+system+path">google "edit windows system path"</a>.
@@ -120,10 +120,10 @@
     
     <UL>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.
     <UL type="circle">
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\lua5.1\include</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>LUA_SUPPORT</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\lua5.1\lib</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>lua5.1.lib</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\lua5.1\include</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>LUA_SUPPORT</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\lua5.1\lib</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>lua5.1.lib</TT>. Hit Enter and apply.</li>
     </UL>
     </UL>
     <p>3. Compile the mod.</p>
@@ -132,13 +132,13 @@
     </UL>
     <p>4. Configure and use the install script.</p>
     <UL>
-    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>if %COMPILED_WITH_LUA_SUPPORT%==0</TT> and change the line to <TT>if %COMPILED_WITH_LUA_SUPPORT%==1</TT>. Execute the install script.
+    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>set COMPILED_WITH_LUA_SUPPORT=0</TT> and change the line to <TT>set COMPILED_WITH_LUA_SUPPORT=1</TT>. Execute the install script.
     <BR>
     Alternatively you can manually copy the library from <TT>../add-ons/lua5.1/bin/lua5.1.dll</TT> to your ET.exe path.
     </UL>
     <p>5. Check if everything went successful.</p>
     <UL>
-    Use the <a href="https://github.com/acqu/wet-sdk-plus/blob/luascripts/framework.lua">Lua framework supplied with sdk-plus</a> or alternatively select a script of your choice. Copy the .lua file to your modfolder. Start your mod with option <TT>+set lua_modules <nameOfScript>.lua</TT>. If you used the framework, you should see Lua messages pop up in the server console. Search for lines starting with <TT>Lua Event:</TT>.
+    Use the <a href="https://github.com/acqu/wet-sdk-plus/blob/luascripts/framework.lua">Lua framework supplied with sdk-plus</a> or alternatively select a script of your choice. Copy the .lua file to your modfolder. Start your mod with option <TT>+set lua_modules nameOfScript.lua</TT>. If you used the framework, you should see Lua messages pop up in the server console. Search for lines starting with <TT>Lua Event:</TT>.
     <BR>
     <BR>
     Note: if you forgot to put the .dll to your et installation path, then your mod will fail to load. Also when you release your mod to the public, then the .dll should be provided by the server provider.
@@ -161,7 +161,7 @@
         </UL>
     <li>Copy extracted files to your new directory hierarchy the following way:</li>
         <UL>
-        <TT>extract-dir-amalgamation/include/</TT> to <TT>src/add-ons/sqlite3/include/</TT>
+        <TT>extract-dir-amalgamation/include/</TT> (filenames: <TT>sqlite3.h</TT> and <TT>sqlite3ext.h</TT>) to <TT>src/add-ons/sqlite3/include/</TT>
         <BR>
         <TT>extract-dir/sqlite3.dll</TT> to <TT>src/add-ons/sqlite3/bin/sqlite3.dll</TT>
         <BR>
@@ -172,10 +172,10 @@
     
     <UL>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.
     <UL type="circle">
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\sqlite3\include</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>XPSAVE_SUPPORT</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\sqlite3\lib</TT>. Hit Enter and apply.
-        <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>sqlite3.lib</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\sqlite3\include</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>XPSAVE_SUPPORT</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>Linker->General->Additional Library Directories</TT>. Append <TT>..\add-ons\sqlite3\lib</TT>. Hit Enter and apply.</li>
+        <li>In <TT>Configuration Properties</TT> select <TT>Linker->Input->Additional Dependencies</TT>. Append <TT>sqlite3.lib</TT>. Hit Enter and apply.</li>
     </UL>
     </UL>
     <p>3. Compile the mod.</p>
@@ -184,7 +184,7 @@
     </UL>
     <p>4. Configure and use the install script.</p>
     <UL>
-    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>if %COMPILED_WITH_XPSAVE_SUPPORT%==0</TT> and change the line to <TT>if %COMPILED_WITH_XPSAVE_SUPPORT%==1</TT>. Execute the install script.
+    Open the install script (either <TT>install.bat</TT> or <TT>install-ext.bat</TT>, dependent on what you want to use). Search line starting with <TT>set COMPILED_WITH_XPSAVE_SUPPORT=0</TT> and change the line to <TT>set COMPILED_WITH_XPSAVE_SUPPORT=1</TT>. Execute the install script.
     <BR>
     Alternatively you can manually copy the library from <TT>../add-ons/sqlite3/bin/sqlit3.dll</TT> to your ET.exe path.
     </UL>
@@ -268,8 +268,8 @@
     <p>3. Configure your Visual Studio Project Settings.</p>
     <UL>Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>game</TT> in the Solution Explorer. Select <TT>Properties</TT>.
     <UL type="circle">
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\omnibot\Common</TT> and <TT>..\add-ons\omnibot\ET</TT>. Hit Enter and apply.
-    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>OMNIBOT_SUPPORT</TT>. Hit Enter and apply.
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->General->Additional Include Directories</TT>. Append <TT>..\add-ons\omnibot\Common</TT> and <TT>..\add-ons\omnibot\ET</TT>. Hit Enter and apply.</li>
+    <li>In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>OMNIBOT_SUPPORT</TT>. Hit Enter and apply.</li>
     </UL>
     </UL>
     <p>4. Compile the mod.</p>
@@ -286,12 +286,12 @@
     <BR>
     </UL>
     <H4>Camtrace Support</H4>
-    <p>Camtrace3D is a computer program for Windows used for editing camera paths. These camera paths are then loaded by ET to be executed during replay. The result is a powerful movie editing suite for ET.</p>
-    <p>Enabeling camtrace does not require any additional development files. We just need to enable the preprocessor definition <TT>CAMTRACE_SUPPORT</TT>.</p>
+    <p>CamTrace3D is a computer program for Windows used for editing camera paths and works in conjunction with ET client code. For more information about CamTrace3D visit the <a href="http://ct3d.twen.name/">CamTrace3D HP</a>.</p>
+    <p>Enabeling camtrace support requires defining a preprocessor flag on the client library. Open the project with Visual Studio. Set <TT>Solution Configurations</TT> to <TT>Release</TT>. Right-click <TT>cgame</TT> in the Solution Explorer. Select <TT>Properties</TT>. In <TT>Configuration Properties</TT> select <TT>C/C++->Preprocessor->Preprocessor Definitions</TT>. Append <TT>CAMTRACE_SUPPORT</TT>. Hit Enter and apply. (Todo: client commands)</p>
     <BR>
     <HR>
     <H2>Linux</H2>
-    <p>In this section, compile and install instructions for Linux are given. You can skip the one or other process, but recommended is that you do all of them, and in order. Skippable parts will be marked with <TT>(Optional)</TT>. Note that specific console commands are given with the assumption that you run Linux - Ubuntu 12.04. These commands may be differ from system to system.</p>    
+    <p>In this section, compile and install instructions for Linux are given. You can skip the one or other process, but recommended is that you do all of them, and in order. Skippable parts will be marked with <TT>(Optional)</TT>. Note that specific console commands are given with the assumption that you run Linux - Ubuntu 12.04. These commands may differ from system to system.</p>    
     <H3>Tools and Preparation</H3>
     <p>1. Download and install Cmake version 2.8.1 or higher.</p>
     <UL>
@@ -356,7 +356,7 @@
     In your ET homepath create a folder with name <TT>mymod</TT> (the ET homepath can most likely be found at <TT>~/.etwolf</TT>). Copy all your prepared files from step 1. in this folder. Note that with this set up, your client and your server will use the same folders and directories. Recommended is that you use one installation for the client and one for the server. But for now, this may be enough.
     </UL>
     <H4>Using install scripts</H4>
-    <p>The following will explain what we just did manually by using linux shell scripts in the build directory. Note that these install scripts are not intended to be used when you compiled for <TT>Debug</TT> (but you can edit them to make them compatible of course).
+    <p>The following will explain what we just did manually by using linux shell scripts in the build directory. Note that these install scripts are not intended to be used when you compiled for <TT>Debug</TT> (but you can edit them to make them compatible of course).</p>
     <p>1. Configure the install scripts.</p>
     <UL>
     We are going to use the install scripts in the <TT>build directory</TT> (<TT>install.sh</TT> and <TT>install-ext.sh</TT>). These compress and copy your compiled mod to your ET modfolder located in ET homepath. We keep everything simple for now and assume you want to use <TT>install.sh</TT> to install your mod. Open <TT>install.sh</TT> with a text editor. At the beginning of this script you see: <CODE>ET_HOMEPATH='/home/random/.etwolf/'</CODE> and <CODE>MODNAME='mymod'</CODE>. These two lines need to be edited before you can start using the script. Set variable <CODE>ET_HOMEPATH</CODE> to point to your homepath (on my system this is: <CODE>/home/acqu/.etwolf/</CODE>). Then set variable <CODE>MODNAME</CODE> to a preferred name (in this example we just keep it with <TT>mymod</TT>).
@@ -376,10 +376,10 @@
     <p>The advanced build options are nothing about compiler optimizations or similar. They are advanced features you may want to include in your mod when basing it on this codebase. These features are not enabled by default. To enable them you need to configure your build environment. In this section i will explain how to do this.</p>
     <p>The following lists the currently supported features:</p>
     <UL type="square">
-    <LI >Lua scripting support interfacing with the game library</LI>
-    <LI>Xpsave support via sqlite interfacing with the game library</LI>
-    <LI>Omni-Bot support interfacing with the game library</LI>
-    <LI>Camtrace support interfacing with the client library</LI>
+    <li>Lua scripting support interfacing with the game library</li>
+    <li>Xpsave support via sqlite interfacing with the game library</li>
+    <li>Omni-Bot support interfacing with the game library</li>
+    <li>Camtrace support interfacing with the client library</li>
     </UL>
     <p>Note that by the time of this writing, Xpsave support and Camtrace support are still under construction and do not yet contain all the intended features. They are working however.</p>
     <H4>Lua Support</H4>
@@ -547,9 +547,9 @@
     Start a server. Connect. Wait till warm up is over (not necessary, but we do it like this for now). After warm up wait about 5 seconds. Then type in server console the command <TT>bot addbot</TT>. You should see a bot connecting.
     <BR>
     </UL>
-    <H4>Camtrace Support</H4>
-    <p>Camtrace3D is a computer program for Windows used for editing camera paths. These camera paths are then loaded by ET to be executed during replay. The result is a powerful movie editing suite for ET.</p>
-    <p>Enabeling camtrace does not require any additional development files. We just need to enable the preprocessor definition <TT>CAMTRACE_SUPPORT</TT>.</p>
+   <H4>Camtrace Support</H4>
+    <p>CamTrace3D is a computer program for Windows used for editing camera paths and works in conjunction with ET client code. For more information about CamTrace3D visit the <a href="http://ct3d.twen.name/">CamTrace3D HP</a>.</p>
+    <p>Enabeling camtrace support requires defining a preprocessor flag on the client library. Open <TT>src/CMakeLists.txt</TT>. Search for line <TT>OPTION(CAMTRACE_SUPPORT "Include Camtrace" OFF)</TT>. Change that line to <TT>OPTION(CAMTRACE_SUPPORT "Include Camtrace" ON) </TT>. (Todo: client commands)</p>
     <BR>
     <HR>
     <H2>Mac</H2>
