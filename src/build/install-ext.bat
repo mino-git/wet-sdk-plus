@@ -5,8 +5,8 @@ REM -- CONFIG START
 set PATH_TO_WETEXE_1=C:\Users\Random\WETc\
 set PATH_TO_WETEXE_2=C:\Users\Random\WETs\
 set MODNAME=mymod
-set COMPILED_WITH_LUA_SUPPORT=1
-set COMPILED_WITH_XPSAVE_SUPPORT=1
+set COMPILED_WITH_LUA_SUPPORT=0
+set COMPILED_WITH_XPSAVE_SUPPORT=0
 set PATH_TO_LUA_LIB=..\add-ons\lua5.1\bin\lua5.1.dll
 set PATH_TO_SQLITE3_LIB=..\add-ons\sqlite3\bin\sqlite3.dll
 
