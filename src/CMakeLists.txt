@@ -165,6 +165,7 @@ FILE(GLOB QAGAME_SRC
 	"game/g_cmds_ext.c"
 	"game/g_combat.c"
 	"game/g_config.c"
+	"game/g_database.c"
 	"game/g_fireteams.c"
 	"game/g_items.c"
 	"game/g_main.c"

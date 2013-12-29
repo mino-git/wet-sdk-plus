@@ -328,6 +328,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\g_database.c"
+				>
+			</File>
+			<File
 				RelativePath=".\g_etbot_interface.cpp"
 				>
 			</File>

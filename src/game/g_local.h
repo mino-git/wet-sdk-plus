@@ -936,24 +936,23 @@ typedef struct voteInfo_s {
 #endif
 
 #ifdef DATABASE_SUPPORT
+#include "sqlite3.h"
 #define DB_STANDARD_FILENAME "et.db"
 #define XPSAVE_INITIALZE_FLAG 1 << 0 // in case of multiple tables in one database this will
 // indicate if the xpsave_table has been successfully initialized and can be operated on
 void G_DB_PrintLastError( void );
 int G_DB_Init( void );
 int G_DB_DeInit( void );
-#endif
-
-#ifdef XPSAVE_SUPPORT
-// sta acqu-sdk (issue 15): xpsave support
-#include "sqlite3.h"
 
 typedef struct database_s {
 	char		path[MAX_OSPATH];
 	sqlite3		*db;
 	int			initialized; // flag indicating what parts of the database are initialized
 } database_t;
+#endif
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
 typedef struct xpsaveData_s {
 	float	skillpoints[SK_NUM_SKILLS];
 } xpsaveData_t;
@@ -1159,7 +1158,7 @@ typedef struct {
 	// end acqu-sdk (issue 3)
 #endif
 
-#ifdef XPSAVE_SUPPORT
+#ifdef DATABASE_SUPPORT
 	// sta acqu-sdk (issue 15): xpsave support
 	database_t database;
 	// end acqu-sdk (issue 15)
