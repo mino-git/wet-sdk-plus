@@ -2628,6 +2628,36 @@ void G_TempTraceIgnorePlayersAndBodies( void ) {
 	}
 }
 
+// performns checks on guids
+// since omnibots use different guids than are normally allowed,
+// soft was added to perform a soft check on guid
+qboolean G_CheckGUIDSanity( char *guid, qboolean soft )
+{
+	int i;
+
+	if( guid == NULL ) {		
+		return qfalse;
+	}
+
+	if( strlen(guid) != 32 ) { // TODO 32 hardcoded, make this maintainable?
+		return qfalse;
+	}
+
+	if( soft ) {
+		return qtrue;
+	}
+
+	for( i = 0; i < 32; i++ ) {
+		if( guid[i] >= '0' && guid[i] <= '9' ||
+			guid[i] >= 'A' && guid[i] <= 'F' ) {
+			continue;
+		}
+
+		return qfalse;
+	}
+
+	return qtrue;
+}
 // ======================================================================
 // sta acqu-sdk (issue 11): these are leftovers from the removed bot code
 // ======================================================================

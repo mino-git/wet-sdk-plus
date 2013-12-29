@@ -1727,12 +1727,6 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 		trap_UnlinkEntity( ent );
 	}
 
-#ifdef XPSAVE_SUPPORT
-	// sta acqu-sdk (issue 15): xpsave support
-	G_XPSave_ReadClient( ent, userinfo );
-	// end acqu-sdk (issue 15)
-#endif
-
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
 	if( G_LuaHook_ClientConnect( clientNum, firstTime, isBot, reason ) ) {
@@ -1753,6 +1747,17 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 #endif
 
 	ClientUserinfoChanged( clientNum );
+
+#ifdef XPSAVE_SUPPORT
+	// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		i = G_XPSave_LoadClientXP( client );
+		if( i ) {
+			G_XPSave_PrintLastError();
+		}
+	}
+	// end acqu-sdk (issue 15)
+#endif
 
 	if (g_gametype.integer == GT_SINGLE_PLAYER) {
 
@@ -2428,7 +2433,18 @@ void ClientDisconnect( int clientNum ) {
 
 #ifdef XPSAVE_SUPPORT
 	// sta acqu-sdk (issue 15): xpsave support
-	G_XPSave_WriteBackClient( ent );
+	if( g_xpsave.integer == 1 ) {
+		i = G_XPSave_SaveClientXP( ent->client );
+		if( i ) {
+			// suppress this message for bots,
+			// as in some cases they disconnect at mapstart without xpsave loaded
+			if( ((ent->r.svFlags & SVF_BOT) && i) == XPSAVE_SAVE_UNLOAD ) {
+				// do nothing
+			} else {
+				G_XPSave_PrintLastError();
+			}
+		}
+	}
 	// end acqu-sdk (issue 15)
 #endif
 

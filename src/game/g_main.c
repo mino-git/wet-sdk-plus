@@ -236,6 +236,16 @@ vmCvar_t		g_hitsounds;
 vmCvar_t		g_maxConnsPerIP;
 // end acqu-sdk (issue 6)
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+vmCvar_t	g_xpsave;
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+vmCvar_t	g_dbpath;
+#endif
+
 #ifdef LUA_SUPPORT
 // sta acqu-sdk (issue 9): lua support
 vmCvar_t lua_modules;
@@ -476,6 +486,16 @@ cvarTable_t		gameCvarTable[] = {
 	{ &g_OmniBotPlaying, "omnibot_playing", "0", CVAR_SERVERINFO_NOUPDATE | CVAR_ROM, 0, qfalse },	
 	{ &g_OmniBotFlags, "omnibot_flags", "0", CVAR_ARCHIVE | CVAR_NORESTART, 0, qfalse },
 	// end acqu-sdk (issue 3)
+#endif
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	{ &g_xpsave, "g_xpsave", "0", 0 },
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	{ &g_dbpath, "g_dbpath", "", 0 },
 #endif
 
 #ifdef LUA_SUPPORT
@@ -2010,6 +2030,14 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	// --- maybe not the best place to do this... seems to be some race conditions on map_restart
 	G_spawnPrintf(DP_MVSPAWN, level.time + 2000, NULL);
 
+#ifdef DATABASE_SUPPORT
+	i = G_DB_Init();
+	if( i ) {
+		G_XPSave_PrintLastError();
+		G_DB_PrintLastError();
+	}
+#endif
+
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
 	G_LuaInit();
@@ -2025,6 +2053,8 @@ G_ShutdownGame
 =================
 */
 void G_ShutdownGame( int restart ) {
+
+
 
 #ifdef LUA_SUPPORT
 	// sta acqu-sdk (issue 9): lua support
@@ -2681,6 +2711,18 @@ void LogExit( const char *string ) {
 		return;
 
 	G_LogPrintf( "Exit: %s\n", string );
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
 
 	level.intermissionQueued = level.time;
 

@@ -452,12 +452,6 @@ void G_WriteSessionData( qboolean restart ) {
 	G_StoreXPBackup();
 #endif // USEXPSTORAGE
 
-#ifdef XPSAVE_SUPPORT
-	// sta acqu-sdk (issue 15): xpsave support
-	G_XPSave_WriteSession();
-	// end acqu-sdk (issue 15)
-#endif	
-
 	trap_GetServerinfo(strServerInfo, sizeof(strServerInfo));
 	trap_Cvar_Set("session", va("%i %i %s", g_gametype.integer,
 											(teamInfo[TEAM_AXIS].spec_lock * TEAM_AXIS | teamInfo[TEAM_ALLIES].spec_lock * TEAM_ALLIES),

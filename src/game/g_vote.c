@@ -511,6 +511,18 @@ int G_Map_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2, qbo
 		}
 	}
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}	
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
+
 	return(G_OK);
 }
 
@@ -544,6 +556,18 @@ int G_Campaign_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2
 		trap_Cvar_VariableStringBuffer("nextcampaign", s, sizeof(s));
 		trap_SendConsoleCommand(EXEC_APPEND, va("campaign %s%s\n", level.voteInfo.vote_value, ((*s) ? va("; set nextcampaign \"%s\"", s) : "")));
 	}
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}	
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
 
 	return(G_OK);
 }
@@ -659,6 +683,18 @@ int G_Nextmap_v(gentity_t *ent, unsigned int dwVoteIndex, char *arg, char *arg2,
 			AP("cp \"^3*** Loading nextmap! ***\n\"");
 		}
 	}
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}	
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
 
 	return(G_OK);
 }

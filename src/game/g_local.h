@@ -724,6 +724,12 @@ typedef struct {
 	int hitsounds;
 	// end acqu-sdk (issue 20)
 
+#ifdef XPSAVE_SUPPORT
+	// sta acqu-sdk (issue 15): xpsave support
+	qboolean		xpsave_loaded;
+	// end acqu-sdk (issue 15)
+#endif
+
 } clientPersistant_t;
 
 typedef struct {
@@ -924,6 +930,35 @@ typedef struct voteInfo_s {
 	char		vote_value[VOTE_MAXSTRING];	// Desired vote item setting.
 } voteInfo_t;
 
+// XPSAVE_SUPPORT requires database support
+#ifdef XPSAVE_SUPPORT
+#define DATABASE_SUPPORT
+#endif
+
+#ifdef DATABASE_SUPPORT
+#define DB_STANDARD_FILENAME "et.db"
+#define XPSAVE_INITIALZE_FLAG 1 << 0 // in case of multiple tables in one database this will
+// indicate if the xpsave_table has been successfully initialized and can be operated on
+void G_DB_PrintLastError( void );
+int G_DB_Init( void );
+int G_DB_DeInit( void );
+#endif
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+#include "sqlite3.h"
+
+typedef struct database_s {
+	char		path[MAX_OSPATH];
+	sqlite3		*db;
+	int			initialized; // flag indicating what parts of the database are initialized
+} database_t;
+
+typedef struct xpsaveData_s {
+	float	skillpoints[SK_NUM_SKILLS];
+} xpsaveData_t;
+// end acqu-sdk (issue 15)
+#endif
 
 typedef struct {
 	struct gclient_s	*clients;		// [maxclients]
@@ -1122,6 +1157,12 @@ typedef struct {
 	qboolean        twoMinute;
 	qboolean        thirtySecond;
 	// end acqu-sdk (issue 3)
+#endif
+
+#ifdef XPSAVE_SUPPORT
+	// sta acqu-sdk (issue 15): xpsave support
+	database_t database;
+	// end acqu-sdk (issue 15)
 #endif
 
 } level_locals_t;
@@ -1916,6 +1957,16 @@ extern vmCvar_t	bot_debug_movementAutonomy;	// movement autonomy of the bot bein
 extern vmCvar_t	bot_debug_cover_spot;		// What cover spot are we going to?
 extern vmCvar_t	bot_debug_anim;				// what animation is the bot playing?
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+extern vmCvar_t	g_xpsave;
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+extern vmCvar_t	g_dbpath;
+#endif
+
 #ifdef LUA_SUPPORT
 // sta acqu-sdk (issue 9): lua support
 extern vmCvar_t lua_modules;
@@ -2659,6 +2710,8 @@ void G_ResetTempTraceIgnoreEnts( void );
 void G_TempTraceIgnoreEntity( gentity_t* ent );
 void G_TempTraceIgnorePlayersAndBodies( void );
 
+qboolean G_CheckGUIDSanity( char *guid, qboolean soft );
+
 qboolean G_CanPickupWeapon( weapon_t weapon, gentity_t* ent );
 
 qboolean G_LandmineSnapshotCallback( int entityNum, int clientNum );
@@ -2666,10 +2719,78 @@ qboolean G_LandmineSnapshotCallback( int entityNum, int clientNum );
 #ifdef XPSAVE_SUPPORT
 // sta acqu-sdk (issue 15): xpsave support
 // g_xpsave.c
-void G_XPSave_ReadClient( gentity_t *ent, const char *userinfo );
-void G_XPSave_WriteBackClient( gentity_t *ent );
-void G_XPSave_WriteSession( void );
+#define XPSAVE_OK							0		/* Successful result */
+#define XPSAVE_INVALID_PATH					1001	/* Invalid path specified */
+#define XPSAVE_INVALID_GUID					1002	/* Invalid guid specified */
+#define XPSAVE_CLIENT_NULL					1003	/* NULL client */
+#define XPSAVE_LOAD_LOAD					1004	/* Attempt to load already loaded client data */
+#define XPSAVE_SAVE_UNLOAD					1005	/* Attempt to save not loaded client data */
+#define XPSAVE_DB_READ						1006	/* Could not read database */
+#define XPSAVE_TABLE_NOTEXIST				1007	/* Table does not exist */
+#define XPSAVE_TABLE_INCORRECT				1008	/* Table is incorrect */
+
+#define XPSAVE_SQLWRAP_CREATE "CREATE TABLE xpsaves_table " \
+	"( "						\
+	"GUID text primary key, "	\
+	"Battlesense integer, "		\
+	"Engineering integer, "		\
+	"FirstAid integer, "		\
+	"Signals integer, "			\
+	"LightWeapons integer, "	\
+	"HeavyWeapons integer, "	\
+	"Intelligence integer );"
+
+#define XPSAVE_SQLWRAP_INSERT "INSERT INTO xpsaves_table " \
+	"( "						\
+	"GUID, "					\
+	"Battlesense, "				\
+	"Engineering, "				\
+	"FirstAid, "				\
+	"Signals, "					\
+	"LightWeapons, "			\
+	"HeavyWeapons, "			\
+	"Intelligence "				\
+	") "						\
+	"VALUES ('%s', '%i', '%i', '%i', '%i', '%i', '%i', '%i');"
+
+#define XPSAVE_SQLWRAP_UPDATE "UPDATE xpsaves_table " \
+	"SET "						\
+	"Battlesense = '%i', "		\
+	"Engineering = '%i', "		\
+	"FirstAid = '%i', "		\
+	"Signals = '%i', "			\
+	"LightWeapons = '%i', "	\
+	"HeavyWeapons = '%i', "	\
+	"Intelligence = '%i' "		\
+	"WHERE "					\
+	"GUID = '%s';"
+
+#define XPSAVE_SQLWRAP_SELECT "SELECT * FROM xpsaves_table WHERE GUID = '%s';"
+
+#define XPSAVE_SQLWRAP_CHECK_IF_TABLE_EXIST "SELECT * FROM xpsaves_table;"
+
+#define XPSAVE_SQLWRAP_CHECK_IF_TABLE_CORRECT "SELECT GUID, Battlesense, Engineering, FirstAid, " \
+											"Signals, LightWeapons, HeavyWeapons, Intelligence FROM xpsaves_table;"
+
+#define XPSAVE_SQLWRAP_DROP "DROP TABLE IF EXISTS xpsaves_table;"
+
+// SELECT GUID FROM xpsaves_table; // if not exist, returns no such column
+//#define XPSAVE_SQLWRAP_CHECK_IF_TABLE_CORRECT "SELECT * FROM sqlite_master WHERE type='table' ORDER BY name='xpsaves_table';"
+
+void G_XPSave_PrintLastError( void );
+int G_XPSave_SVCreateNewDB( void );
+int G_XPSave_CreateNewDB( char *dbpath, qboolean force );
+int G_XPSave_CheckDBSanity( char *dbpath );
+int G_XPSave_LoadClientXP( gclient_t *cl );
+int G_XPSave_SaveClientXP( gclient_t *cl );
+void G_XPSave_WriteSessionData( void );
 // end acqu-sdk (issue 15)
+#endif // XPSAVE_SUPPORT
+
+#ifdef DATABASE_SUPPORT
+#define DB_INIT_INIT					10001	/* Attempt to initialize already initialized database */
+#define DB_ACCESS_NONINIT				10002	/* Access to non-initialized database */
+#define DB_INIT_MODFAIL					10003	/* None of modules initialized */
 #endif
 
 #endif /* __G_LOCAL_H__ */

@@ -829,6 +829,18 @@ void Svcmd_ResetMatch_f(qboolean fDoReset, qboolean fDoRestart)
 {
 	int i;
 
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}	
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
+
 	for(i=0; i<level.numConnectedClients; i++) {
 		g_entities[level.sortedClients[i]].client->pers.ready = 0;
 	}
@@ -925,6 +937,18 @@ void Svcmd_Campaign_f(void) {
 	else
 #endif
 		trap_SendConsoleCommand( EXEC_APPEND, va( "map %s\n", campaign->mapnames[0] ) );
+
+#ifdef XPSAVE_SUPPORT
+// sta acqu-sdk (issue 15): xpsave support
+	if( g_xpsave.integer == 1 ) {
+		G_XPSave_WriteSessionData();
+	}	
+// end acqu-sdk (issue 15)
+#endif
+
+#ifdef DATABASE_SUPPORT
+	G_DB_DeInit();
+#endif
 }
 
 void Svcmd_ListCampaigns_f(void) {
@@ -1373,6 +1397,28 @@ qboolean	ConsoleCommand( void ) {
 		return qtrue;
 	}
 	// -fretn
+
+#ifdef DATABASE_SUPPORT
+	if (!Q_stricmp(cmd, "newdb_all")) {
+		if( G_XPSave_SVCreateNewDB() ) {
+			G_XPSave_PrintLastError();
+		}
+
+		// more?
+
+		return qtrue;
+	}
+#endif
+
+#ifdef XPSAVE_SUPPORT
+	// if( g_xpsave.integer == 1 )
+	if (!Q_stricmp(cmd, "newdb_xpsave")) {
+		if( G_XPSave_SVCreateNewDB() ) {
+			G_XPSave_PrintLastError();
+		}
+		return qtrue;
+	}
+#endif
 
 	if( g_dedicated.integer ) {
 		if( !Q_stricmp (cmd, "say")) {
