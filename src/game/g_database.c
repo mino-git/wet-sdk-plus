@@ -35,7 +35,7 @@ int G_DB_Init( void )
 		return DB_INIT_INIT;
 	}
 
-	if( g_dbpath.string ) {		
+	if( g_dbpath.string ) {
 		dbpath = va( "%s", g_dbpath.string );
 	} else {
 		trap_Cvar_VariableStringBuffer( "fs_game", fsgame, sizeof( fsgame ) );
@@ -64,15 +64,16 @@ int G_DB_Init( void )
 			}
 			
 			// if it still fails
-			if( err ) {
-				G_DB_LogLastError( va( "G_DB_Init: XPSave failed to initialize database with error code %i", err ) );
+			if( err ) {				
+				xpsave_initialize = qfalse;
+				G_DB_PrintLastError();
 			} else {
 				xpsave_initialize = qtrue;
 			}
 		} else {
 			xpsave_initialize = qtrue;
 		}
-	}	
+	}
 #endif
 
 	// if one of the modules passes sanity tests, the database will be initialized
@@ -84,7 +85,7 @@ int G_DB_Init( void )
 #endif 
 
 	if( !initialize ) {
-		G_DB_LogLastError( "No module initialized\n" );
+		G_LogPrintf( "G_DB_Init: no module initialized\n" );
 		return DB_INIT_MODFAIL;
 	}
 
@@ -98,8 +99,8 @@ int G_DB_Init( void )
 
 #ifdef XPSAVE_SUPPORT
 	if( xpsave_initialize ) {
-		level.database.initialized &= XPSAVE_INITIALZE_FLAG;
-	}	
+		level.database.initialized |= XPSAVE_INITIALZE_FLAG;
+	}
 #endif 
 
 	G_LogPrintf( "Database: %s initialized\n", xpsave_initialize ? "XPSave" : "XPSave not" );

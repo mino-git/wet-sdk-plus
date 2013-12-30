@@ -81,12 +81,12 @@ int G_XPSave_SVCreateNewDB( void )
 	if( err ) {
 		if( err == DB_ACCESS_NONINIT ) {
 			// do nothing
-		} else {			
+		} else {
 			return err;
 		}
 	}
 
-	if( g_dbpath.string ) {		
+	if( g_dbpath.string ) {
 		dbpath = va( "%s", g_dbpath.string );
 	} else {
 		trap_Cvar_VariableStringBuffer( "fs_game", fsgame, sizeof( fsgame ) );
@@ -95,14 +95,14 @@ int G_XPSave_SVCreateNewDB( void )
 	}
 
 	err = G_XPSave_CreateNewDB( dbpath, qtrue );
-	if( err ) {		
+	if( err ) {
 		return err;
 	}
 
 	G_LogPrintf("XPSave: new database created\n");
 
 	err = G_DB_Init();
-	if( err ) {		
+	if( err ) {
 		return err;
 	}
 
@@ -117,7 +117,7 @@ int G_XPSave_CreateNewDB( char *dbpath, qboolean force )
 	sqlite3		*db;
 
 	if( dbpath == NULL || dbpath[0] == '\0' ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_CreateNewDB: invalid path specified" );
+		G_XPSave_LogLastError( "G_XPSave_CreateNewDB: invalid path specified" );
 		return XPSAVE_INVALID_PATH;
 	}
 
@@ -125,29 +125,29 @@ int G_XPSave_CreateNewDB( char *dbpath, qboolean force )
 		if( force ) {
 			// do nothing
 		} else {
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CreateNewDB: sqlite3_open failed with error code %i", err ) );
+			G_XPSave_LogLastError( va( "G_XPSave_CreateNewDB: sqlite3_open failed with error code %i", err ) );
 			return err;
 		}
 	}
 
 	if( force ) {
 		if( err = sqlite3_exec( db, XPSAVE_SQLWRAP_DROP, NULL, NULL, NULL ) ) {		
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CreateNewDB: sqlite3_exec drop failed with error code %i", err ) );
+			G_XPSave_LogLastError( va( "G_XPSave_CreateNewDB: sqlite3_exec drop failed with error code %i", err ) );
 			sqlite3_close( db );
 			return err;
 		}
 	}
 
-	if( err = sqlite3_exec( db, XPSAVE_SQLWRAP_CREATE, NULL, NULL, NULL ) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CreateNewDB: sqlite3_exec create failed with error code %i", err ) );
+	if( err = sqlite3_exec( db, XPSAVE_SQLWRAP_CREATE, NULL, NULL, NULL ) ) {
+		G_XPSave_LogLastError( va( "G_XPSave_CreateNewDB: sqlite3_exec create failed with error code %i", err ) );
 		sqlite3_close( db );
 		return err;
 	}
 
 	if( err = sqlite3_close( level.database.db ) ) {
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CreateNewDB: sqlite3_close failed with error code %i", err ) );
+		G_XPSave_LogLastError( va( "G_XPSave_CreateNewDB: sqlite3_close failed with error code %i", err ) );
 		return err;
-	}	
+	}
 
 	G_LogPrintf( "XPSave: new database created at path '%s'\n", dbpath );
 
@@ -161,32 +161,32 @@ int G_XPSave_CheckDBSanity( char *dbpath )
 	sqlite3		*db;
 
 	if( !dbpath || dbpath[0] == '\0' ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_CheckDBSanity: invalid path specified" );
+		G_XPSave_LogLastError( "G_XPSave_CheckDBSanity: invalid path specified" );
 		return XPSAVE_INVALID_PATH;
 	}
 
 	// check if database can be opened
-	err = sqlite3_open_v2( dbpath, &db, SQLITE_OPEN_READONLY, NULL );	
+	err = sqlite3_open_v2( dbpath, &db, SQLITE_OPEN_READONLY, NULL );
 	if( err ) {
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_open_v2 failed with error code %i", err ) );
+		G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_open_v2 failed with error code %i", err ) );
 		return XPSAVE_DB_READ;
 	} else {
-		if( err = sqlite3_close( db ) ) {			
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
+		if( err = sqlite3_close( db ) ) {
+			G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
 			return err;
 		}
 	}
 
 	// db can be opened, now check if table exists
-	if( err = sqlite3_open( dbpath, &db ) ) { // this check is most likely redundant		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_open failed with error code %i", err ) );
+	if( err = sqlite3_open( dbpath, &db ) ) { // this check is most likely redundant
+		G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_open failed with error code %i", err ) );
 		return err;
 	}
 
 	if( err = sqlite3_exec( db, XPSAVE_SQLWRAP_CHECK_IF_TABLE_EXIST, NULL, NULL, NULL ) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_exec failed with error code %i", err ) );
-		if( err = sqlite3_close( db ) ) {			
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
+		G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_exec failed with error code %i", err ) );
+		if( err = sqlite3_close( db ) ) {
+			G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
 			return err;
 		}
 		return XPSAVE_TABLE_NOTEXIST;
@@ -194,17 +194,17 @@ int G_XPSave_CheckDBSanity( char *dbpath )
 
 	// db and table exist, now check schema
 	if( err = sqlite3_exec( db, XPSAVE_SQLWRAP_CHECK_IF_TABLE_CORRECT, NULL, NULL, NULL ) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_exec failed with error code %i", err ) );
-		if( err = sqlite3_close( db ) ) {			
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
+		G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_exec failed with error code %i", err ) );
+		if( err = sqlite3_close( db ) ) {
+			G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
 			return err;
 		}
 		return XPSAVE_TABLE_INCORRECT;
-	}	
+	}
 
 	// all ok
-	if( err = sqlite3_close( db ) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
+	if( err = sqlite3_close( db ) ) {
+		G_XPSave_LogLastError( va( "G_XPSave_CheckDBSanity: sqlite3_close failed with error code %i", err ) );
 		return err;
 	}
 
@@ -218,19 +218,19 @@ static int G_XPSave_GetXP( char *guid, xpsaveData_t *xpdata )
 	int				err;
 	sqlite3_stmt	*sqlitestmt;
 
-	if( level.database.initialized & XPSAVE_INITIALZE_FLAG ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_GetXP: access to non-initialized database" );
+	if( !(level.database.initialized & XPSAVE_INITIALZE_FLAG) ) {
+		G_XPSave_LogLastError( "G_XPSave_GetXP: access to non-initialized database" );
 		return DB_ACCESS_NONINIT;
 	}
 
 	if( !G_CheckGUIDSanity( guid, qtrue ) ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_GetXP: guid failed" );
+		G_XPSave_LogLastError( "G_XPSave_GetXP: guid failed" );
 		return XPSAVE_INVALID_GUID;
 	}
 
 	sqlstmt = va( XPSAVE_SQLWRAP_SELECT, guid );
 	if( err = sqlite3_prepare( level.database.db, sqlstmt, strlen(sqlstmt), &sqlitestmt, NULL ) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_GetXP: sqlite3_prepare failed with error code %i", err ) );
+		G_XPSave_LogLastError( va( "G_XPSave_GetXP: sqlite3_prepare failed with error code %i", err ) );
 		return err;
 	}
 
@@ -255,13 +255,13 @@ static int G_XPSave_GetXP( char *guid, xpsaveData_t *xpdata )
 			xpdata->skillpoints[SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS] = 0;
 		} else {
 			sqlite3_finalize(sqlitestmt);
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_GetXP: sqlite3_step failed with error code %i", err )  );
+			G_XPSave_LogLastError( va( "G_XPSave_GetXP: sqlite3_step failed with error code %i", err )  );
 			return err;
 		}
 	}
 
-	if( err = sqlite3_finalize(sqlitestmt) ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_GetXP: sqlite3_finalize failed with error code %i", err ) );
+	if( err = sqlite3_finalize(sqlitestmt) ) {
+		G_XPSave_LogLastError( va( "G_XPSave_GetXP: sqlite3_finalize failed with error code %i", err ) );
 		return err;
 	}
 
@@ -275,13 +275,13 @@ static int G_XPSave_SetXP( char *guid, xpsaveData_t *xpdata )
 	int				err;
 	sqlite3_stmt	*sqlitestmt;
 
-	if( level.database.initialized & XPSAVE_INITIALZE_FLAG ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SetXP: access to non-initialized database" );
+	if( !(level.database.initialized & XPSAVE_INITIALZE_FLAG) ) {
+		G_XPSave_LogLastError( "G_XPSave_SetXP: access to non-initialized database" );
 		return DB_ACCESS_NONINIT;
 	}
 
 	if( !G_CheckGUIDSanity( guid, qtrue ) ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SetXP: guid failed" );
+		G_XPSave_LogLastError( "G_XPSave_SetXP: guid failed" );
 		return XPSAVE_INVALID_GUID;
 	}
 
@@ -302,8 +302,8 @@ static int G_XPSave_SetXP( char *guid, xpsaveData_t *xpdata )
 			(int)xpdata->skillpoints[SK_MILITARY_INTELLIGENCE_AND_SCOPED_WEAPONS]);
 
 		err = sqlite3_exec(level.database.db, sqlstmt, NULL, NULL, NULL);
-		if( err ) {			
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_SetXP: sqlite3_exec::1 failed with error code %i", err ) );
+		if( err ) {
+			G_XPSave_LogLastError( va( "G_XPSave_SetXP: sqlite3_exec::1 failed with error code %i", err ) );
 			return err;
 		}
 	} else {
@@ -319,14 +319,14 @@ static int G_XPSave_SetXP( char *guid, xpsaveData_t *xpdata )
 
 		err = sqlite3_exec(level.database.db, sqlstmt, NULL, NULL, NULL);
 		if( err ) {			
-			G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_SetXP: sqlite3_exec::2 failed with error code %i", err ) );
+			G_XPSave_LogLastError( va( "G_XPSave_SetXP: sqlite3_exec::2 failed with error code %i", err ) );
 			return err;
 		}
 	}
 
 	err = sqlite3_finalize(sqlitestmt);
-	if( err ) {		
-		G_XPSave_LogLastError( va( "XPSave Last Error: G_XPSave_SetXP: sqlite3_finalize failed with error code %i", err ) );
+	if( err ) {
+		G_XPSave_LogLastError( va( "G_XPSave_SetXP: sqlite3_finalize failed with error code %i", err ) );
 		return err;
 	}
 
@@ -338,18 +338,18 @@ int G_XPSave_LoadClientXP( gclient_t *cl )
 	char			*guid;
 	int				i, err, clientNum;
 
-	if( level.database.initialized & XPSAVE_INITIALZE_FLAG ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_LoadClientXP: access to non-initialized database" );
+	if( !(level.database.initialized & XPSAVE_INITIALZE_FLAG) ) {
+		G_XPSave_LogLastError( "G_XPSave_LoadClientXP: access to non-initialized database" );
 		return DB_ACCESS_NONINIT;
 	}
 
 	if( !cl ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_LoadClientXP: null client" );
+		G_XPSave_LogLastError( "G_XPSave_LoadClientXP: null client" );
 		return XPSAVE_CLIENT_NULL;
 	}
 
 	if( cl->pers.xpsave_loaded == qtrue ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_LoadClientXP: already loaded" );
+		G_XPSave_LogLastError( "G_XPSave_LoadClientXP: already loaded" );
 		return XPSAVE_LOAD_LOAD;
 	}
 
@@ -357,10 +357,6 @@ int G_XPSave_LoadClientXP( gclient_t *cl )
 
 	trap_GetUserinfo( clientNum, xpbuf_userinfo, sizeof( xpbuf_userinfo ) );
 	guid = Info_ValueForKey ( xpbuf_userinfo, "cl_guid" );
-	if( guid[0] == '\0' ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_LoadClientXP: invalid guid" );
-		return XPSAVE_INVALID_GUID;
-	}
 
 	err = G_XPSave_GetXP( guid, &xpbuf_xpdata );
 	if( err ) {		
@@ -385,18 +381,18 @@ int G_XPSave_SaveClientXP( gclient_t *cl )
 	char			*guid;
 	int				i, err, clientNum;
 
-	if( level.database.initialized & XPSAVE_INITIALZE_FLAG ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SaveClientXP: access to non-initialized database" );
+	if( !(level.database.initialized & XPSAVE_INITIALZE_FLAG) ) {
+		G_XPSave_LogLastError( "G_XPSave_SaveClientXP: access to non-initialized database" );
 		return DB_ACCESS_NONINIT;
 	}
 
 	if( !cl ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SaveClientXP: null client" );
+		G_XPSave_LogLastError( "G_XPSave_SaveClientXP: null client" );
 		return XPSAVE_CLIENT_NULL;
 	}
 
 	if( cl->pers.xpsave_loaded == qfalse ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SaveClientXP: not loaded" );
+		G_XPSave_LogLastError( "G_XPSave_SaveClientXP: not loaded" );
 		return XPSAVE_SAVE_UNLOAD;
 	}
 
@@ -404,17 +400,13 @@ int G_XPSave_SaveClientXP( gclient_t *cl )
 
 	trap_GetUserinfo( clientNum, xpbuf_userinfo, sizeof( xpbuf_userinfo ) );
 	guid = Info_ValueForKey ( xpbuf_userinfo, "cl_guid" );
-	if( guid[0] == '\0' ) {
-		G_XPSave_LogLastError( "XPSave Last Error: G_XPSave_SaveClientXP: invalid guid" );
-		return XPSAVE_INVALID_GUID;
-	}
 
 	for( i = 0; i < SK_NUM_SKILLS; i++ ) {
 		xpbuf_xpdata.skillpoints[i] = cl->sess.skillpoints[i];
 	}	
 
 	err = G_XPSave_SetXP( guid, &xpbuf_xpdata );
-	if( err ) {		
+	if( err ) {
 		return err;
 	}
 
@@ -426,16 +418,21 @@ int G_XPSave_SaveClientXP( gclient_t *cl )
 void G_XPSave_WriteSessionData( void )
 {
 	int				i, err;
-	gentity_t		*ent;	
+	gentity_t		*ent;
+
+	if( !(level.database.initialized & XPSAVE_INITIALZE_FLAG) ) {
+		G_LogPrintf( "G_XPSave_WriteSessionData: access to non-initialized database" );
+		return;
+	}
 
 	for( i = 0; i < level.numConnectedClients; i++ ) {
 		ent = &g_entities[level.sortedClients[i]];
 		if( !ent ) {
 			continue;
 		}
-		
+
 		err = G_XPSave_SaveClientXP( ent->client );
-		if( err ) {			
+		if( err ) {
 			G_XPSave_PrintLastError();
 		}
 	}

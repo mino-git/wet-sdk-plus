@@ -2031,11 +2031,7 @@ void G_InitGame( int levelTime, int randomSeed, int restart ) {
 	G_spawnPrintf(DP_MVSPAWN, level.time + 2000, NULL);
 
 #ifdef DATABASE_SUPPORT
-	i = G_DB_Init();
-	if( i ) {
-		G_XPSave_PrintLastError();
-		G_DB_PrintLastError();
-	}
+	G_DB_Init();
 #endif
 
 #ifdef LUA_SUPPORT
