@@ -1438,6 +1438,8 @@ void ClientUserinfoChanged( int clientNum ) {
 
 	// send over a subset of the userinfo keys so other clients can
 	// print scoreboards, display models, and play custom sounds
+	// sta acqu-sdk (issue 3): omnibot support
+	/*
 	if ( ent->r.svFlags & SVF_BOT ) {
 		// n: netname
 		// t: sessionTeam
@@ -1469,6 +1471,8 @@ void ClientUserinfoChanged( int clientNum ) {
 			client->sess.muted ? 1 : 0
 		);
 	} else {
+	*/
+	// end acqu-sdk (issue 3)
 		s = va( "n\\%s\\t\\%i\\c\\%i\\r\\%i\\m\\%s\\s\\%s\\dn\\%s\\dr\\%i\\w\\%i\\lw\\%i\\sw\\%i\\mu\\%i\\ref\\%i",
 			client->pers.netname, 
 			client->sess.sessionTeam, 
@@ -1484,7 +1488,7 @@ void ClientUserinfoChanged( int clientNum ) {
 			client->sess.muted ? 1 : 0,
 			client->sess.referee
 		);
-	}
+	//}
 
 	trap_GetConfigstring( CS_PLAYERS + clientNum, oldname, sizeof( oldname ) );
 
