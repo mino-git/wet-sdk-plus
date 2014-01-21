@@ -740,19 +740,7 @@ void BotRecordTeamChange( int client );
 
 void G_TeamDataForString( const char* teamstr, int clientNum, team_t* team, spectatorState_t* sState, int* specClient ) {
 	*sState = SPECTATOR_NOT;
-	if( !Q_stricmp( teamstr, "follow1" ) ) {
-		*team =		TEAM_SPECTATOR;
-		*sState =	SPECTATOR_FOLLOW;
-		if( specClient ) {
-			*specClient = -1;
-		}
-	} else if( !Q_stricmp( teamstr, "follow2" ) ) {
-		*team =		TEAM_SPECTATOR;
-		*sState =	SPECTATOR_FOLLOW;
-		if( specClient ) {
-			*specClient = -2;
-		}
-	} else if( !Q_stricmp( teamstr, "spectator" ) || !Q_stricmp( teamstr, "s" ) ) {
+	if( !Q_stricmp( teamstr, "spectator" ) || !Q_stricmp( teamstr, "s" ) ) {
 		*team =		TEAM_SPECTATOR;
 		*sState =	SPECTATOR_FREE;
 	} else if ( !Q_stricmp( teamstr, "red" ) || !Q_stricmp( teamstr, "r" ) || !Q_stricmp( teamstr, "axis" ) ) {

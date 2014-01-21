@@ -2276,8 +2276,6 @@ void CalculateRanks( void ) {
 	char	teaminfo[TEAM_NUM_TEAMS][256];	// OSP
 	gclient_t	*cl;
 
-	level.follow1 = -1;
-	level.follow2 = -1;
 	level.numConnectedClients = 0;
 	level.numNonSpectatorClients = 0;
 	level.numPlayingClients = 0;
@@ -2333,12 +2331,6 @@ void CalculateRanks( void ) {
 						if ( !(g_entities[i].r.svFlags & SVF_BOT) ) {
 							level.voteInfo.numVotingTeamClients[ teamIndex ]++;
 						}
-					}
-
-					if ( level.follow1 == -1 ) {
-						level.follow1 = i;
-					} else if ( level.follow2 == -1 ) {
-						level.follow2 = i;
 					}
 				}
 			}

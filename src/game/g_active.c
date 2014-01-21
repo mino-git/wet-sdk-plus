@@ -1468,13 +1468,6 @@ void SpectatorClientEndFrame( gentity_t *ent )
 
 		clientNum = ent->client->sess.spectatorClient;
 
-		// team follow1 and team follow2 go to whatever clients are playing
-		if ( clientNum == -1 ) {
-			clientNum = level.follow1;
-		} else if ( clientNum == -2 ) {
-			clientNum = level.follow2;
-		}
-
 		if ( clientNum >= 0 ) {
 			cl = &level.clients[ clientNum ];
 			if(cl->pers.connected == CON_CONNECTED && cl->sess.sessionTeam != TEAM_SPECTATOR) {
