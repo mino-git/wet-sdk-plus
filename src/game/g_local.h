@@ -182,6 +182,7 @@ typedef struct
 	char	*animatingParams;		// Gordon: read 8 lines up for why i love this code ;)
 } g_script_status_t;
 //
+#define	MAX_SCRIPT_ACCUM_BUFFERS	8
 #define	G_MAX_SCRIPT_ACCUM_BUFFERS 10
 //
 void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params );
@@ -411,7 +412,7 @@ struct gentity_s {
 	g_script_event_t	*scriptEvents;	// contains a list of actions to perform for each event type
 	g_script_status_t	scriptStatus;	// current status of scripting
 	// the accumulation buffer
-	int scriptAccumBuffer[G_MAX_SCRIPT_ACCUM_BUFFERS];
+	int scriptAccumBuffer[MAX_SCRIPT_ACCUM_BUFFERS];
 
 	qboolean	AASblocking;
 	vec3_t		AASblocking_mins, AASblocking_maxs;
@@ -915,8 +916,6 @@ typedef struct limbo_cam_s {
 #define	MAX_SPAWN_VARS_CHARS	2048
 #define VOTE_MAXSTRING			256		// Same value as MAX_STRING_TOKENS
 
-#define	MAX_SCRIPT_ACCUM_BUFFERS	8
-
 #define MAX_BUFFERED_CONFIGSTRINGS 128
 
 typedef struct voteInfo_s {
@@ -1061,7 +1060,7 @@ typedef struct {
 	qboolean	initStaticEnts;
 	qboolean	initSeekCoverChains;
 	char		*botScriptBuffer;
-	int			globalAccumBuffer[MAX_SCRIPT_ACCUM_BUFFERS];
+	int			globalAccumBuffer[G_MAX_SCRIPT_ACCUM_BUFFERS];
 
 	int			soldierChargeTime[2];
 	int			medicChargeTime[2];

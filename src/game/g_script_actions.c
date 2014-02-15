@@ -590,14 +590,8 @@ qboolean G_ScriptAction_FollowSpline( gentity_t* ent, char *params ) {
 			}
 
 			bufferIndex = atoi(token);
-			// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which can result in a wrong index
 			if (bufferIndex < 0 || bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
-			//if (bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-			// end acqu-sdk (issue 2): CHRUKER: b055
-				// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which can result in a wrong index
-				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS-1 );
-				//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS-1 );
-				// end acqu-sdk (issue 2): CHRUKER: b055
+				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
 			}
 
 			backward = ent->scriptAccumBuffer[bufferIndex] != 0 ? qtrue : qfalse;
@@ -611,7 +605,7 @@ qboolean G_ScriptAction_FollowSpline( gentity_t* ent, char *params ) {
 
 			bufferIndex = atoi(token);
 			if (bufferIndex < 0 || bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS-1 );
+				G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1 );
 			}
 
 			backward = level.globalAccumBuffer[bufferIndex] != 0 ? qtrue : qfalse;
@@ -1987,11 +1981,8 @@ qboolean G_ScriptAction_Accum( gentity_t *ent, char *params )
 	}
 
 	bufferIndex = atoi(token);
-	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 10 as the last bufferindex, but its actually 9
-		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1);
-		//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
-		// end acqu-sdk (issue 2): CHRUKER: b055
+	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS - 1);
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -2187,14 +2178,8 @@ qboolean G_ScriptAction_GlobalAccum( gentity_t *ent, char *params )
 	}
 
 	bufferIndex = atoi(token);
-	// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using G_MAX_SCRIPT_ACCUM_BUFFERS, which would result in invalid indexes
-	if (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) {
-	//if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
-	// end acqu-sdk (issue 2): CHRUKER: b055
-		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 10 as the last bufferindex, but its actually 7
-		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
-		//G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS );
-		// end acqu-sdk (issue 2): CHRUKER: b055
+	if (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) {
+		G_Error( "G_Scripting: accum buffer is outside range (0 - %i)\n", G_MAX_SCRIPT_ACCUM_BUFFERS - 1 );
 	}
 
 	token = COM_ParseExt( &pString, qfalse );
@@ -3564,15 +3549,10 @@ qboolean G_ScriptAction_PrintAccum( gentity_t *ent, char *params )
 
 
 	bufferIndex = atoi(token);
-	// sta acqu-sdk (issue 2): CHRUKER: b055 - Was using MAX_SCRIPT_ACCUM_BUFFERS which is a different limit
-	if ((bufferIndex < 0) || (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) )
-	//if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
-	// end acqu-sdk (issue 2): CHRUKER: b055
+
+	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
 	{
-		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last buffer index and using MAX_SCRIPT_ACCUM_BUFFERS, but its actually 9
-		G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", G_MAX_SCRIPT_ACCUM_BUFFERS - 1);
-		//G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
-		// end acqu-sdk (issue 2): CHRUKER: b055
+		G_Error("G_ScriptAction_PrintAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1);
 	}
 
 	G_Printf("(G_Script) %s: Accum[%i] = %d\n", ent->scriptName, bufferIndex, ent->scriptAccumBuffer[bufferIndex]);
@@ -3609,12 +3589,9 @@ qboolean G_ScriptAction_PrintGlobalAccum( gentity_t *ent, char *params )
 
 
 	bufferIndex = atoi(token);
-	if ((bufferIndex < 0) || (bufferIndex >= MAX_SCRIPT_ACCUM_BUFFERS) )
+	if ((bufferIndex < 0) || (bufferIndex >= G_MAX_SCRIPT_ACCUM_BUFFERS) )
 	{
-		// sta acqu-sdk (issue 2): CHRUKER: b055 - Was printing 8 as the last buffer index, but its actually 7
-		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS - 1 );
-		//G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", MAX_SCRIPT_ACCUM_BUFFERS );
-		// end acqu-sdk (issue 2): CHRUKER: b055
+		G_Error("PrintGlobalAccum: buffer is outside range (0 - %i)", G_MAX_SCRIPT_ACCUM_BUFFERS - 1 );
 	}
 
 	G_Printf("(G_Script) GlobalAccum[%i] = %d\n", bufferIndex, level.globalAccumBuffer[bufferIndex]);
