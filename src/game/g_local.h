@@ -182,7 +182,7 @@ typedef struct
 	char	*animatingParams;		// Gordon: read 8 lines up for why i love this code ;)
 } g_script_status_t;
 //
-#define	MAX_SCRIPT_ACCUM_BUFFERS	8
+#define	MAX_SCRIPT_ACCUM_BUFFERS 10
 #define	G_MAX_SCRIPT_ACCUM_BUFFERS 10
 //
 void G_Script_ScriptEvent( gentity_t *ent, char *eventStr, char *params );
